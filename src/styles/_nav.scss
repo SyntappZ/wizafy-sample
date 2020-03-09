@@ -1,7 +1,5 @@
-$light-text: #949494;
-$light-grey: #cfcfcf;
-$purple: #554fd8;
-$text: #303A53;
+@import "./colors";
+
 .nav-container {
   height: 100%;
   display: flex;
@@ -26,7 +24,7 @@ $text: #303A53;
   p {
     margin: 0;
     padding: 0;
-    color: $light-text;
+    color:$pink;
   }
 }
 .picture-wrap {
@@ -38,7 +36,7 @@ $text: #303A53;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    box-shadow: 0px 15px 20px -12px rgb(77, 90, 122);
+    box-shadow: 0px 15px 20px -12px #4d5a7a;
   }
 }
 .page-navigator {
@@ -67,7 +65,8 @@ $text: #303A53;
   }
 }
 .icon {
-  color: $light-text;
+  // color: $light-text;
+  color: $pink;
   font-size: 25px;
 }
 

@@ -3,7 +3,7 @@ import "./App.scss";
 import SideNav from "./components/SideNav";
 import PageRouter from "./router/PageRouter";
 import { BrowserRouter as Router } from "react-router-dom";
-
+import Player from "./components/Player";
 function App() {
   return (
     <Router>
@@ -16,7 +16,9 @@ function App() {
             <PageRouter />
           </div>
         </div>
-        <div className="player-section"></div>
+        <div className="player-section">
+          <Player />
+        </div>
       </div>
     </Router>
   );

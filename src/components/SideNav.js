@@ -13,7 +13,7 @@ const SideNav = () => {
     {
       title: "Home",
       link: "/",
-      icon: <AiOutlineHome className="icon" />
+      icon: <AiOutlineHome className="icon"  />
     },
     {
       title: "Playlists",
