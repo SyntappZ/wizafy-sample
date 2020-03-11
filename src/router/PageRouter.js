@@ -4,6 +4,7 @@ import Generator from "../pages/Generator";
 import Playlists from "../pages/Playlists";
 import Settings from "../pages/Settings";
 import Home from "../pages/Home";
+import Browse from '../pages/Browse'
 import { Switch, Route } from "react-router-dom";
 
 const routes = [
@@ -11,6 +12,10 @@ const routes = [
     path: "/",
     exact: true,
     main: () => <Home />
+  },
+  {
+    path: "/browse",
+    main: () => <Browse />
   },
   {
     path: "/createPlaylist",

@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import img from "../images/tempAlbum.jpg";
 import { FaStepForward, FaVolumeUp, FaStepBackward } from "react-icons/fa";
 import { MdPlayArrow } from "react-icons/md";
+import { PlaylistStore } from "../context/ContextProvider";
+
+
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 const Player = () => {
+  const contextStore = useContext(PlaylistStore);
+
+
+  const playSample = () => {
+    let sample = contextStore.state.testPreview
+    var audio = new Audio(sample);
+    audio.play();
+  }
   return (
     <div className="player-container">
       <div className="now-playing">
@@ -19,14 +30,14 @@ const Player = () => {
         <div className="controls">
           <div className="controls-wrap">
             <FaStepBackward className="player-icon" />
-            <div className="play-wrap">
+            <div className="play-wrap" onClick={playSample}>
               <MdPlayArrow />
             </div>
             <FaStepForward className="player-icon" />
           </div>
         </div>
       </div>
-
+     
       <div className="progress-bar">
         <div className="slider-wrap">
           <p>0:00</p>

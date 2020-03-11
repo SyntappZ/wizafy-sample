@@ -14,12 +14,15 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+ 
+
   h4 {
     padding: 0;
     margin: 0;
     letter-spacing: 1px;
     font-weight: bold;
     font-size: 20px;
+    text-transform: capitalize;
   }
   p {
     margin: 0;
@@ -64,12 +67,16 @@
     letter-spacing: 1px;
   }
 }
+
 .icon {
-  // color: $light-text;
   color: $pink;
   font-size: 25px;
 }
 
+.disabled-link {
+  pointer-events: none;
+  color: $disabled;
+}
 
 .create-playlist {
   flex: 2;

@@ -1,34 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import img from "../images/tempProfile.jpg";
 import { AiOutlineHome } from "react-icons/ai";
 import { MdPlaylistAdd, MdPlaylistPlay } from "react-icons/md";
-import { GiRegeneration } from "react-icons/gi";
+import { GiRegeneration, GiCubes } from "react-icons/gi";
 import { FiSettings } from "react-icons/fi";
-
+import { PlaylistStore } from "../context/ContextProvider";
 import { Link, useLocation } from "react-router-dom";
 
 const SideNav = () => {
+  const contextStore = useContext(PlaylistStore);
+  const { username, profileImage, email, signedIn } = contextStore.state;
   const [page, setPage] = useState("/");
+  const iconStyle = signedIn ? "icon" : "icon disabled-link";
   const links = [
     {
       title: "Home",
       link: "/",
-      icon: <AiOutlineHome className="icon"  />
+      icon: <AiOutlineHome className={iconStyle} />
+    },
+    {
+      title: "Explore",
+      link: "/explore",
+      icon: <GiCubes className={iconStyle} />
     },
     {
       title: "Playlists",
       link: "/playlists",
-      icon: <MdPlaylistPlay className="icon" />
+      icon: <MdPlaylistPlay className={iconStyle} />
     },
     {
       title: "Generator",
       link: "/generator",
-      icon: <GiRegeneration className="icon" />
+      icon: <GiRegeneration className={iconStyle} />
     },
     {
       title: "Settings",
       link: "/settings",
-      icon: <FiSettings className="icon" />
+      icon: <FiSettings className={iconStyle} />
     }
   ];
 
@@ -47,10 +55,10 @@ const SideNav = () => {
     <div className="nav-container">
       <div className="profile-wrap">
         <div className="picture-wrap">
-          <img src={img} alt="profile" />
+          <img src={profileImage ? profileImage : img} alt="profile" />
         </div>
-        <h4>Farzan Faruk</h4>
-        <p>tomjones@gmail.com</p>
+        <h4>{username}</h4>
+        <p>{email}</p>
       </div>
       <div className="page-navigator">
         <div className="links">
@@ -61,6 +69,7 @@ const SideNav = () => {
               link={link.link}
               page={page}
               key={i}
+              signedIn={signedIn}
             />
           ))}
         </div>
@@ -69,9 +78,10 @@ const SideNav = () => {
       <div className="create-playlist">
         <LinkContainer
           title="Create Playlist"
-          icon={<MdPlaylistAdd className="icon" />}
+          icon={<MdPlaylistAdd className={iconStyle} />}
           link="/createPlaylist"
           page={page}
+          signedIn={signedIn}
         />
       </div>
     </div>
@@ -80,7 +90,7 @@ const SideNav = () => {
 
 export default SideNav;
 
-const LinkContainer = ({ title, icon, link, page }) => {
+const LinkContainer = ({ title, icon, link, page, signedIn }) => {
   const selectedStyle = {
     background: "#554fd8",
     color: "#fff",
@@ -91,7 +101,7 @@ const LinkContainer = ({ title, icon, link, page }) => {
     <Link
       to={link}
       style={page === link ? selectedStyle : null}
-      className="link"
+      className={signedIn ? "link" : "link disabled-link"}
     >
       {icon}
       <h4>{title}</h4>
