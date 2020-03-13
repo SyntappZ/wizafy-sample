@@ -10,7 +10,8 @@ const userData = (state, action) => {
         ...state,
         username: action.payload.display_name,
         email: action.payload.email,
-        profileImage: action.payload.images ? action.payload.images[0].url : ""
+        profileImage: action.payload.images ? action.payload.images[0].url : "",
+        isPremium: action.payload.product === 'premium' ? true : false
       };
     }
   
@@ -35,10 +36,10 @@ const userData = (state, action) => {
         myTopTracks: action.payload
       }
     }
-    case 'test': {
+    case 'loadTrack': {
       return {
         ...state,
-        testPreview: action.payload
+        currentTrack: action.payload
       }
     }
     default:
@@ -50,6 +51,7 @@ const userData = (state, action) => {
 const userState = {
   signedIn: parsed.access_token ? true : false,
   isloading: true,
+  isPremium: false,
   username: "",
   email: "",
   profileImage: "",
@@ -58,7 +60,7 @@ const userState = {
   albums: [],
   moreAlbums: "",
   myTopTracks: [],
-  testPreview: ''
+  currentTrack: ''
 };
 
 export const Reducer = () => useReducer(userData, userState);

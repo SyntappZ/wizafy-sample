@@ -3,6 +3,7 @@
 @import "./styles/player";
 @import "./styles/home";
 @import "./styles/loading";
+@import "./styles/track";
 @import url('https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap');
 
 
@@ -17,6 +18,8 @@
  
   font-family: 'Baloo Da 2', cursive;
   color: $text;
+  overflow: hidden;
+ 
 }
 .section-container {
   display: flex;
@@ -31,6 +34,7 @@
 }
 .pages-section {
   flex: 7 4;
+  overflow-y: auto;
 }
 .player-section {
   background: white;
@@ -39,5 +43,4 @@
   width: 100%;
   position: absolute;
   bottom: 0;
-  
 }

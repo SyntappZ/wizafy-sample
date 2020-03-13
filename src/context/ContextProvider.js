@@ -11,11 +11,12 @@ const ContextProvider = ({ children }) => {
     if (state.signedIn) {
       fetchStartupData();
     }
-    // console.log('is signed in ' + state.signedIn)
+    
   }, []);
 
   const fetchStartupData = () => {
     fetchData("https://api.spotify.com/v1/me", "GET").then(data => {
+      
       dispatch({ type: "setProfileData", payload: data });
     });
     fetchData("https://api.spotify.com/v1/me/playlists", "GET").then(data => {
@@ -41,8 +42,8 @@ const ContextProvider = ({ children }) => {
         };
       });
 
-      dispatch({ type: "homeData", payload: tracks });
-      dispatch({type: 'test', payload: data.items[2].preview_url})
+     dispatch({ type: "homeData", payload: tracks });
+     
     });
   };
 

@@ -12,9 +12,9 @@ const Player = () => {
 
 
   const playSample = () => {
-    let sample = contextStore.state.testPreview
-    var audio = new Audio(sample);
-    audio.play();
+    // let sample = contextStore.state.testPreview
+    // var audio = new Audio(sample);
+    // audio.play();
   }
   return (
     <div className="player-container">
