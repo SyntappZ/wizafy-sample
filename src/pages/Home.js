@@ -1,21 +1,34 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { MdPerson, MdArrowDownward, MdArrowForward } from "react-icons/md";
-import { FiLogOut } from "react-icons/fi";
-
+import { FiLogOut, FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import TrackFull from "../components/TrackFull";
 import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
 import Track from "../components/Track";
 import { serverUrl } from "../serverUrl";
-import im from "../images/tempProfile.jpg";
+import im from "../images/tempAlbum.jpg";
 const Home = () => {
+  const [years, setYears] = useState([]);
+
   const contextStore = useContext(PlaylistStore);
   const {
     signedIn,
     myTopTracks,
     profileImage,
     username,
-    albums
+    albums,
+    favorites
   } = contextStore.state;
+
+  useEffect(() => {
+    const arr = ["All"];
+    favorites.forEach(track => {
+      if (!arr.includes(track.year)) {
+        arr.push(track.year);
+      }
+    });
+    setYears(arr);
+  }, [favorites]);
 
   return signedIn ? (
     <HomeContent
@@ -23,6 +36,8 @@ const Home = () => {
       profileImage={profileImage}
       myTopTracks={myTopTracks}
       username={username}
+      years={years}
+      favorites={favorites}
     />
   ) : (
     <SignIn />
@@ -31,7 +46,41 @@ const Home = () => {
 
 export default Home;
 
-const HomeContent = ({ myTopTracks, username, albums, profileImage }) => {
+const Year = ({ date, currentYear, changeCurrentYear }) => {
+  return (
+    <div
+      onClick={() => changeCurrentYear(date)}
+      className={currentYear === date ? "date current-date" : "date"}
+    >
+      {date}
+    </div>
+  );
+};
+
+const HomeContent = ({
+  myTopTracks,
+  years,
+  username,
+  albums,
+  profileImage,
+  favorites
+}) => {
+  const [currentYear, setCurrentYear] = useState("All");
+  const [favoriteTracks, setFavoriteTracks] = useState([]);
+
+  const changeCurrentYear = date => {
+    setCurrentYear(date);
+  };
+
+  useEffect(() => {
+    if (currentYear === "All") {
+      setFavoriteTracks(favorites);
+    } else {
+      const tracks = favorites.filter(track => track.year === currentYear);
+      setFavoriteTracks(tracks);
+    }
+  }, [currentYear, favorites]);
+
   return (
     <>
       {myTopTracks.length > 0 ? (
@@ -58,18 +107,56 @@ const HomeContent = ({ myTopTracks, username, albums, profileImage }) => {
           </div>
 
           <div className="top-tracks">
-            <h1 className="title">top played tracks</h1>
-            
+            <div className="title-wrap">
+              <h1>top played tracks</h1>
+              <div className="scroll-buttons">
+                <div>
+                  <FiChevronLeft />
+                </div>
+                <div>
+                  <FiChevronRight />
+                </div>
+              </div>
+            </div>
+
             <div className="myTopTracks">
-              {myTopTracks.map(track => {
+              {myTopTracks.map((track, i) => {
                 return (
                   <Track
-                    img={track.image.url}
+                    key={i}
+                    img={track.image}
                     title={track.title.split("-")[0]}
                   />
                 );
               })}
             </div>
+          </div>
+
+          <div className="favorites">
+            <div className="title-wrap">
+              <h1>My Favorites</h1>
+              <div className="favorite-dates">
+                {years.map(year => (
+                  <Year
+                    changeCurrentYear={changeCurrentYear}
+                    currentYear={currentYear}
+                    date={year}
+                  />
+                ))}
+              </div>
+            </div>
+            {favoriteTracks.map((track, i) => {
+              return (
+                <TrackFull
+                  key={i}
+                  title={track.title}
+                  artist={track.artist}
+                  image={track.image}
+                  duration={track.duration}
+                  // isFavorite={false}
+                />
+              );
+            })}
           </div>
         </div>
       ) : (

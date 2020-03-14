@@ -1,6 +1,7 @@
 import { useReducer } from "react";
 import queryString from "query-string";
 const parsed = queryString.parse(window.location.search);
+
 const userData = (state, action) => {
   
 
@@ -30,10 +31,16 @@ const userData = (state, action) => {
         moreAlbums: action.payload.next
       };
     }
-    case 'homeData': {
+    case 'topTracks': {
       return {
         ...state,
-        myTopTracks: action.payload
+        myTopTracks: action.payload,
+      }
+    }
+    case 'favorites': {
+      return {
+        ...state,
+        favorites: action.payload,
       }
     }
     case 'loadTrack': {
@@ -60,7 +67,8 @@ const userState = {
   albums: [],
   moreAlbums: "",
   myTopTracks: [],
-  currentTrack: ''
+  currentTrack: '',
+  favorites: []
 };
 
 export const Reducer = () => useReducer(userData, userState);

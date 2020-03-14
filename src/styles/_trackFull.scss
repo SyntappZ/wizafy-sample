@@ -1,0 +1,64 @@
+@import './colors';
+
+.full-track {
+    width: 100%;
+    display: flex;
+    margin: 10px auto;
+    justify-content: space-between;
+    height: 100px;
+    border-radius: 15px;
+    background:white;
+    // box-shadow: 0px 15px 10px -12px #99acdb80;
+    padding: 0 30px 0 20px;
+    transition: 1s ease-in-out;
+    
+
+    .left {
+        min-width: 300px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+            img{ 
+                width: 70px;
+                border-radius: 7px;
+                margin: 0 10px;
+            }
+        
+
+        .text-wrap {
+            padding-left: 10px;
+            text-transform: capitalize;
+            h3 {
+                font-weight: bold;
+                letter-spacing: 1px;
+                
+            }
+
+            p {
+                color: $light-text;
+            }
+        }
+
+    }
+
+    .right {
+        width: 200px;
+        height: 100%;
+        display: flex;
+       
+        align-items: center;
+
+        P {
+            font-size: 20px;
+            font-weight: bold;
+        
+        }
+
+    }
+}
+
+.more-icon {
+    font-size: 40px;
+    cursor: pointer;
+    
+}

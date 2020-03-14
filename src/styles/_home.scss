@@ -137,16 +137,27 @@
   }
 }
 
+
+
 .top-tracks {
   padding: 30px 50px;
+
+  .wrap {
+    display: flex;
+  
+  }
 
 }
 
 .myTopTracks {
- display:flex;
+  display:flex;
+  flex: 4 1;
   overflow: auto;
 }
 
+.favorites {
+  flex: 2 1;
+}
 
 .myTopTracks::-webkit-scrollbar {
   width: 12px;
@@ -170,8 +181,67 @@
 
 
 
-.title {
-  text-transform: capitalize;
-  letter-spacing: 1px;
+.scroll-buttons {
+  width: 200px;
+  display: flex;
+
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    width: 50px;
+    height: 50px;
+    background: $purple;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0px 20px 15px -12px #4d5a7a;
+  }
+}
+
+
+
+.favorites {
+  width: 100%;
+  padding: 50px;
+  min-height: 500px;
+}
+
+.favorite-dates {
+  display: flex;
+  align-items: center;
   padding: 5px 0 20px 0;
+
+  .date {
+    min-width: 100px;
+    padding: 7px;
+    
+   
+    text-align: center;
+    margin: 0 10px;
+    border-radius: 15px;
+    
+    font-size: 20px;
+    letter-spacing: 1px;
+    
+    text-transform: capitalize;
+    cursor: pointer;
+    background: white;
+    color: $purple;
+    font-weight: bold;
+    box-shadow: 0px 10px 5px -16px #8d9ab6a2;
+    transition: .2s ;
+
+  }
+  .current-date {
+    background: $purple;
+    color: white;
+    font-weight: 400;
+    box-shadow: 0px 15px 10px -12px #515d7a;
+
+  
+  }
 }

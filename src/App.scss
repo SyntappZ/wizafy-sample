@@ -4,6 +4,7 @@
 @import "./styles/home";
 @import "./styles/loading";
 @import "./styles/track";
+@import "./styles/trackFull";
 @import url('https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap');
 
 
@@ -28,6 +29,7 @@
   padding-bottom: 95px;
   background: $background;
 }
+
 .nav-section {
   flex: .3 3 250px;
   border-right: solid 2px rgb(236, 236, 236);
@@ -43,6 +45,18 @@
   width: 100%;
   position: absolute;
   bottom: 0;
+}
+
+
+.title-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  h1 {
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    padding: 5px 0 20px 0;
+  }
 }
 
 

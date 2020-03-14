@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Track = ({img, title}) => {
+const Album = ({img, title}) => {
     
     return (
         <div className="track">
@@ -12,4 +12,4 @@ const Track = ({img, title}) => {
     )
 }
 
-export default Track
+export default Album

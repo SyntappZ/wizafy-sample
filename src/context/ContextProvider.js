@@ -4,6 +4,13 @@ import { fetchData } from "../data/fetchApi";
 import { Reducer } from "./Reducer.js";
 export const PlaylistStore = createContext();
 
+
+const durationConverter = millis => {
+  var minutes = Math.floor(millis / 60000);
+  var seconds = ((millis % 60000) / 1000).toFixed(0);
+  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+};
+
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = Reducer();
 
@@ -27,6 +34,29 @@ const ContextProvider = ({ children }) => {
         dispatch({ type: "setNewReleases", payload: data.albums });
       }
     );
+    fetchData("https://api.spotify.com/v1/me/tracks?limit=50", "GET").then(
+      data => {
+      
+        const tracks = data.items.map(track => {
+          const year = track.added_at.split('-')[0]
+          
+          track = track.track
+      
+          return {
+            id: track.id,
+            title: track.name,
+            artist: track.artists[0].name,
+            image: track.album.images[1].url,
+            duration: durationConverter(track.duration_ms),
+            preview: track.preview_url,
+            uri: track.uri,
+            href: track.href,
+            year: year
+          };
+        });
+        dispatch({ type: "favorites", payload: tracks });
+      }
+    );
 
     fetchData("https://api.spotify.com/v1/me/top/tracks", "GET").then(data => {
       const tracks = data.items.map(track => {
@@ -34,15 +64,15 @@ const ContextProvider = ({ children }) => {
           id: track.id,
           title: track.name,
           artist: track.artists[0].name,
-          image: track.album.images[1],
-          duration: track.duration_ms,
+          image: track.album.images[1].url,
+          duration: durationConverter(track.duration_ms),
           preview: track.preview_url,
           uri: track.uri,
           href: track.href
         };
       });
 
-     dispatch({ type: "homeData", payload: tracks });
+     dispatch({ type: "topTracks", payload: tracks });
      
     });
   };
