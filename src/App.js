@@ -5,7 +5,9 @@ import PageRouter from "./router/PageRouter";
 import { BrowserRouter as Router } from "react-router-dom";
 import ContextProvider from "./context/ContextProvider";
 import Player from "./components/Player";
+
 function App() {
+
   return (
     <ContextProvider>
       <Router>

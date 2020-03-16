@@ -6,13 +6,13 @@ import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
 import Track from "../components/Track";
 import { serverUrl } from "../serverUrl";
-
+import TrackScroller from "../components/TrackScroller";
 import im from "../images/tempAlbum.jpg";
 const Home = () => {
   const contextStore = useContext(PlaylistStore);
-  const { signedIn } = contextStore.state;
+  const { accessToken } = contextStore.state;
 
-  return signedIn ? <HomeContent /> : <SignIn />;
+  return accessToken ? <HomeContent /> : <SignIn />;
 };
 
 export default Home;
@@ -30,7 +30,7 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
 
 const HomeContent = () => {
   const contextStore = useContext(PlaylistStore);
-  const {loadMoreTracks} = contextStore
+  const { loadMoreTracks, dispatch } = contextStore;
   const {
     myTopTracks,
     profileImage,
@@ -44,9 +44,9 @@ const HomeContent = () => {
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
 
-
   useEffect(() => {
     const arr = ["All"];
+
     favorites.forEach(track => {
       if (!arr.includes(track.year)) {
         arr.push(track.year);
@@ -58,8 +58,6 @@ const HomeContent = () => {
     setCurrentYear(date);
   };
 
-  
-
   useEffect(() => {
     if (currentYear === "All") {
       setFavoriteTracks(favorites);
@@ -69,14 +67,21 @@ const HomeContent = () => {
     }
   }, [currentYear, favorites]);
 
-  const loadMoreFavs = () => {
-    loadMoreTracks(moreFavorites, 'favorites')
-  }
-  const loadMoreTopTracks = () => {
-    loadMoreTracks(moreTopTracks, 'topTracks')
-  }
+  const signOut = () => {
+    dispatch({ type: "setAccessToken", payload: "" });
+    dispatch({ type: "setProfileData", payload: [] });
+    dispatch({ type: "setPlaylists", payload: [] });
+    dispatch({ type: "setNewReleases", payload: [] });
+    dispatch({ type: "favorites", payload: "logout" });
+    dispatch({ type: "topTracks", payload: "logout" });
+  };
 
-  
+  const loadMoreFavs = () => {
+    loadMoreTracks(moreFavorites, "favorites");
+  };
+  const loadMoreTopTracks = () => {
+    loadMoreTracks(moreTopTracks, "topTracks");
+  };
 
   return (
     <>
@@ -95,7 +100,7 @@ const HomeContent = () => {
             </div>
             <p className="username">{username}</p>
             <div className="image-section">
-              <div className="logout">
+              <div className="logout" onClick={signOut}>
                 <p>Logout</p>
                 <FiLogOut />
               </div>
@@ -103,35 +108,11 @@ const HomeContent = () => {
             </div>
           </div>
 
-          <div className="top-tracks">
-            <div className="title-wrap">
-              <h1>top played tracks</h1>
-              <div className="scroll-buttons">
-                <div>
-                  <FiChevronLeft />
-                </div>
-                <div>
-                  <FiChevronRight />
-                </div>
-              </div>
-            </div>
-
-            <div className="myTopTracks">
-              {myTopTracks.map((track, i) => {
-                return (
-                  <Track
-                    key={i}
-                    img={track.image}
-                    title={track.title.split("-")[0]}
-                    id={track.id}
-                 
-                  />
-                );
-              })}
-              <Track loadMoreTopTracks={loadMoreTopTracks} img={null} title='' id={null} />
-            </div>
-           
-          </div>
+          <TrackScroller
+            loadMoreTopTracks={loadMoreTopTracks}
+            tracks={myTopTracks}
+            album={null}
+          />
 
           <div className="favorites">
             <div className="title-wrap">
@@ -148,6 +129,7 @@ const HomeContent = () => {
               </div>
             </div>
             {favoriteTracks.map((track, i) => {
+              
               return (
                 <TrackFull
                   key={i}

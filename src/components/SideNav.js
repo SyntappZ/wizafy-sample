@@ -9,9 +9,9 @@ import { Link, useLocation } from "react-router-dom";
 
 const SideNav = () => {
   const contextStore = useContext(PlaylistStore);
-  const { username, profileImage, email, signedIn } = contextStore.state;
+  const { username, profileImage, email, accessToken } = contextStore.state;
   const [page, setPage] = useState("/");
-  const iconStyle = signedIn ? "icon" : "icon disabled-link";
+  const iconStyle = accessToken ? "icon" : "icon disabled-link";
   const links = [
     {
       title: "Home",
@@ -69,7 +69,7 @@ const SideNav = () => {
               link={link.link}
               page={page}
               key={i}
-              signedIn={signedIn}
+              accessToken={accessToken}
             />
           ))}
         </div>
@@ -81,7 +81,7 @@ const SideNav = () => {
           icon={<MdPlaylistAdd className={iconStyle} />}
           link="/createPlaylist"
           page={page}
-          signedIn={signedIn}
+          accessToken={accessToken}
         />
       </div>
     </div>
@@ -90,7 +90,7 @@ const SideNav = () => {
 
 export default SideNav;
 
-const LinkContainer = ({ title, icon, link, page, signedIn }) => {
+const LinkContainer = ({ title, icon, link, page, accessToken }) => {
   const selectedStyle = {
     background: "#554fd8",
     color: "#fff",
@@ -101,7 +101,7 @@ const LinkContainer = ({ title, icon, link, page, signedIn }) => {
     <Link
       to={link}
       style={page === link ? selectedStyle : null}
-      className={signedIn ? "link" : "link disabled-link"}
+      className={accessToken ? "link" : "link disabled-link"}
     >
       {icon}
       <h4>{title}</h4>

@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import CreatePlaylist from "../pages/CreatePlaylist";
 import Generator from "../pages/Generator";
 import Playlists from "../pages/Playlists";
 import Settings from "../pages/Settings";
 import Home from "../pages/Home";
-import Browse from '../pages/Browse'
-import { Switch, Route } from "react-router-dom";
+import Explore from '../pages/Explore'
+import { PlaylistStore } from "../context/ContextProvider";
+import { Switch, Route, useHistory } from "react-router-dom";
+
+import queryString from "query-string";
 
 const routes = [
   {
@@ -14,8 +17,8 @@ const routes = [
     main: () => <Home />
   },
   {
-    path: "/browse",
-    main: () => <Browse />
+    path: "/explore",
+    main: () => <Explore />
   },
   {
     path: "/createPlaylist",
@@ -36,6 +39,22 @@ const routes = [
 ];
 
 const PageRouter = () => {
+  const parsed = queryString.parse(window.location.search);
+  const contextStore = useContext(PlaylistStore);
+  const {dispatch} = contextStore;
+  const { accessToken } = contextStore.state;
+  const history = useHistory();
+
+  useEffect(() => {
+    if(parsed.access_token) {
+      dispatch({type: 'setAccessToken', payload: parsed.access_token})
+    }
+    if(!accessToken) {
+      history.push("/");
+    }
+  }, [accessToken])
+ 
+
   return (
     <Switch>
       {routes.map((route, index) => (

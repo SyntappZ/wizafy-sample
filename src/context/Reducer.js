@@ -1,6 +1,4 @@
 import { useReducer } from "react";
-import queryString from "query-string";
-const parsed = queryString.parse(window.location.search);
 
 const durationConverter = millis => {
   var minutes = Math.floor(millis / 60000);
@@ -19,6 +17,12 @@ const userData = (state, action) => {
         isPremium: action.payload.product === "premium" ? true : false
       };
     }
+    case "setAccessToken": {
+      return {
+        ...state,
+        accessToken: action.payload
+      };
+    }
 
     case "setPlaylists": {
       return {
@@ -35,45 +39,52 @@ const userData = (state, action) => {
       };
     }
     case "topTracks": {
-      const tracks = action.payload.items.map(track => {
-        return {
-          id: track.id,
-          title: track.name,
-          artist: track.artists[0].name,
-          image: track.album.images[1].url,
-          duration: durationConverter(track.duration_ms),
-          preview: track.preview_url,
-          uri: track.uri,
-          href: track.href
-        };
-      });
+      const tracks =
+        action.payload === "logout"
+          ? "logout"
+          : action.payload.items.map(track => {
+              return {
+                id: track.id,
+                title: track.name.split('-')[0],
+                artist: track.artists[0].name.split('-')[0],
+                image: track.album.images[1].url,
+                duration: durationConverter(track.duration_ms),
+                preview: track.preview_url,
+                uri: track.uri,
+                href: track.href
+              };
+            });
       return {
         ...state,
-        myTopTracks: [...state.myTopTracks, ...tracks],
+        myTopTracks:
+          tracks === "logout" ? [] : [...state.myTopTracks, ...tracks],
         moreTopTracks: action.payload.next
       };
     }
     case "favorites": {
-      const tracks = action.payload.items.map(track => {
-        const year = track.added_at.split("-")[0];
+      const tracks =
+        action.payload === "logout"
+          ? "logout"
+          : action.payload.items.map(track => {
+              const year = track.added_at.split("-")[0];
 
-        track = track.track;
+              track = track.track;
 
-        return {
-          id: track.id,
-          title: track.name,
-          artist: track.artists[0].name,
-          image: track.album.images[1].url,
-          duration: durationConverter(track.duration_ms),
-          preview: track.preview_url,
-          uri: track.uri,
-          href: track.href,
-          year: year
-        };
-      });
+              return {
+                id: track.id,
+                title: track.name.split('-')[0],
+                artist: track.artists[0].name.split('-')[0],
+                image: track.album.images[1].url,
+                duration: durationConverter(track.duration_ms),
+                preview: track.preview_url,
+                uri: track.uri,
+                href: track.href,
+                year: year
+              };
+            });
       return {
         ...state,
-        favorites: [...state.favorites, ...tracks],
+        favorites: tracks === "logout" ? [] : [...state.favorites, ...tracks],
         moreFavorites: action.payload.next
       };
     }
@@ -90,7 +101,7 @@ const userData = (state, action) => {
 };
 
 const userState = {
-  signedIn: parsed.access_token ? true : false,
+  accessToken: "",
   isloading: true,
   isPremium: false,
   username: "",

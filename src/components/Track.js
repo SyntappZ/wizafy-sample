@@ -1,11 +1,19 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import { PlaylistStore } from "../context/ContextProvider";
 import { FiPlusCircle } from 'react-icons/fi'
-const Track = ({img, title, id, loadMoreTopTracks}) => {
-    
+const Track = ({track, loadMoreTopTracks}) => {
+    const contextStore = useContext(PlaylistStore);
+
+   
+
+    const selectTrack = () => {
+        const {dispatch} = contextStore
+        dispatch({type: 'loadTrack', payload: track})
+    }
     return (
         <div className="track">
-            <div className="image-wrap" onClick={() => loadMoreTopTracks()}>
-                {img ? <img src={img} alt={`${title} album art`} /> : 
+            <div className="image-wrap" onClick={() => track ? selectTrack() : loadMoreTopTracks()}>
+                {track ? <img src={track.image} alt={`${track.title} album art`} /> : 
                 <div>
                     <FiPlusCircle className="plus-icon"  />
                     <p>Load More</p>
@@ -14,7 +22,7 @@ const Track = ({img, title, id, loadMoreTopTracks}) => {
                 }
                 
             </div>
-            <p>{title}</p>
+            <p>{track ? track.title : null}</p>
         </div>
     )
 }
