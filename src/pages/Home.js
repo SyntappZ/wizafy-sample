@@ -6,42 +6,13 @@ import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
 import Track from "../components/Track";
 import { serverUrl } from "../serverUrl";
+
 import im from "../images/tempAlbum.jpg";
 const Home = () => {
-  const [years, setYears] = useState([]);
-
   const contextStore = useContext(PlaylistStore);
-  const {
-    signedIn,
-    myTopTracks,
-    profileImage,
-    username,
-    albums,
-    favorites
-  } = contextStore.state;
+  const { signedIn } = contextStore.state;
 
-  useEffect(() => {
-    const arr = ["All"];
-    favorites.forEach(track => {
-      if (!arr.includes(track.year)) {
-        arr.push(track.year);
-      }
-    });
-    setYears(arr);
-  }, [favorites]);
-
-  return signedIn ? (
-    <HomeContent
-      albums={albums}
-      profileImage={profileImage}
-      myTopTracks={myTopTracks}
-      username={username}
-      years={years}
-      favorites={favorites}
-    />
-  ) : (
-    <SignIn />
-  );
+  return signedIn ? <HomeContent /> : <SignIn />;
 };
 
 export default Home;
@@ -57,20 +28,37 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
   );
 };
 
-const HomeContent = ({
-  myTopTracks,
-  years,
-  username,
-  albums,
-  profileImage,
-  favorites
-}) => {
+const HomeContent = () => {
+  const contextStore = useContext(PlaylistStore);
+  const {loadMoreTracks} = contextStore
+  const {
+    myTopTracks,
+    profileImage,
+    username,
+    favorites,
+    moreFavorites,
+    moreTopTracks
+  } = contextStore.state;
+  const [years, setYears] = useState([]);
+
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
 
+
+  useEffect(() => {
+    const arr = ["All"];
+    favorites.forEach(track => {
+      if (!arr.includes(track.year)) {
+        arr.push(track.year);
+      }
+    });
+    setYears(arr);
+  }, [favorites]);
   const changeCurrentYear = date => {
     setCurrentYear(date);
   };
+
+  
 
   useEffect(() => {
     if (currentYear === "All") {
@@ -80,6 +68,15 @@ const HomeContent = ({
       setFavoriteTracks(tracks);
     }
   }, [currentYear, favorites]);
+
+  const loadMoreFavs = () => {
+    loadMoreTracks(moreFavorites, 'favorites')
+  }
+  const loadMoreTopTracks = () => {
+    loadMoreTracks(moreTopTracks, 'topTracks')
+  }
+
+  
 
   return (
     <>
@@ -126,21 +123,26 @@ const HomeContent = ({
                     key={i}
                     img={track.image}
                     title={track.title.split("-")[0]}
+                    id={track.id}
+                 
                   />
                 );
               })}
+              <Track loadMoreTopTracks={loadMoreTopTracks} img={null} title='' id={null} />
             </div>
+           
           </div>
 
           <div className="favorites">
             <div className="title-wrap">
               <h1>My Favorites</h1>
               <div className="favorite-dates">
-                {years.map(year => (
+                {years.map((year, i) => (
                   <Year
                     changeCurrentYear={changeCurrentYear}
                     currentYear={currentYear}
                     date={year}
+                    key={i}
                   />
                 ))}
               </div>
@@ -157,6 +159,9 @@ const HomeContent = ({
                 />
               );
             })}
+            <div className="load-more" onClick={loadMoreFavs}>
+              load more
+            </div>
           </div>
         </div>
       ) : (

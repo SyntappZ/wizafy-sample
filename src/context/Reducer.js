@@ -2,9 +2,13 @@ import { useReducer } from "react";
 import queryString from "query-string";
 const parsed = queryString.parse(window.location.search);
 
-const userData = (state, action) => {
-  
+const durationConverter = millis => {
+  var minutes = Math.floor(millis / 60000);
+  var seconds = ((millis % 60000) / 1000).toFixed(0);
+  return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+};
 
+const userData = (state, action) => {
   switch (action.type) {
     case "setProfileData": {
       return {
@@ -12,10 +16,9 @@ const userData = (state, action) => {
         username: action.payload.display_name,
         email: action.payload.email,
         profileImage: action.payload.images ? action.payload.images[0].url : "",
-        isPremium: action.payload.product === 'premium' ? true : false
+        isPremium: action.payload.product === "premium" ? true : false
       };
     }
-  
 
     case "setPlaylists": {
       return {
@@ -31,23 +34,54 @@ const userData = (state, action) => {
         moreAlbums: action.payload.next
       };
     }
-    case 'topTracks': {
+    case "topTracks": {
+      const tracks = action.payload.items.map(track => {
+        return {
+          id: track.id,
+          title: track.name,
+          artist: track.artists[0].name,
+          image: track.album.images[1].url,
+          duration: durationConverter(track.duration_ms),
+          preview: track.preview_url,
+          uri: track.uri,
+          href: track.href
+        };
+      });
       return {
         ...state,
-        myTopTracks: action.payload,
-      }
+        myTopTracks: [...state.myTopTracks, ...tracks],
+        moreTopTracks: action.payload.next
+      };
     }
-    case 'favorites': {
+    case "favorites": {
+      const tracks = action.payload.items.map(track => {
+        const year = track.added_at.split("-")[0];
+
+        track = track.track;
+
+        return {
+          id: track.id,
+          title: track.name,
+          artist: track.artists[0].name,
+          image: track.album.images[1].url,
+          duration: durationConverter(track.duration_ms),
+          preview: track.preview_url,
+          uri: track.uri,
+          href: track.href,
+          year: year
+        };
+      });
       return {
         ...state,
-        favorites: action.payload,
-      }
+        favorites: [...state.favorites, ...tracks],
+        moreFavorites: action.payload.next
+      };
     }
-    case 'loadTrack': {
+    case "loadTrack": {
       return {
         ...state,
         currentTrack: action.payload
-      }
+      };
     }
     default:
       break;
@@ -67,8 +101,10 @@ const userState = {
   albums: [],
   moreAlbums: "",
   myTopTracks: [],
-  currentTrack: '',
-  favorites: []
+  moreTopTracks: "",
+  currentTrack: "",
+  favorites: [],
+  moreFavorites: ""
 };
 
 export const Reducer = () => useReducer(userData, userState);
