@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { MdPerson, MdArrowDownward, MdArrowForward } from "react-icons/md";
-import { FiLogOut, FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import TrackFull from "../components/TrackFull";
 import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
-import Track from "../components/Track";
+
 import { serverUrl } from "../serverUrl";
 import TrackScroller from "../components/TrackScroller";
 import im from "../images/tempAlbum.jpg";
@@ -30,7 +30,7 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
 
 const HomeContent = () => {
   const contextStore = useContext(PlaylistStore);
-  const { loadMoreTracks, dispatch } = contextStore;
+  const { loadMoreTracks, dispatch, state } = contextStore;
   const {
     myTopTracks,
     profileImage,
@@ -38,7 +38,7 @@ const HomeContent = () => {
     favorites,
     moreFavorites,
     moreTopTracks
-  } = contextStore.state;
+  } = state;
   const [years, setYears] = useState([]);
 
   const [currentYear, setCurrentYear] = useState("All");
@@ -109,7 +109,8 @@ const HomeContent = () => {
           </div>
 
           <TrackScroller
-            loadMoreTopTracks={loadMoreTopTracks}
+            title="my top tracks"
+            loadMoreTracks={loadMoreTopTracks}
             tracks={myTopTracks}
             album={null}
           />

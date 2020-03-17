@@ -25,18 +25,71 @@ const userData = (state, action) => {
     }
 
     case "setPlaylists": {
+      const playlists =
+      action.payload === "logout"
+        ? "logout"
+        : action.payload.items.map(playlist => {
+            return {
+              id: playlist.id,
+              title: playlist.name,
+              description: playlist.description,
+              image: playlist.images[0].url,
+              uri: playlist.uri,
+              tracks: playlist.tracks.href,
+              tracksAmount: playlist.tracks.total,
+              owner: playlist.owner.display_name
+            };
+          })
       return {
         ...state,
-        playlists: action.payload.items,
+        playlists: playlists === "logout" ? [] : [...state.playlists, ...playlists],
         morePlaylistsUrl: action.payload.next
       };
     }
     case "setNewReleases": {
+      
+      const albums =
+      action.payload === "logout"
+        ? "logout"
+        : action.payload.albums.items.map(album => {
+            return {
+              id: album.id,
+              title: album.name,
+              artist: album.artists[0].name.split('-')[0],
+              image: album.images[1].url,
+              uri: album.uri,
+              href: album.href,
+              tracksAmount: album.total_tracks
+            };
+          });
       return {
         ...state,
-        albums: action.payload.items,
-        moreAlbums: action.payload.next
+        newReleaseAlbums:  albums === "logout" ? [] : [...state.newReleaseAlbums, ...albums],
+        moreNewAlbums: action.payload.albums.next
       };
+    }
+    case "setFeaturedPlaylists": {
+
+      const playlists =
+      action.payload === "logout"
+        ? "logout"
+        : action.payload.playlists.items.map(playlist => {
+            return {
+              id: playlist.id,
+              title: playlist.name,
+              description: playlist.description,
+              image: playlist.images[0].url,
+              uri: playlist.uri,
+              tracks: playlist.tracks.href,
+              tracksAmount: playlist.tracks.total,
+              owner: playlist.owner.display_name
+            };
+          })
+      return {
+        ...state,
+        playlistMessage: action.payload.message,
+        featuredPlaylists: playlists === "logout" ? [] : [...state.featuredPlaylists, ...playlists],
+      }
     }
     case "topTracks": {
       const tracks =
@@ -58,7 +111,8 @@ const userData = (state, action) => {
         ...state,
         myTopTracks:
           tracks === "logout" ? [] : [...state.myTopTracks, ...tracks],
-        moreTopTracks: action.payload.next
+        moreTopTracks: action.payload.next,
+       
       };
     }
     case "favorites": {
@@ -88,7 +142,7 @@ const userData = (state, action) => {
         moreFavorites: action.payload.next
       };
     }
-    case "loadTrack": {
+    case "loadCurrentTrack": {
       return {
         ...state,
         currentTrack: action.payload
@@ -109,13 +163,15 @@ const userState = {
   profileImage: "",
   playlists: [],
   morePlaylistsUrl: "",
-  albums: [],
-  moreAlbums: "",
+  newReleaseAlbums: [],
+  moreNewAlbums: "",
   myTopTracks: [],
   moreTopTracks: "",
   currentTrack: "",
   favorites: [],
-  moreFavorites: ""
+  moreFavorites: "",
+  playlistMessage: '',
+  featuredPlaylists: []
 };
 
 export const Reducer = () => useReducer(userData, userState);

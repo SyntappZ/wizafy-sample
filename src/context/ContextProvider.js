@@ -36,7 +36,6 @@ const ContextProvider = ({ children }) => {
 
   const fetchStartupData = () => {
     fetchData("https://api.spotify.com/v1/me", "GET").then(data => {
-    
       dispatch({ type: "setProfileData", payload: data });
     });
     fetchData("https://api.spotify.com/v1/me/playlists", "GET").then(data => {
@@ -44,19 +43,24 @@ const ContextProvider = ({ children }) => {
     });
     fetchData("https://api.spotify.com/v1/browse/new-releases", "GET").then(
       data => {
-        dispatch({ type: "setNewReleases", payload: data.albums });
+        dispatch({ type: "setNewReleases", payload: data });
+      }
+    );
+
+    fetchData("https://api.spotify.com/v1/browse/featured-playlists").then(
+      data => {
+        dispatch({ type: "setFeaturedPlaylists", payload: data });
       }
     );
     fetchData("https://api.spotify.com/v1/me/tracks?limit=50", "GET").then(
       data => {
-        console.log(data)
         dispatch({ type: "favorites", payload: data });
       }
     );
 
     fetchData("https://api.spotify.com/v1/me/top/tracks", "GET").then(data => {
       dispatch({ type: "topTracks", payload: data });
-      dispatch({type: 'loadTrack', payload: data.items[0]})
+      dispatch({ type: "loadCurrentTrack", payload: data.items[0] });
     });
   };
 
