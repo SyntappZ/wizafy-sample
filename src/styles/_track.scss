@@ -1,12 +1,13 @@
 @import "./colors";
-
+$size:  calc(80px + 6vw);
 .track {
-  width: 200px;
+  width: $size;
   height: 300px;
   margin: 10px 20px;
   .image-wrap {
-    width: 200px;
-    height: 200px;
+    width: $size;
+
+    height: $size;
     display:flex;
     justify-content: center;
     align-items: center;

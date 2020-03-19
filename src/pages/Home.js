@@ -67,13 +67,8 @@ const HomeContent = () => {
     }
   }, [currentYear, favorites]);
 
-  const signOut = () => {
-    dispatch({ type: "setAccessToken", payload: "" });
-    dispatch({ type: "setProfileData", payload: [] });
-    dispatch({ type: "setPlaylists", payload: [] });
-    dispatch({ type: "setNewReleases", payload: [] });
-    dispatch({ type: "favorites", payload: "logout" });
-    dispatch({ type: "topTracks", payload: "logout" });
+  const logout = () => {
+    dispatch({ type: "logout" });
   };
 
   const loadMoreFavs = () => {
@@ -100,7 +95,7 @@ const HomeContent = () => {
             </div>
             <p className="username">{username}</p>
             <div className="image-section">
-              <div className="logout" onClick={signOut}>
+              <div className="logout" onClick={logout}>
                 <p>Logout</p>
                 <FiLogOut />
               </div>
@@ -117,7 +112,7 @@ const HomeContent = () => {
 
           <div className="favorites">
             <div className="title-wrap">
-              <h1>My Favorites</h1>
+              <h1 className="title">My Favorites</h1>
               <div className="favorite-dates">
                 {years.map((year, i) => (
                   <Year
@@ -130,7 +125,6 @@ const HomeContent = () => {
               </div>
             </div>
             {favoriteTracks.map((track, i) => {
-              
               return (
                 <TrackFull
                   key={i}

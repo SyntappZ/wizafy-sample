@@ -1,0 +1,34 @@
+ 
+ @import './colors';
+ 
+ .playlist {
+    margin: 10px auto;
+    width: 95%;
+    height: 200px;
+    border-radius: 15px;
+    background: $purple;
+    cursor: pointer;
+    display: flex;
+  
+    position: relative;
+    overflow: hidden;
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+    .cover {
+      background: rgba(0, 0, 0, 0.753);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      h3 {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: white;
+      }
+    }
+  }
+  

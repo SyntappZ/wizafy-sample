@@ -6,7 +6,7 @@ const TrackScroller = ({ loadMoreTracks, title, tracks, album }) => {
   return (
     <div className="top-tracks">
       <div className="title-wrap">
-       <h1>{title}</h1>
+       <h1 className="title">{title}</h1>
         <div className="scroll-buttons">
           <div>
             <FiChevronLeft />

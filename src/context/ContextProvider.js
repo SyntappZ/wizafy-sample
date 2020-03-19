@@ -58,6 +58,13 @@ const ContextProvider = ({ children }) => {
       }
     );
 
+    fetchData('https://api.spotify.com/v1/browse/categories?limit=40', 'GET').then(
+      data => {
+        // console.log(data)
+        dispatch({type: "setCatagories", payload: data.categories.items})
+      }
+    )
+
     fetchData("https://api.spotify.com/v1/me/top/tracks", "GET").then(data => {
       dispatch({ type: "topTracks", payload: data });
       dispatch({ type: "loadCurrentTrack", payload: data.items[0] });

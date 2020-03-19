@@ -7,6 +7,7 @@
 @import "./styles/trackFull";
 @import "./styles/explore";
 @import "./styles/search";
+@import "./styles/playlist";
 @import url('https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap');
 
 
@@ -18,7 +19,7 @@
   margin: 0;
 }
 .App {
- 
+  
   font-family: 'Baloo Da 2', cursive;
   color: $text;
   overflow: hidden;
@@ -49,16 +50,19 @@
   bottom: 0;
 }
 
+.title {
+  font-size: calc(18px + .4vw);
+  text-transform: capitalize;
+    letter-spacing: 1px;
+    padding: 5px 0 20px 0;
+    
+}
 
 .title-wrap {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  h1 {
-    text-transform: capitalize;
-    letter-spacing: 1px;
-    padding: 5px 0 20px 0;
-  }
+ 
 }
 
 // .load-more {
