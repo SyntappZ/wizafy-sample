@@ -60,7 +60,7 @@ const ContextProvider = ({ children }) => {
 
     fetchData('https://api.spotify.com/v1/browse/categories?limit=40', 'GET').then(
       data => {
-        // console.log(data)
+ 
         dispatch({type: "setCatagories", payload: data.categories.items})
       }
     )

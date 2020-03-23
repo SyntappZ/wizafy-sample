@@ -1,0 +1,39 @@
+@import './colors';
+
+
+.catagory-wrap {
+    display: flex;
+    
+    flex-wrap: wrap;
+    
+}
+
+.catagory {
+  
+    flex: 1 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .image-wrap {
+        width: 230px;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        h3 {
+            position: absolute;
+            z-index: 100;
+            color: white;
+            letter-spacing: 1px;
+            left: 0;
+            right: 0;
+            bottom: 40px;
+            margin: auto;
+        }
+    }
+}

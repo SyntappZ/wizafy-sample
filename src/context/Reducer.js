@@ -146,11 +146,12 @@ const userData = (state, action) => {
 
       const categoryList = action.payload.map(category => {
         return {
-          name: category.name,
+          title: category.name,
           url: category.href,
           icon: category.icons[0].url
         }
       })
+      console.log(categoryList)
       return {
         ...state,
         categories: categoryList

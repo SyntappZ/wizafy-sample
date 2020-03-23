@@ -7,7 +7,7 @@ import Home from "../pages/Home";
 import Explore from '../pages/Explore'
 import { PlaylistStore } from "../context/ContextProvider";
 import { Switch, Route, useHistory } from "react-router-dom";
-
+import Details from '../pages/Details'
 import queryString from "query-string";
 
 const routes = [
@@ -35,6 +35,10 @@ const routes = [
   {
     path: "/settings",
     main: () => <Settings />
+  },
+  {
+    path: "/details",
+    main: () => <Details />
   }
 ];
 
