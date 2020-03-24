@@ -4,6 +4,7 @@ import TrackScroller from "../components/TrackScroller";
 import { PlaylistStore } from "../context/ContextProvider";
 import im from "../images/tempAlbum.jpg";
 import Playlist from "../components/Playlist";
+
 const Explore = () => {
   const [isSearch, setIsSearch] = useState(false);
   const contextStore = useContext(PlaylistStore);
@@ -19,7 +20,7 @@ const Explore = () => {
 export default Explore;
 
 const ExploreMain = ({ store, state }) => {
-  const { loadMoreTracks, dispatch } = store;
+  const { loadMoreTracks, dispatch, fetchData } = store;
   const {
     newReleaseAlbums,
     moreNewAlbums,
@@ -27,8 +28,6 @@ const ExploreMain = ({ store, state }) => {
     featuredPlaylists,
     categories
   } = state;
-
-  console.log(categories)
 
   const loadMoreAlbums = () => {
     loadMoreTracks(moreNewAlbums, "setNewReleases");
@@ -58,7 +57,9 @@ const ExploreMain = ({ store, state }) => {
                   key={i}
                   icon={catagory.icon}
                   name={catagory.title}
-                  url={catagory.url}
+                  id={catagory.id}
+                  dispatch={dispatch}
+                  fetchData={fetchData}
                 />
               );
             })}
@@ -69,12 +70,38 @@ const ExploreMain = ({ store, state }) => {
   );
 };
 
-const Catagory = ({ name, icon, url }) => {
+const Catagory = ({ name, icon, id, dispatch, fetchData }) => {
+  const getDetails = () => {
+    fetchData(
+      `https://api.spotify.com/v1/browse/categories/${id}/playlists?limit=50`,
+      "GET"
+    ).then(data => {
+
+      const playlists = {
+        name: name,
+        image: icon,
+        playlists: data.playlists.items.map(playlist => {
+          return {
+            id: playlist.id,
+            title: playlist.name,
+            description: playlist.description,
+            image: playlist.images[0].url,
+            uri: playlist.uri,
+            tracks: playlist.tracks.href,
+            tracksAmount: playlist.tracks.total,
+            owner: playlist.owner.display_name
+          };
+        })
+      };
+      dispatch({ type: "setSelectedCategory", payload: playlists });
+    });
+  };
+
   return (
     <div className="catagory">
-      <div className="image-wrap">
+      <div className="image-wrap" onClick={getDetails}>
         <img src={icon} alt={name} />
-         <h3>{name}</h3>
+        <h3>{name}</h3>
       </div>
     </div>
   );

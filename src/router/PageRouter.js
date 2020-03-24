@@ -1,13 +1,14 @@
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import CreatePlaylist from "../pages/CreatePlaylist";
 import Generator from "../pages/Generator";
 import Playlists from "../pages/Playlists";
 import Settings from "../pages/Settings";
 import Home from "../pages/Home";
-import Explore from '../pages/Explore'
+import Explore from "../pages/Explore";
 import { PlaylistStore } from "../context/ContextProvider";
 import { Switch, Route, useHistory } from "react-router-dom";
-import Details from '../pages/Details'
+import Tracks from "../pages/Tracks";
+import CategoryPlaylists from "../pages/CategoryPlaylists";
 import queryString from "query-string";
 
 const routes = [
@@ -37,27 +38,37 @@ const routes = [
     main: () => <Settings />
   },
   {
-    path: "/details",
-    main: () => <Details />
+    path: "/tracks",
+    main: () => <Tracks />
+  },
+  {
+    path: "/categoryPlaylists",
+    main: () => <CategoryPlaylists />
   }
+
 ];
 
 const PageRouter = () => {
   const parsed = queryString.parse(window.location.search);
   const contextStore = useContext(PlaylistStore);
-  const {dispatch} = contextStore;
-  const { accessToken } = contextStore.state;
+  const { dispatch } = contextStore;
+  const { accessToken, detailsPageTitle } = contextStore.state;
   const history = useHistory();
 
   useEffect(() => {
-    if(parsed.access_token) {
-      dispatch({type: 'setAccessToken', payload: parsed.access_token})
+    if (parsed.access_token) {
+      dispatch({ type: "setAccessToken", payload: parsed.access_token });
     }
-    if(!accessToken) {
+    if (!accessToken) {
       history.push("/");
     }
-  }, [accessToken])
- 
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (detailsPageTitle) {
+      history.push("/categoryPlaylists");
+    }
+  }, [detailsPageTitle]);
 
   return (
     <Switch>

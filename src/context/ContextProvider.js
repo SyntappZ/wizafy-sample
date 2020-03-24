@@ -1,11 +1,17 @@
 import React, { createContext, useEffect } from "react";
 import { Reducer } from "./Reducer.js";
+
+
 export const PlaylistStore = createContext();
+
+
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = Reducer();
   const { accessToken } = state;
 
+
+   
   useEffect(() => {
     if (accessToken) {
       fetchStartupData();
@@ -17,6 +23,8 @@ const ContextProvider = ({ children }) => {
       dispatch({ type: type, payload: data });
     });
   };
+
+  
 
   const fetchData = (url, method) => {
     return new Promise((resolve, reject) => {
@@ -75,7 +83,8 @@ const ContextProvider = ({ children }) => {
     state: state,
     dispatch: dispatch,
     loadMoreTracks: loadMoreTracks,
-    fetchData: fetchData
+    fetchData: fetchData,
+    
   };
 
   return (

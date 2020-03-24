@@ -17,7 +17,8 @@ const cleanState = {
   moreFavorites: "",
   playlistMessage: "",
   featuredPlaylists: [],
-  categories: []
+  categories: [],
+  selectedCategory: {}
 }
 const durationConverter = millis => {
   var minutes = Math.floor(millis / 60000);
@@ -148,13 +149,22 @@ const userData = (state, action) => {
         return {
           title: category.name,
           url: category.href,
+          id: category.id,
           icon: category.icons[0].url
         }
       })
-      console.log(categoryList)
+     
       return {
         ...state,
         categories: categoryList
+      }
+    }
+    case "setSelectedCategory": {
+
+      return {
+        ...state,
+        selectedCategory: action.payload
+        
       }
     }
     case "loadCurrentTrack": {
