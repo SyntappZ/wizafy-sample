@@ -52,7 +52,7 @@ const PageRouter = () => {
   const parsed = queryString.parse(window.location.search);
   const contextStore = useContext(PlaylistStore);
   const { dispatch } = contextStore;
-  const { accessToken, detailsPageTitle } = contextStore.state;
+  const { accessToken, selectedCategory } = contextStore.state;
   const history = useHistory();
 
   useEffect(() => {
@@ -65,10 +65,10 @@ const PageRouter = () => {
   }, [accessToken]);
 
   useEffect(() => {
-    if (detailsPageTitle) {
+    if (Object.keys(selectedCategory).length > 0) {
       history.push("/categoryPlaylists");
     }
-  }, [detailsPageTitle]);
+  }, [selectedCategory]);
 
   return (
     <Switch>

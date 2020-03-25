@@ -7,7 +7,7 @@ import LoadingScreen from "../components/LoadingScreen";
 
 import { serverUrl } from "../serverUrl";
 import TrackScroller from "../components/TrackScroller";
-import im from "../images/tempAlbum.jpg";
+// import im from "../images/tempAlbum.jpg";
 const Home = () => {
   const contextStore = useContext(PlaylistStore);
   const { accessToken } = contextStore.state;

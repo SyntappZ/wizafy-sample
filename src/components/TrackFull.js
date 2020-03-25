@@ -26,11 +26,15 @@ const TrackFull = ({ title, artist, image, duration, isFavorite }) => {
     }
   };
 
+  const arr = title.split(' ');
+
+  title = arr.length > 4 ? arr.slice(0, 4).join(' ') + '...' : title
+
   return (
     <div className="full-track">
       <div className="left">
         <Lottie
-        style={{margin: 0}}
+          style={{margin: 0}}
           options={defaultOptions}
           height={80}
           width={80}

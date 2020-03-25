@@ -2,7 +2,7 @@
  @import './colors';
  
  .playlist {
-    margin: 10px auto;
+    margin: 10px 0;
     width: 95%;
     height: 200px;
     border-radius: 15px;
@@ -24,10 +24,15 @@
       justify-content: center;
       align-items: center;
       position: absolute;
+      transition: .3s;
       h3 {
         text-transform: uppercase;
         letter-spacing: 1px;
         color: white;
+      }
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.911);
       }
     }
   }

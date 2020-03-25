@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Playlist = ({ playlist }) => {
+const Playlist = ({ playlist, getPlaylistDetails }) => {
     const {image, title} = playlist
   return (
-    <div className="playlist">
+    <div className="playlist" onClick={() => getPlaylistDetails(playlist)}>
       <img src={image} alt="playlist" />
       <div className="cover">
       <h3>{title}</h3>
