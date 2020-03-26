@@ -1,105 +1,44 @@
-@import './colors';
+@import "./colors";
 
 .category-playlist {
-  position: relative;
-  padding: 100px 50px;
-
-
- 
+  padding: 0 50px;
 }
 
-
-
-.details-bar {
-  display: flex;
-
-  width: 100%;
-  .left {
-    flex: 1 1 200px;
-    
-
-    .image-wrap {
-     position: relative;
-     width: 90%;
-      img {
-        width: 100%;
-        border-radius: 15px;
-      }
-      .lottie {
-          position: absolute;
-          margin: auto;
-          left: 0;
-          right: 0;
-          bottom: 0;
-      }
-    }
-    
-  }
-  .right {
-    flex: 7 1;
-    position: relative;
-    .text-wrap {
-        position:absolute;
-        bottom: 0;
-
-        h2 {
-            text-transform: uppercase;
-        }
-
-        h1 {
-            font-size: 50px;
-            letter-spacing: 1px;
-        }
-
-        h3 {
-            color:  $light-text;
-            font-weight: 200;
-        }
-
-    }
-  }
-
-}
 
 .playlists-wrap {
-    margin-top: 70px;
-    display: flex;
+  margin-top: 70px;
+  display: flex;
 
-    .left {
-        flex: 1 3 500px;
-        
-    
-      }
-      .right {
-        flex: 7 1 500px;
-        position: relative;
-      }
+  .left {
+    flex: 1 3 500px;
+  }
+  .right {
+    flex: 7 1 500px;
+    position: relative;
+  }
 }
 
 .tracklist-bar {
-    width: 100%;
-    display: flex;
-    margin: 10px 0 20px 0;
-    align-items: flex-end;
+  width: 100%;
+  display: flex;
+  margin: 10px 0 20px 0;
+  align-items: flex-end;
 
+  .image-wrap {
+    width: 200px;
 
-    .image-wrap {
-        width: 200px;
-
-        img {
-            width: 100%;
-            border-radius: 15px;
-
-        }
+    img {
+      width: 100%;
+      border-radius: 15px;
     }
+  }
 
-    .text-wrap {
-        padding: 10px 20px;
+  .text-wrap {
+    padding: 10px 20px;
 
-        h3 {
-            color:  $light-text;
-            font-weight: 200;
-        }
+    h3 {
+      color: $light-text;
+      font-weight: 200;
     }
-
+  }
 }

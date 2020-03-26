@@ -34,8 +34,11 @@ const ExploreMain = ({ store, state }) => {
   };
 
   const getPlaylistDetails = (playlist) => {
-
+     dispatch({type: 'setSelectedPlaylist', payload: playlist})
   }
+
+  
+
 
   return (
     <>
@@ -80,7 +83,7 @@ const Catagory = ({ name, icon, id, dispatch, fetchData }) => {
       `https://api.spotify.com/v1/browse/categories/${id}/playlists?limit=50`,
       "GET"
     ).then(data => {
-      // console.log(data)
+    
       const playlists = {
         title: name,
         image: icon,

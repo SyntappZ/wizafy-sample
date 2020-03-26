@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import { convertTracks } from "../data/trackConverter.js";
 
 const cleanState = {
   accessToken: "",
@@ -19,12 +20,8 @@ const cleanState = {
   featuredPlaylists: [],
   categories: [],
   selectedCategory: {},
+  selectedPlaylist: {},
   page: null
-}
-const durationConverter = millis => {
-  var minutes = Math.floor(millis / 60000);
-  var seconds = ((millis % 60000) / 1000).toFixed(0);
-  return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 };
 
 const userData = (state, action) => {
@@ -49,7 +46,7 @@ const userData = (state, action) => {
       return {
         ...state,
         page: action.payload
-      }
+      };
     }
 
     case "setPlaylists": {
@@ -109,18 +106,8 @@ const userData = (state, action) => {
       };
     }
     case "topTracks": {
-      const tracks = action.payload.items.map(track => {
-        return {
-          id: track.id,
-          title: track.name.split("-")[0],
-          artist: track.artists[0].name.split("-")[0],
-          image: track.album.images[1].url,
-          duration: durationConverter(track.duration_ms),
-          preview: track.preview_url,
-          uri: track.uri,
-          href: track.href
-        };
-      });
+      const tracks = convertTracks(action.payload, false);
+
       return {
         ...state,
         myTopTracks: [...state.myTopTracks, ...tracks],
@@ -128,23 +115,8 @@ const userData = (state, action) => {
       };
     }
     case "favorites": {
-      const tracks = action.payload.items.map(track => {
-        const year = track.added_at.split("-")[0];
+      const tracks = convertTracks(action.payload, true);
 
-        track = track.track;
-
-        return {
-          id: track.id,
-          title: track.name.split("-")[0],
-          artist: track.artists[0].name.split("-")[0],
-          image: track.album.images[1].url,
-          duration: durationConverter(track.duration_ms),
-          preview: track.preview_url,
-          uri: track.uri,
-          href: track.href,
-          year: year
-        };
-      });
       return {
         ...state,
         favorites: [...state.favorites, ...tracks],
@@ -152,28 +124,32 @@ const userData = (state, action) => {
       };
     }
     case "setCatagories": {
-
       const categoryList = action.payload.map(category => {
         return {
           title: category.name,
           url: category.href,
           id: category.id,
           icon: category.icons[0].url
-        }
-      })
-     
-      return {
-        ...state,
-        categories: categoryList
-      }
-    }
-    case "setSelectedCategory": {
+        };
+      });
 
       return {
         ...state,
+        categories: categoryList
+      };
+    }
+
+    case "setSelectedPlaylist": {
+      return {
+        ...state,
+        selectedPlaylist: action.payload
+      };
+    }
+    case "setSelectedCategory": {
+      return {
+        ...state,
         selectedCategory: action.payload
-        
-      }
+      };
     }
     case "loadCurrentTrack": {
       return {
@@ -182,15 +158,15 @@ const userData = (state, action) => {
       };
     }
     case "logout": {
-      return cleanState
+      return cleanState;
     }
-       
+
     default:
       break;
   }
   return state;
 };
 
-const userState = cleanState
+const userState = cleanState;
 
 export const Reducer = () => useReducer(userData, userState);

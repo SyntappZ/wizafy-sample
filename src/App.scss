@@ -10,6 +10,8 @@
 @import "./styles/playlist";
 @import "./styles/category";
 @import "./styles/categoryPlaylist";
+@import "./styles/tracksPage";
+@import "./styles/details";
 @import url('https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap');
 
 
@@ -40,13 +42,7 @@
   border-right: solid 2px rgb(236, 236, 236);
 }
 
-.back-icon {
-  position: absolute;
-  left: 30px;
-  top: 30px;
-  font-size: 40px;
-  cursor: pointer;
-}
+
 
 .pages-section {
   flex: 7 4;

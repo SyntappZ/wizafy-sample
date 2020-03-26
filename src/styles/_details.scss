@@ -1,0 +1,67 @@
+
+
+.details .top-bar {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.back-icon {
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.details-bar {
+    display: flex;
+  
+    width: 100%;
+    .left {
+      flex: 1 1 200px;
+  
+      .image-wrap {
+        position: relative;
+        width: 90%;
+        img {
+          width: 100%;
+          border-radius: 15px;
+        }
+        .lottie {
+          position: absolute;
+          margin: auto;
+          left: 0;
+          right: 0;
+          bottom: -25px;
+        }
+      }
+    }
+    .right {
+      flex: 7 1;
+      position: relative;
+      .text-wrap {
+        position: absolute;
+        bottom: 0;
+  
+        h2 {
+          text-transform: uppercase;
+          font-size: 16px;
+        }
+  
+        h1 {
+          font-size: 50px;
+          letter-spacing: 1px;
+          text-transform: capitalize;
+
+        }
+  
+        h3 {
+          color: $light-text;
+          font-weight: 200;
+          text-transform: capitalize;
+
+        }
+      }
+    }
+  }
+  
