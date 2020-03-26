@@ -54,6 +54,10 @@ const PageRouter = () => {
   const { dispatch } = contextStore;
   const { accessToken, selectedCategory } = contextStore.state;
   const history = useHistory();
+ 
+
+
+
 
   useEffect(() => {
     if (parsed.access_token) {

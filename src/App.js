@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./App.scss";
 import SideNav from "./components/SideNav";
 import PageRouter from "./router/PageRouter";
+import ScrollToTop from "./router/ScrollToTop";
 import { BrowserRouter as Router } from "react-router-dom";
 import ContextProvider from "./context/ContextProvider";
 import Player from "./components/Player";
 
 function App() {
+
+  const pageWrap = useRef(null);
 
   return (
     <ContextProvider>
@@ -16,7 +19,8 @@ function App() {
             <div className="nav-section">
               <SideNav />
             </div>
-            <div className="pages-section">
+            <div ref={pageWrap}  className="pages-section">
+              <ScrollToTop pageWrap={pageWrap} />
               <PageRouter />
             </div>
           </div>

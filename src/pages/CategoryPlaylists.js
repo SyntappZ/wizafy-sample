@@ -10,8 +10,8 @@ import heartBeat from "../images/heartBeat.json";
 const CategoryPlaylists = () => {
   const history = useHistory();
   const contextStore = useContext(PlaylistStore);
-  const { dispatch, fetchData, state } = contextStore;
-  const { selectedCategory } = state;
+  const { fetchData, state } = contextStore;
+  const { selectedCategory, page } = state;
   const { title, playlists, image } = selectedCategory;
   const [tracks, setTracks] = useState([]);
   const [playlistTitle, setPlaylistTitle] = useState([]);
@@ -24,7 +24,11 @@ const CategoryPlaylists = () => {
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   };
 
-  const getPlaylistDetails = playlist => {
+  const getPlaylistDetails = (playlist, firstStart) => {
+    if (!firstStart) {
+      page.scrollTo(0, 470);
+    }
+
     const { tracks, title, description, image } = playlist;
     setPlaylistTitle(title);
     setPlaylistDesc(description);
@@ -49,7 +53,7 @@ const CategoryPlaylists = () => {
   };
 
   useEffect(() => {
-    getPlaylistDetails(playlists[0]);
+    getPlaylistDetails(playlists[0], true);
   }, []);
 
   const defaultOptions = {
@@ -60,6 +64,8 @@ const CategoryPlaylists = () => {
       preserveAspectRatio: "xMidYMid slice"
     }
   };
+
+  // console.log(playlistDesc)
 
   return (
     <div className="category-playlist">
@@ -73,15 +79,14 @@ const CategoryPlaylists = () => {
             <div className="image-wrap">
               <img src={image} alt={title} />
               <div className="lottie">
-              <Lottie
-              speed={0.7}
-              delay={1000}
-                options={defaultOptions}
-                height={200}
-                width={200}
-              />
+                <Lottie
+                  speed={0.7}
+                  delay={1000}
+                  options={defaultOptions}
+                  height={200}
+                  width={200}
+                />
               </div>
-             
             </div>
           </div>
           <div className="right">

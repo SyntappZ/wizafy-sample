@@ -18,7 +18,8 @@ const cleanState = {
   playlistMessage: "",
   featuredPlaylists: [],
   categories: [],
-  selectedCategory: {}
+  selectedCategory: {},
+  page: null
 }
 const durationConverter = millis => {
   var minutes = Math.floor(millis / 60000);
@@ -42,6 +43,13 @@ const userData = (state, action) => {
         ...state,
         accessToken: action.payload
       };
+    }
+
+    case "setPage": {
+      return {
+        ...state,
+        page: action.payload
+      }
     }
 
     case "setPlaylists": {
