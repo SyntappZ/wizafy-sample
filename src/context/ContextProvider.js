@@ -1,17 +1,13 @@
 import React, { createContext, useEffect } from "react";
 import { Reducer } from "./Reducer.js";
-
+import { categories } from "../data/categories.js";
 
 export const PlaylistStore = createContext();
-
-
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = Reducer();
   const { accessToken } = state;
 
-
-   
   useEffect(() => {
     if (accessToken) {
       fetchStartupData();
@@ -23,8 +19,6 @@ const ContextProvider = ({ children }) => {
       dispatch({ type: type, payload: data });
     });
   };
-
-  
 
   const fetchData = (url, method) => {
     return new Promise((resolve, reject) => {
@@ -43,6 +37,8 @@ const ContextProvider = ({ children }) => {
   };
 
   const fetchStartupData = () => {
+    dispatch({ type: "setCatagories", payload: categories });
+    
     fetchData("https://api.spotify.com/v1/me", "GET").then(data => {
       dispatch({ type: "setProfileData", payload: data });
     });
@@ -66,13 +62,6 @@ const ContextProvider = ({ children }) => {
       }
     );
 
-    fetchData('https://api.spotify.com/v1/browse/categories?limit=40', 'GET').then(
-      data => {
- 
-        dispatch({type: "setCatagories", payload: data.categories.items})
-      }
-    )
-
     fetchData("https://api.spotify.com/v1/me/top/tracks", "GET").then(data => {
       dispatch({ type: "topTracks", payload: data });
       dispatch({ type: "loadCurrentTrack", payload: data.items[0] });
@@ -83,8 +72,7 @@ const ContextProvider = ({ children }) => {
     state: state,
     dispatch: dispatch,
     loadMoreTracks: loadMoreTracks,
-    fetchData: fetchData,
-    
+    fetchData: fetchData
   };
 
   return (

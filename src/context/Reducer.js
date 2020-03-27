@@ -70,13 +70,14 @@ const userData = (state, action) => {
     }
     case "setNewReleases": {
       const albums = action.payload.albums.items.map(album => {
+       
         return {
           id: album.id,
           title: album.name,
           artist: album.artists[0].name.split("-")[0],
           image: album.images[1].url,
           uri: album.uri,
-          href: album.href,
+          tracks: album.href,
           tracksAmount: album.total_tracks
         };
       });
@@ -124,15 +125,7 @@ const userData = (state, action) => {
       };
     }
     case "setCatagories": {
-      const categoryList = action.payload.map(category => {
-        return {
-          title: category.name,
-          url: category.href,
-          id: category.id,
-          icon: category.icons[0].url
-        };
-      });
-
+      const categoryList = action.payload
       return {
         ...state,
         categories: categoryList

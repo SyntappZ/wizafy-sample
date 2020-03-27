@@ -33,12 +33,10 @@ const ExploreMain = ({ store, state }) => {
     loadMoreTracks(moreNewAlbums, "setNewReleases");
   };
 
-  const getPlaylistDetails = (playlist) => {
-     dispatch({type: 'setSelectedPlaylist', payload: playlist})
-  }
-
-  
-
+  const getPlaylistDetails = playlist => {
+    
+    dispatch({ type: "setSelectedPlaylist", payload: playlist });
+  };
 
   return (
     <>
@@ -52,7 +50,13 @@ const ExploreMain = ({ store, state }) => {
         <div className="featuredPlaylists">
           <h1 className="title">Featured Playlists</h1>
           {featuredPlaylists.map((playlist, i) => {
-            return <Playlist key={i} playlist={playlist} getPlaylistDetails={getPlaylistDetails} />;
+            return (
+              <Playlist
+                key={i}
+                playlist={playlist}
+                getPlaylistDetails={getPlaylistDetails}
+              />
+            );
           })}
         </div>
         <div className="catagories">
@@ -83,7 +87,6 @@ const Catagory = ({ name, icon, id, dispatch, fetchData }) => {
       `https://api.spotify.com/v1/browse/categories/${id}/playlists?limit=50`,
       "GET"
     ).then(data => {
-    
       const playlists = {
         title: name,
         image: icon,

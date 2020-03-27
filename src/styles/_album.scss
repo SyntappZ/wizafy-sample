@@ -1,0 +1,44 @@
+@import "./colors";
+$size:  calc(80px + 6vw);
+.album {
+  width: $size;
+  height: 300px;
+  margin: 10px 20px;
+  .image-wrap {
+    width: $size;
+
+    height: $size;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; 
+    img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0px 15px 20px -12px #4d5a7a;
+     
+      transition: .3s ease;
+      &:hover {
+          transform: scale(1.1);
+          box-shadow: 0px 15px 30px -8px #303c5a;
+
+      }
+    }
+    
+  }
+  p {
+    text-align: center;
+    padding-top: 20px;
+    color: #a3a3a3;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+}
+
+.plus-icon {
+font-size: 50px;
+color: #a3a3a3;
+display: block;
+margin: auto;
+
+}

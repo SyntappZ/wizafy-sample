@@ -11,9 +11,10 @@ const Tracks = () => {
   const { image, title, tracks } = state.selectedPlaylist;
 
   useEffect(() => {
+   
     fetchData(tracks, "GET").then(data => {
-      const tracks = convertTracks(data, true);
-      setTracks(tracks);
+      const tracklist = convertTracks(data, false, tracks, image);
+      setTracks(tracklist);
     });
   }, []);
 

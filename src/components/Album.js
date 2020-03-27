@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useContext } from "react";
+import { PlaylistStore } from "../context/ContextProvider";
 
-const Album = ({img, title}) => {
-    
-    return (
-        <div className="track">
-            <div className="image-wrap">
-                <img src={img} alt={`${title} album art`} />
-            </div>
-            <p>{title}</p>
-        </div>
-    )
-}
+const Album = ({ album }) => {
+  const contextStore = useContext(PlaylistStore);
+  const { dispatch } = contextStore;
 
-export default Album
+  const setAlbum = () => {
+    dispatch({ type: "setSelectedPlaylist", payload: album });
+  };
+  return (
+    <div className="album">
+      <div className="image-wrap" onClick={setAlbum}>
+        <img src={album.image} alt={`${album.title} album art`} />
+      </div>
+      <p>{album.title}</p>
+    </div>
+  );
+};
+
+export default Album;
