@@ -4,7 +4,7 @@ import TrackScroller from "../components/TrackScroller";
 import { PlaylistStore } from "../context/ContextProvider";
 import im from "../images/tempAlbum.jpg";
 import Playlist from "../components/Playlist";
-
+import {convertDescription} from '../data/trackConverter.js'
 const Explore = () => {
   const [isSearch, setIsSearch] = useState(false);
   const contextStore = useContext(PlaylistStore);
@@ -94,7 +94,7 @@ const Catagory = ({ name, icon, id, dispatch, fetchData }) => {
           return {
             id: playlist.id,
             title: playlist.name,
-            description: playlist.description,
+            description: convertDescription(playlist.description),
             image: playlist.images[0].url,
             uri: playlist.uri,
             tracks: playlist.tracks.href,

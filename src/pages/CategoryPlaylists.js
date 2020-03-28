@@ -41,7 +41,7 @@ const CategoryPlaylists = () => {
 
   return (
     <div className="category-playlist">
-      <Details title={title} image={image} isLottie={true} />
+      <Details title={title} image={image} category={true} />
 
       <div ref={playlistScroll} className="playlists-wrap">
         <div className="left">

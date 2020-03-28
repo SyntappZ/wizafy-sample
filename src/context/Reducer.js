@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { convertTracks } from "../data/trackConverter.js";
+import { convertTracks, convertDescription } from "../data/trackConverter.js";
 
 const cleanState = {
   accessToken: "",
@@ -51,10 +51,11 @@ const userData = (state, action) => {
 
     case "setPlaylists": {
       const playlists = action.payload.items.map(playlist => {
+        
         return {
           id: playlist.id,
           title: playlist.name,
-          description: playlist.description,
+          description: convertDescription(playlist.description),
           image: playlist.images[0].url,
           uri: playlist.uri,
           tracks: playlist.tracks.href,
@@ -92,7 +93,7 @@ const userData = (state, action) => {
         return {
           id: playlist.id,
           title: playlist.name,
-          description: playlist.description,
+          description: convertDescription(playlist.description),
           image: playlist.images[0].url,
           uri: playlist.uri,
           tracks: playlist.tracks.href,
@@ -107,7 +108,7 @@ const userData = (state, action) => {
       };
     }
     case "topTracks": {
-      const tracks = convertTracks(action.payload, false);
+      const tracks = convertTracks(action.payload);
 
       return {
         ...state,
@@ -116,7 +117,7 @@ const userData = (state, action) => {
       };
     }
     case "favorites": {
-      const tracks = convertTracks(action.payload, true);
+      const tracks = convertTracks(action.payload);
 
       return {
         ...state,

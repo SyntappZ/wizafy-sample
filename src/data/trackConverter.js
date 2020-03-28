@@ -4,18 +4,16 @@ const durationConverter = millis => {
   return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 };
 
-export const convertTracks = (data, isTrack, url, image) => {
- const isAlbum = (/albums/i).test(url);
+const convertTracks = (data, url, image) => {
+  const isAlbum = /albums/i.test(url);
 
-   data = isAlbum ? data.tracks : data
+  data = isAlbum ? data.tracks : data;
 
-  
- 
   const tracks = data.items.map(track => {
-    
     const year = track.added_at ? track.added_at.split("-")[0] : null;
-    track = isTrack ? track.track : track;
-    
+
+    track = track.track || track;
+
     return {
       id: track.id,
       title: track.name.split("-")[0],
@@ -30,3 +28,9 @@ export const convertTracks = (data, isTrack, url, image) => {
   });
   return tracks;
 };
+
+const convertDescription = str => str.replace(/<.+">|<\/a>/g, '')
+
+
+
+export { convertTracks, convertDescription };

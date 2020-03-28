@@ -4,7 +4,7 @@ import Lottie from "react-lottie";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import heartBeat from "../images/heartBeat.json";
 
-const Details = ({ image, title, isLottie }) => {
+const Details = ({ image, title, description, category }) => {
   const history = useHistory();
 
   const defaultOptions = {
@@ -29,7 +29,7 @@ const Details = ({ image, title, isLottie }) => {
         <div className="left">
           <div className="image-wrap">
             <img src={image} alt={title} />
-            {isLottie ? (
+            {category ? (
               <div className="lottie">
                 <Lottie
                   speed={0.7}
@@ -44,9 +44,9 @@ const Details = ({ image, title, isLottie }) => {
         </div>
         <div className="right">
           <div className="text-wrap">
-            <h2>{isLottie ? 'Category' : 'Playlist'}</h2>
+            <h2>{category ? 'Category' : 'Playlist'}</h2>
             <h1>{title}</h1>
-            <h3>All of {title}'s {isLottie ? 'playlists' : 'tracks'}</h3>
+            <h3>{description ? description : `All of ${title}'s tracks` }</h3>
           </div>
         </div>
       </div>
