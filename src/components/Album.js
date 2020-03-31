@@ -13,7 +13,7 @@ const Album = ({ album }) => {
       <div className="image-wrap" onClick={setAlbum}>
         <img src={album.image} alt={`${album.title} album art`} />
       </div>
-      <p>{album.title}</p>
+      <p>{album.title.split('-')[0]}</p>
     </div>
   );
 };

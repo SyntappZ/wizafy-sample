@@ -9,10 +9,11 @@
 @import "./styles/search";
 @import "./styles/playlist";
 @import "./styles/category";
-@import "./styles/categoryPlaylist";
+@import "./styles/trackScroller";
 @import "./styles/tracksPage";
 @import "./styles/details";
 @import "./styles/album";
+@import "./styles/playlistBrowser";
 @import url('https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap');
 
 
@@ -29,6 +30,10 @@
   color: $text;
   overflow: hidden;
  
+}
+
+.wrap  {
+  padding: 0 50px;
 }
 .section-container {
   display: flex;
@@ -61,8 +66,8 @@
 .title {
   font-size: calc(18px + .4vw);
   text-transform: capitalize;
-    letter-spacing: 1px;
-    padding: 5px 0 20px 0;
+  letter-spacing: 1px;
+  padding: 30px 0;
     
 }
 

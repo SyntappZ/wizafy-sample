@@ -42,7 +42,7 @@ const ContextProvider = ({ children }) => {
     fetchData("https://api.spotify.com/v1/me", "GET").then(data => {
       dispatch({ type: "setProfileData", payload: data });
     });
-    fetchData("https://api.spotify.com/v1/me/playlists", "GET").then(data => {
+    fetchData("https://api.spotify.com/v1/me/playlists?limit=50", "GET").then(data => {
       dispatch({ type: "setPlaylists", payload: data });
     });
     fetchData("https://api.spotify.com/v1/browse/new-releases", "GET").then(

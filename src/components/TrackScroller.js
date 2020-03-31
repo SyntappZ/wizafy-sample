@@ -4,8 +4,9 @@ import Album from "./Album";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
 const TrackScroller = ({ loadMoreTracks, title, tracks, album }) => {
+ 
   return (
-    <div className="top-tracks">
+    <div className="scroller">
       <div className="title-wrap">
         <h1 className="title">{title}</h1>
         <div className="scroll-buttons">
@@ -18,7 +19,7 @@ const TrackScroller = ({ loadMoreTracks, title, tracks, album }) => {
         </div>
       </div>
 
-      <div className="myTopTracks">
+      <div className="scroller-tracks">
         {tracks.map((track, i) => {
          
           return album ? (

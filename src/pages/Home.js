@@ -102,13 +102,14 @@ const HomeContent = () => {
               <img src={profileImage} alt="profile" />
             </div>
           </div>
-
-          <TrackScroller
-            title="my top tracks"
-            loadMoreTracks={loadMoreTopTracks}
-            tracks={myTopTracks}
-            album={null}
-          />
+          <div className="wrap" style={{paddingTop: '20px'}}>
+            <TrackScroller
+              title="my top tracks"
+              loadMoreTracks={loadMoreTopTracks}
+              tracks={myTopTracks}
+              album={null}
+            />
+          </div>
 
           <div className="favorites">
             <div className="title-wrap">
@@ -125,16 +126,7 @@ const HomeContent = () => {
               </div>
             </div>
             {favoriteTracks.map((track, i) => {
-              return (
-                <TrackFull
-                  key={i}
-                  title={track.title}
-                  artist={track.artist}
-                  image={track.image}
-                  duration={track.duration}
-                  // isFavorite={false}
-                />
-              );
+              return <TrackFull key={i} track={track} />;
             })}
             <div className="load-more" onClick={loadMoreFavs}>
               load more

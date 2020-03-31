@@ -11,7 +11,6 @@ const Tracks = () => {
   const { image, title, tracks, description } = state.selectedPlaylist;
 
   useEffect(() => {
-   
     fetchData(tracks, "GET").then(data => {
       const tracklist = convertTracks(data, tracks, image);
       setTracks(tracklist);
@@ -21,18 +20,12 @@ const Tracks = () => {
   return (
     <div className="tracks">
       <Details title={title} image={image} description={description} />
-      <h1 className="title" style={{marginTop: '40px'}}>{title} Tracks</h1>
+      <h1 className="title" style={{ marginTop: "40px" }}>
+        {title} Tracks
+      </h1>
 
       {playlistTracks.map((track, i) => {
-        return (
-          <TrackFull
-            key={i}
-            title={track.title}
-            artist={track.artist}
-            image={track.image}
-            duration={track.duration}
-          />
-        );
+        return <TrackFull key={i} track={track} />;
       })}
     </div>
   );

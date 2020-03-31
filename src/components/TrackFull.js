@@ -4,7 +4,7 @@ import playButton from "../images/play-circle.json";
 import heart from "../images/heart.json";
 import { MdMoreHoriz } from "react-icons/md";
 
-const TrackFull = ({ title, artist, image, duration, isFavorite }) => {
+const TrackFull = ({ track, isFavorite }) => {
   const [state, setState] = useState({
     isPaused: false,
     isStopped: true
@@ -26,25 +26,31 @@ const TrackFull = ({ title, artist, image, duration, isFavorite }) => {
     }
   };
 
+  const sendTrack = () => {
+
+  }
+  const {title, artist, image, duration} = track
+
   const arr = title.split(' ');
 
-  title = arr.length > 4 ? arr.slice(0, 4).join(' ') + '...' : title
+  const trackTitle = arr.length > 4 ? arr.slice(0, 4).join(' ') + '...' : title
 
   return (
     <div className="full-track">
       <div className="left">
         <Lottie
-          style={{margin: 0}}
+          onClick={sendTrack}
+          style={{margin: 0, cursor: 'pointer'}}
           options={defaultOptions}
           height={80}
           width={80}
           
         />
       
-          <img src={image} alt={title} />
+          <img src={image} alt={trackTitle} />
        
         <div className="text-wrap">
-          <h3>{title}</h3>
+          <h3>{trackTitle}</h3>
           <p>{artist}</p>
         </div>
       </div>

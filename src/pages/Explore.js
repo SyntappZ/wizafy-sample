@@ -10,7 +10,7 @@ const Explore = () => {
   const contextStore = useContext(PlaylistStore);
 
   return (
-    <div className="explore">
+    <div className="explore wrap">
       <Search />
       <ExploreMain store={contextStore} state={contextStore.state} />
     </div>
