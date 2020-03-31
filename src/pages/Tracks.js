@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PlaylistStore } from "../context/ContextProvider";
 import Details from "../components/Details";
-import TrackFull from "../components/TrackFull";
+import Tracklist from "../components/Tracklist";
 import { convertTracks } from "../data/trackConverter.js";
 
 const Tracks = () => {
@@ -11,7 +11,7 @@ const Tracks = () => {
   const { image, title, tracks, description } = state.selectedPlaylist;
 
   useEffect(() => {
-    fetchData(tracks, "GET").then(data => {
+    fetchData(tracks + "?limit=50", "GET").then(data => {
       const tracklist = convertTracks(data, tracks, image);
       setTracks(tracklist);
     });
@@ -24,9 +24,8 @@ const Tracks = () => {
         {title} Tracks
       </h1>
 
-      {playlistTracks.map((track, i) => {
-        return <TrackFull key={i} track={track} />;
-      })}
+      <Tracklist tracklist={playlistTracks} />
+    
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 
 import Playlist from "../components/Playlist";
-import TrackFull from "../components/TrackFull";
+
 import { PlaylistStore } from "../context/ContextProvider";
 import { convertTracks } from "../data/trackConverter.js";
 import {IoIosSave} from 'react-icons/io'
+import Tracklist from './Tracklist'
 const PlaylistBrowser = ({playlists, title}) => {
   const contextStore = useContext(PlaylistStore);
 
@@ -28,8 +29,8 @@ const PlaylistBrowser = ({playlists, title}) => {
     setPlaylistDesc(description);
     setPlaylistImage(image);
 
-    fetchData(tracks, "GET").then(data => {
-      const tracklist = convertTracks(data, true);
+    fetchData(tracks + '?limit=50', "GET").then(data => {
+      const tracklist = convertTracks(data);
       setTracks(tracklist);
     });
   };
@@ -70,10 +71,7 @@ const PlaylistBrowser = ({playlists, title}) => {
             <h3>{playlistDesc}</h3>
           </div>
         </div>
-
-        {tracks.map((track, i) => {
-          return <TrackFull key={i} track={track} />;
-        })}
+         <Tracklist tracklist={tracks} />
       </div>
     </div>
   );

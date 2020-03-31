@@ -1,6 +1,8 @@
 import { useReducer } from "react";
 import { convertTracks, convertDescription } from "../data/trackConverter.js";
 
+
+
 const cleanState = {
   accessToken: "",
   isPremium: false,
@@ -15,6 +17,7 @@ const cleanState = {
   moreTopTracks: "",
   currentTrack: "",
   favorites: [],
+  favoriteIds: [],
   moreFavorites: "",
   playlistMessage: "",
   featuredPlaylists: [],
@@ -118,10 +121,12 @@ const userData = (state, action) => {
     }
     case "favorites": {
       const tracks = convertTracks(action.payload);
-
+      const ids = action.payload.items.map(track => track.track.id)
+      
       return {
         ...state,
         favorites: [...state.favorites, ...tracks],
+        favoriteIds: ids,
         moreFavorites: action.payload.next
       };
     }

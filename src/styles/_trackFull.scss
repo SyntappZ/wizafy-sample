@@ -8,6 +8,7 @@
   height: 90px;
   border-radius: 15px;
   background: white;
+  overflow: 'hidden';
   //  box-shadow: 0px 15px 10px -12px #99acdb80;
   padding: 0 30px 0 20px;
   transition: 1s ease-in-out;
@@ -22,6 +23,14 @@
       height: 70px;
       border-radius: 7px;
       margin: 0 10px;
+    }
+
+    .icon-wrap {
+      height: 100%;
+      width: 80px;
+      display:flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .text-wrap {
@@ -50,9 +59,18 @@
       font-weight: bold;
     }
   }
+
+  .lottie-wrap {
+    height: 90px;
+    width: 100px;
+    overflow: hidden;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .more-icon {
-  font-size: 40px;
+  font-size: 30px;
   cursor: pointer;
 }

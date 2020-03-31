@@ -36,15 +36,37 @@ const ContextProvider = ({ children }) => {
     });
   };
 
+  const favoriteCheck = list => {
+    return new Promise((resolve, reject) => {
+      if (list.length > 0) {
+        const ids = list.map(track => track.id);
+        fetchData(
+          `https://api.spotify.com/v1/me/tracks/contains?ids=${ids}`,
+          "GET"
+        ).then(data => {
+          const tracks = list.map((track, i) => {
+            return {
+              ...track,
+              favorite: data[i]
+            };
+          });
+          resolve(tracks);
+        }).catch(err => reject(err))
+      }
+    });
+  };
+
   const fetchStartupData = () => {
     dispatch({ type: "setCatagories", payload: categories });
-    
+
     fetchData("https://api.spotify.com/v1/me", "GET").then(data => {
       dispatch({ type: "setProfileData", payload: data });
     });
-    fetchData("https://api.spotify.com/v1/me/playlists?limit=50", "GET").then(data => {
-      dispatch({ type: "setPlaylists", payload: data });
-    });
+    fetchData("https://api.spotify.com/v1/me/playlists?limit=50", "GET").then(
+      data => {
+        dispatch({ type: "setPlaylists", payload: data });
+      }
+    );
     fetchData("https://api.spotify.com/v1/browse/new-releases", "GET").then(
       data => {
         dispatch({ type: "setNewReleases", payload: data });
@@ -72,7 +94,8 @@ const ContextProvider = ({ children }) => {
     state: state,
     dispatch: dispatch,
     loadMoreTracks: loadMoreTracks,
-    fetchData: fetchData
+    fetchData: fetchData,
+    favoriteCheck: favoriteCheck
   };
 
   return (

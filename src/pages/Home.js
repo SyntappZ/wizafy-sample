@@ -4,12 +4,14 @@ import { FiLogOut } from "react-icons/fi";
 import TrackFull from "../components/TrackFull";
 import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
-
+import Tracklist from '../components/Tracklist'
 import { serverUrl } from "../serverUrl";
 import TrackScroller from "../components/TrackScroller";
 // import im from "../images/tempAlbum.jpg";
 const Home = () => {
   const contextStore = useContext(PlaylistStore);
+
+ 
   const { accessToken } = contextStore.state;
 
   return accessToken ? <HomeContent /> : <SignIn />;
@@ -30,7 +32,8 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
 
 const HomeContent = () => {
   const contextStore = useContext(PlaylistStore);
-  const { loadMoreTracks, dispatch, state } = contextStore;
+ 
+  const { loadMoreTracks, dispatch, state, favoriteCheck } = contextStore;
   const {
     myTopTracks,
     profileImage,
@@ -40,12 +43,14 @@ const HomeContent = () => {
     moreTopTracks
   } = state;
   const [years, setYears] = useState([]);
-
+  
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
 
   useEffect(() => {
     const arr = ["All"];
+
+   
 
     favorites.forEach(track => {
       if (!arr.includes(track.year)) {
@@ -54,6 +59,8 @@ const HomeContent = () => {
     });
     setYears(arr);
   }, [favorites]);
+
+
   const changeCurrentYear = date => {
     setCurrentYear(date);
   };
@@ -125,12 +132,8 @@ const HomeContent = () => {
                 ))}
               </div>
             </div>
-            {favoriteTracks.map((track, i) => {
-              return <TrackFull key={i} track={track} />;
-            })}
-            <div className="load-more" onClick={loadMoreFavs}>
-              load more
-            </div>
+            <Tracklist tracklist={favoriteTracks} />
+           
           </div>
         </div>
       ) : (
