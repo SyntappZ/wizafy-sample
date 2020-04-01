@@ -6,6 +6,20 @@
     align-items: center;
     justify-content: space-between;
 
+    .title-wrap {
+      height: 100px;
+      width: 150px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      cursor: pointer;
+
+      .icon {
+        font-size: 20px;
+        color: $light-text;
+      }
+    }
+
 }
 
 .back-icon {

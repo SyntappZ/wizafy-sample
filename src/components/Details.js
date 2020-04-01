@@ -3,9 +3,14 @@ import { useHistory } from "react-router-dom";
 import Lottie from "react-lottie";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import heartBeat from "../images/heartBeat.json";
+import {MdPlaylistAdd} from 'react-icons/md'
 
 const Details = ({ image, title, description, category }) => {
   const history = useHistory();
+
+  const savePlaylist = () => {
+    
+  }
 
   const defaultOptions = {
     loop: true,
@@ -22,7 +27,11 @@ const Details = ({ image, title, description, category }) => {
           className="back-icon"
           onClick={() => history.goBack()}
         />
-        <h4>{title}</h4>
+        
+        <div className="title-wrap" onClick={savePlaylist}>
+          <h4>{title}</h4>
+          <MdPlaylistAdd className="icon"/>
+        </div>
       </div>
 
       <div className="details-bar">

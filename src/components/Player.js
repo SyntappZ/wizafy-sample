@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import img from "../images/tempAlbum.jpg";
-import { FaStepForward, FaVolumeUp, FaStepBackward } from "react-icons/fa";
-import { MdPlayArrow } from "react-icons/md";
+import { FaStepForward, FaVolumeUp, FaStepBackward, FaLongArrowAltDown } from "react-icons/fa";
+import { MdPause, MdPlayArrow } from "react-icons/md";
+
 import { PlaylistStore } from "../context/ContextProvider";
 
 import Slider from "rc-slider";
@@ -9,7 +10,12 @@ import "rc-slider/assets/index.css";
 const Player = () => {
   const contextStore = useContext(PlaylistStore);
   const [track, setTrack] = useState({});
-  const { currentTrack } = contextStore.state;
+  const [volume, setVolume] = useState(0.2);
+  const [time, setTime] = useState(0);
+  const { currentTrack, audio, isPlaying, isPaused } = contextStore.state;
+
+  
+
   useEffect(() => {
     if (currentTrack) {
       if (currentTrack.title) {
@@ -27,17 +33,56 @@ const Player = () => {
         });
       }
     }
-    playSample()
+    autoPlay();
   }, [currentTrack]);
 
   const playSample = () => {
     if (currentTrack.preview) {
-      const audio = new Audio(currentTrack.preview);
-      audio.play();
+      if(isPlaying) {
+        audio.pause()
+       
+      }else{
+        audio.play()
+      }
+      
+    }
+  };
+  const autoPlay = () => {
+    if (currentTrack.preview) {
+      audio.src = currentTrack.preview;
+      audio.play()
     }
   };
 
+  useEffect(() => {
+    let interval = null;
+   
+    if (isPlaying) {
+      interval = setInterval(() => {
+        setTime(audio.currentTime);
+      }, 1000);
+    } else if(!isPlaying && isPaused) {
+      clearInterval(interval);
+    }else{
+      setTime(0);
+      clearInterval(interval);
+
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [currentTrack, isPlaying, isPaused]);
+
+  useEffect(() => {
+    audio.volume = volume;
+  }, [volume]);
+
+  const changeVolume = event => {
+    setVolume(event / 100);
+  };
+
   const { title, artist, image } = track;
+  const timePosition = Math.floor(time)
   return (
     <div className="player-container">
       <div className="now-playing">
@@ -53,22 +98,26 @@ const Player = () => {
           <div className="controls-wrap">
             <FaStepBackward className="player-icon" />
             <div className="play-wrap" onClick={playSample}>
-              <MdPlayArrow />
+             {isPlaying ? <MdPause /> : <MdPlayArrow />}
             </div>
-            <FaStepForward className="player-icon" />
+            <FaStepForward
+              className="player-icon"
+              onClick={() => console.log(audio.currentTime)}
+            />
           </div>
         </div>
       </div>
 
       <div className="progress-bar">
         <div className="slider-wrap">
-          <p>0:00</p>
+          <p>0:{timePosition < 10 ? '0' + timePosition : timePosition}</p>
           <Slider
             handleStyle={{ borderColor: "#554fd8" }}
             trackStyle={{ background: "#554fd8" }}
             min={0}
             max={30}
-            defaultValue={3}
+            defaultValue={0}
+            value={time}
           />
           <p>0:30</p>
         </div>
@@ -81,8 +130,10 @@ const Player = () => {
             handleStyle={{ borderColor: "#554fd8" }}
             trackStyle={{ background: "#554fd8" }}
             min={0}
-            max={30}
-            defaultValue={3}
+            max={100}
+            defaultValue={20}
+            value={volume * 100}
+            onChange={changeVolume}
           />
         </div>
       </div>

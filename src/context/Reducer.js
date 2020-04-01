@@ -24,7 +24,10 @@ const cleanState = {
   categories: [],
   selectedCategory: {},
   selectedPlaylist: {},
-  page: null
+  page: null,
+  audio: new Audio(),
+  isPlaying: false,
+  isPaused: false
 };
 
 const userData = (state, action) => {
@@ -151,10 +154,20 @@ const userData = (state, action) => {
       };
     }
     case "loadCurrentTrack": {
+      
+   
       return {
         ...state,
-        currentTrack: action.payload
+        currentTrack: action.payload,
+      
       };
+    }
+    case "audioTracker": {
+      return {
+        ...state,
+        isPlaying: action.payload.isPlaying,
+        isPaused: action.payload.isPaused
+      }
     }
     case "logout": {
       return cleanState;

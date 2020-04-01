@@ -1,27 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import Lottie from "react-lottie";
-import playButton from "../images/play-pause.json";
+
 import heart from "../images/heart.json";
-import { MdMoreHoriz, MdPlayArrow } from "react-icons/md";
+import visualizer from "../images/sound-visualizer.json";
+import { MdMoreHoriz, MdPause, MdPlayArrow } from "react-icons/md";
+import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
 
-const TrackFull = ({ track, isFavorite }) => {
+const TrackFull = ({ track, updateFavorite }) => {
   const contextStore = useContext(PlaylistStore);
-
+  const { sendData, dispatch } = contextStore;
+  const {isPlaying, isPaused, audio, currentTrack} = contextStore.state
   const [state, setState] = useState({
-    isPaused: false,
-    isStopped: true,
-    paused: false,
-    stopped: true
+    lottiePaused: false,
+    lottieStopped: true
   });
-  const defaultOptions = {
-    loop: false,
-    autoplay: false,
-    animationData: playButton,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  };
+
   const heartOptions = {
     loop: false,
     autoplay: false,
@@ -31,31 +25,73 @@ const TrackFull = ({ track, isFavorite }) => {
     }
   };
 
-  const sendTrack = () => {
-    
-    setState({ stopped: true });
+  const visualizerOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: visualizer,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
   };
-  const { title, artist, image, duration, favorite } = track;
+
+  const { title, artist, image, duration, favorite, preview, id } = track;
 
   const arr = title.split(" ");
 
   useEffect(() => {
     if (favorite) {
-      setState({ isStopped: false, isPaused: false });
+      setState({ lottieStopped: false, lottiePaused: false });
     } else {
-      setState({ isStopped: true });
+      setState({ lottieStopped: true });
     }
   }, [favorite]);
 
-  const handleFavorite = () => {};
+  const sendTrack = () => {
+      dispatch({ type: "loadCurrentTrack", payload: track });
+  };
+
+  const handleFavorite = async () => {
+    const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
+    const method = favorite ? "DELETE" : "PUT";
+
+    const action = await sendData(url, method);
+    console.log(action);
+    updateFavorite(id);
+  };
 
   const trackTitle = arr.length > 4 ? arr.slice(0, 4).join(" ") + "..." : title;
-  const iconSize = { fontSize: "30px" };
+  const iconStyle = {
+    fontSize: "30px",
+    color: preview ? "#333" : "#aaa"
+  };
+ 
+  let isPlay
+    if(currentTrack.id === id && isPlaying) {
+      isPlay = (  <Lottie
+        options={visualizerOptions}
+        isPaused={isPaused}
+        width={40}
+        height={40}
+      />)
+    }else{
+      isPlay = <MdPlayArrow style={iconStyle} /> 
+    }
+  
+  const icon = preview ? isPlay : (
+    <div style={{ textAlign: "center" }}>
+      <TiCancel style={iconStyle} />
+      <p style={{ fontSize: "10px", color: "#aaa" }}>no sample</p>
+    </div>
+  );
   return (
     <div className="full-track">
       <div className="left">
-        <div className="icon-wrap" onClick={sendTrack}>
-          <MdPlayArrow style={iconSize} />
+        <div
+          className="play-icon-wrap"
+          style={{ cursor: preview ? "pointer" : "default" }}
+          onClick={preview ? sendTrack : null}
+        >
+          {icon}
         </div>
 
         <img src={image} alt={trackTitle} />
@@ -72,8 +108,8 @@ const TrackFull = ({ track, isFavorite }) => {
           <Lottie
             options={heartOptions}
             style={{ cursor: "pointer" }}
-            isStopped={state.isStopped}
-            isPaused={state.isPaused}
+            isStopped={state.lottieStopped}
+            isPaused={state.lottiePaused}
             width={200}
             height={150}
           />

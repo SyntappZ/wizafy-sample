@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { MdPerson, MdArrowDownward, MdArrowForward } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
-import TrackFull from "../components/TrackFull";
+
 import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
 import Tracklist from '../components/Tracklist'

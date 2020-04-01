@@ -4,7 +4,7 @@ import Playlist from "../components/Playlist";
 
 import { PlaylistStore } from "../context/ContextProvider";
 import { convertTracks } from "../data/trackConverter.js";
-import {IoIosSave} from 'react-icons/io'
+import {MdPlaylistAdd} from 'react-icons/md'
 import Tracklist from './Tracklist'
 const PlaylistBrowser = ({playlists, title}) => {
   const contextStore = useContext(PlaylistStore);
@@ -56,7 +56,7 @@ const PlaylistBrowser = ({playlists, title}) => {
         <div className="save-wrap">
         <h2>{playlistTitle} playlist</h2>
         <div className="save">
-        <IoIosSave className="icon" />
+        <MdPlaylistAdd className="icon" />
         {/* <p>{'save'}</p> */}
         </div>
           
