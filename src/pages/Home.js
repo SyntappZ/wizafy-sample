@@ -4,14 +4,13 @@ import { FiLogOut } from "react-icons/fi";
 
 import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
-import Tracklist from '../components/Tracklist'
+import Tracklist from "../components/Tracklist";
 import { serverUrl } from "../serverUrl";
 import TrackScroller from "../components/TrackScroller";
 // import im from "../images/tempAlbum.jpg";
 const Home = () => {
   const contextStore = useContext(PlaylistStore);
 
- 
   const { accessToken } = contextStore.state;
 
   return accessToken ? <HomeContent /> : <SignIn />;
@@ -32,7 +31,7 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
 
 const HomeContent = () => {
   const contextStore = useContext(PlaylistStore);
- 
+
   const { loadMoreTracks, dispatch, state, favoriteCheck } = contextStore;
   const {
     myTopTracks,
@@ -43,14 +42,12 @@ const HomeContent = () => {
     moreTopTracks
   } = state;
   const [years, setYears] = useState([]);
-  
+
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
 
   useEffect(() => {
     const arr = ["All"];
-
-   
 
     favorites.forEach(track => {
       if (!arr.includes(track.year)) {
@@ -59,7 +56,6 @@ const HomeContent = () => {
     });
     setYears(arr);
   }, [favorites]);
-
 
   const changeCurrentYear = date => {
     setCurrentYear(date);
@@ -109,7 +105,7 @@ const HomeContent = () => {
               <img src={profileImage} alt="profile" />
             </div>
           </div>
-          <div className="wrap" style={{paddingTop: '20px'}}>
+          <div className="wrap" style={{ paddingTop: "20px" }}>
             <TrackScroller
               title="my top tracks"
               loadMoreTracks={loadMoreTopTracks}
@@ -132,8 +128,12 @@ const HomeContent = () => {
                 ))}
               </div>
             </div>
-            <Tracklist tracklist={favoriteTracks} />
-           
+            <Tracklist
+              tracklist={favoriteTracks}
+              loadMore={loadMoreFavs}
+              favorites={true}
+              next={moreFavorites}
+            />
           </div>
         </div>
       ) : (

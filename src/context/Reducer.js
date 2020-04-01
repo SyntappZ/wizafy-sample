@@ -114,7 +114,7 @@ const userData = (state, action) => {
       };
     }
     case "topTracks": {
-      const tracks = convertTracks(action.payload);
+      const tracks = convertTracks(action.payload.items);
 
       return {
         ...state,
@@ -123,13 +123,12 @@ const userData = (state, action) => {
       };
     }
     case "favorites": {
-      const tracks = convertTracks(action.payload);
-      const ids = action.payload.items.map(track => track.track.id)
+      const tracks = convertTracks(action.payload.items);
       
+     
       return {
         ...state,
         favorites: [...state.favorites, ...tracks],
-        favoriteIds: ids,
         moreFavorites: action.payload.next
       };
     }

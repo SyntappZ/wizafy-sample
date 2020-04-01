@@ -3,14 +3,12 @@ import { useHistory } from "react-router-dom";
 import Lottie from "react-lottie";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import heartBeat from "../images/heartBeat.json";
-import {MdPlaylistAdd} from 'react-icons/md'
+import { MdPlaylistAdd } from "react-icons/md";
 
 const Details = ({ image, title, description, category }) => {
   const history = useHistory();
 
-  const savePlaylist = () => {
-    
-  }
+  const savePlaylist = () => {};
 
   const defaultOptions = {
     loop: true,
@@ -27,10 +25,14 @@ const Details = ({ image, title, description, category }) => {
           className="back-icon"
           onClick={() => history.goBack()}
         />
-        
-        <div className="title-wrap" onClick={savePlaylist}>
+
+        <div
+          className="title-wrap"
+          style={{ cursor: category ? "default" : "pointer" }}
+          onClick={category ? null : savePlaylist}
+        >
           <h4>{title}</h4>
-          <MdPlaylistAdd className="icon"/>
+          {category ? null : <MdPlaylistAdd className="icon" />}
         </div>
       </div>
 
@@ -53,9 +55,9 @@ const Details = ({ image, title, description, category }) => {
         </div>
         <div className="right">
           <div className="text-wrap">
-            <h2>{category ? 'Category' : 'Playlist'}</h2>
+            <h2>{category ? "Category" : "Playlist"}</h2>
             <h1>{title}</h1>
-            <h3>{description ? description : `All of ${title}'s tracks` }</h3>
+            <h3>{description ? description : `All of ${title}'s tracks`}</h3>
           </div>
         </div>
       </div>

@@ -52,21 +52,21 @@
     letter-spacing: 1px;  
   }
 
-  .icon {
-    font-size: 30px;
-    cursor: pointer;
-    color: rgb(104, 104, 104);
-  }
+  
 
   .save {
     display:flex;
-    flex-direction:column;
+    justify-content: flex-end;
     align-items: center;
-
-    p {
-      text-transform: capitalize;
-     
+    cursor: pointer;
+    height: 100%;
+    width: 100px;
+    
+    .icon {
+      font-size: 25px;
       color: $light-text;
     }
+
+  
   }
 }

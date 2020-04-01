@@ -55,8 +55,8 @@ const TrackFull = ({ track, updateFavorite }) => {
     const method = favorite ? "DELETE" : "PUT";
 
     const action = await sendData(url, method);
-    console.log(action);
-    updateFavorite(id);
+  
+    updateFavorite(id, track);
   };
 
   const trackTitle = arr.length > 4 ? arr.slice(0, 4).join(" ") + "..." : title;
@@ -123,5 +123,4 @@ const TrackFull = ({ track, updateFavorite }) => {
 
 export default TrackFull;
 
-// <button  onClick={() => setState({isStopped: true})}>Stop</button>
-//<button  onClick={() => setState({isStopped: false, isPaused: false })}>Play</button>
+

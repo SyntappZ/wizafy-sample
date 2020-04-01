@@ -4,14 +4,13 @@ const durationConverter = millis => {
   return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 };
 
-const convertTracks = (data, url, image) => {
-  const isAlbum = /albums/i.test(url);
+const convertTracks = (data, image) => {
+  
   const tracks = [];
-  data = isAlbum ? data.tracks : data;
+  
 
-  data.items.forEach(track => {
-    const year = track.added_at ? track.added_at.split("-")[0] : null;
-
+  data.forEach(track => {
+  
     track = track.track || track;
     
     if (track.id) {
@@ -19,15 +18,17 @@ const convertTracks = (data, url, image) => {
         id: track.id,
         title: track.name.split("-")[0],
         artist: track.artists[0].name.split("-")[0],
-        image: isAlbum ? image : track.album.images[1].url,
+        image: image ? image : track.album.images[1].url,
         duration: durationConverter(track.duration_ms),
         preview: track.preview_url,
         uri: track.uri,
         href: track.href,
-        year: year
+        favorite: track.favorite,
+        year: track.year
       });
     }
   });
+  console.log(tracks)
   return tracks;
 };
 

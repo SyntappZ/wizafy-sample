@@ -5,6 +5,7 @@ import Playlist from "../components/Playlist";
 import { PlaylistStore } from "../context/ContextProvider";
 import { convertTracks } from "../data/trackConverter.js";
 import {MdPlaylistAdd} from 'react-icons/md'
+
 import Tracklist from './Tracklist'
 const PlaylistBrowser = ({playlists, title}) => {
   const contextStore = useContext(PlaylistStore);
@@ -15,6 +16,7 @@ const PlaylistBrowser = ({playlists, title}) => {
   const [playlistTitle, setPlaylistTitle] = useState([]);
   const [playlistDesc, setPlaylistDesc] = useState([]);
   const [playlistImage, setPlaylistImage] = useState([]);
+  const [next, setNext] = useState('')
   const [tracks, setTracks] = useState([]);
 
 
@@ -30,10 +32,19 @@ const PlaylistBrowser = ({playlists, title}) => {
     setPlaylistImage(image);
 
     fetchData(tracks + '?limit=50', "GET").then(data => {
-      const tracklist = convertTracks(data);
+      setNext(data.next)
+      const tracklist = convertTracks(data.items);
       setTracks(tracklist);
     });
   };
+
+  const savePlaylist = () => {
+    
+  }
+
+  const updateNext = (newNext) => {
+    setNext(newNext)
+  }
 
 
   useEffect(() => {
@@ -55,7 +66,7 @@ const PlaylistBrowser = ({playlists, title}) => {
       <div className="right">
         <div className="save-wrap">
         <h2>{playlistTitle} playlist</h2>
-        <div className="save">
+        <div className="save" onClick={savePlaylist}>
         <MdPlaylistAdd className="icon" />
         {/* <p>{'save'}</p> */}
         </div>
@@ -71,7 +82,7 @@ const PlaylistBrowser = ({playlists, title}) => {
             <h3>{playlistDesc}</h3>
           </div>
         </div>
-         <Tracklist tracklist={tracks} />
+         <Tracklist tracklist={tracks} next={next} updateNext={updateNext} />
       </div>
     </div>
   );

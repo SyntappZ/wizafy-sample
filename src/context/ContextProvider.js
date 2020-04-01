@@ -14,12 +14,6 @@ const ContextProvider = ({ children }) => {
     }
   }, [accessToken]);
 
-  const loadMoreTracks = (url, type) => {
-    fetchData(url, "GET").then(data => {
-      dispatch({ type: type, payload: data });
-    });
-  };
-
   const fetchData = url => {
     return new Promise((resolve, reject) => {
       fetch(url, {
@@ -55,22 +49,40 @@ const ContextProvider = ({ children }) => {
   const favoriteCheck = list => {
     return new Promise((resolve, reject) => {
       if (list.length > 0) {
-        const ids = list.map(track => track.id);
+        const ids = list.map(track => {
+          track = track.track || track;
+          return track.id;
+        });
+
         fetchData(
           `https://api.spotify.com/v1/me/tracks/contains?ids=${ids}`,
           "GET"
         )
-          .then(data => {
+          .then(trackData => {
             const tracks = list.map((track, i) => {
+              const year = track.added_at ? track.added_at.split("-")[0] : null;
+              track = track.track || track;
+
               return {
                 ...track,
-                favorite: data[i]
+                favorite: trackData[i],
+                year: year
               };
             });
             resolve(tracks);
           })
           .catch(err => reject(err));
       }
+    });
+  };
+
+  const loadMoreTracks = (url, type) => {
+    fetchData(url).then(data => {
+      favoriteCheck(data.items).then(tracks => {
+        data.items = tracks;
+
+        dispatch({ type: type, payload: data });
+      });
     });
   };
 
@@ -118,12 +130,18 @@ const ContextProvider = ({ children }) => {
       }
     );
     fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then(data => {
-      dispatch({ type: "favorites", payload: data });
+      favoriteCheck(data.items).then(tracks => {
+        data.items = tracks;
+        dispatch({ type: "favorites", payload: data });
+      });
     });
 
     fetchData("https://api.spotify.com/v1/me/top/tracks").then(data => {
-      dispatch({ type: "topTracks", payload: data });
-      dispatch({ type: "loadCurrentTrack", payload: data.items[0] });
+      favoriteCheck(data.items).then(tracks => {
+        data.items = tracks;
+        dispatch({ type: "topTracks", payload: data });
+        dispatch({ type: "loadCurrentTrack", payload: data.items[0] });
+      });
     });
   };
 

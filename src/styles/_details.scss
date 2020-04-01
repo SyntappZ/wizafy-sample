@@ -10,9 +10,13 @@
       height: 100px;
       width: 150px;
       display: flex;
-      justify-content: space-around;
+      justify-content: flex-end;
       align-items: center;
-      cursor: pointer;
+     
+
+      h4 {
+        padding-right: 10px;
+      }
 
       .icon {
         font-size: 20px;
