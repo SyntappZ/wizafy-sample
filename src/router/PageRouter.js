@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import CreatePlaylist from "../pages/CreatePlaylist";
 import Generator from "../pages/Generator";
 import Playlists from "../pages/Playlists";
 import Settings from "../pages/Settings";
@@ -20,10 +19,6 @@ const routes = [
   {
     path: "/explore",
     main: () => <Explore />
-  },
-  {
-    path: "/createPlaylist",
-    main: () => <CreatePlaylist />
   },
   {
     path: "/generator",

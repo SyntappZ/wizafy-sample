@@ -16,28 +16,28 @@ const SideNav = () => {
     {
       title: "Home",
       link: "/",
-      icon: <AiOutlineHome className={iconStyle} />
+      icon: <AiOutlineHome className={iconStyle} />,
     },
     {
       title: "Explore",
       link: "/explore",
-      icon: <GiCubes className={iconStyle} />
+      icon: <GiCubes className={iconStyle} />,
     },
     {
       title: "Playlists",
       link: "/playlists",
-      icon: <MdPlaylistPlay className={iconStyle} />
+      icon: <MdPlaylistPlay className={iconStyle} />,
     },
     {
       title: "Generator",
       link: "/generator",
-      icon: <GiRegeneration className={iconStyle} />
+      icon: <GiRegeneration className={iconStyle} />,
     },
     {
       title: "Settings",
       link: "/settings",
-      icon: <FiSettings className={iconStyle} />
-    }
+      icon: <FiSettings className={iconStyle} />,
+    },
   ];
 
   let location = useLocation();
@@ -79,8 +79,7 @@ const SideNav = () => {
         <LinkContainer
           title="Create Playlist"
           icon={<MdPlaylistAdd className={iconStyle} />}
-          link="/createPlaylist"
-          page={page}
+          link={null}
           accessToken={accessToken}
         />
       </div>
@@ -94,17 +93,28 @@ const LinkContainer = ({ title, icon, link, page, accessToken }) => {
   const selectedStyle = {
     background: "#554fd8",
     color: "#fff",
-    boxShadow: "10px 10px 20px -11px #554fd8"
+    boxShadow: "10px 10px 20px -11px #554fd8",
   };
 
   return (
-    <Link
-      to={link}
-      style={page === link ? selectedStyle : null}
-      className={accessToken ? "link" : "link disabled-link"}
-    >
-      {icon}
-      <h4>{title}</h4>
-    </Link>
+    <>
+      {link ? (
+        <Link
+          to={link}
+          style={page === link ? selectedStyle : null}
+          className={accessToken ? "link" : "link disabled-link"}
+        >
+          {icon}
+          <h4>{title}</h4>
+        </Link>
+      ) : (
+        <Link
+          className={accessToken ? "link" : "link disabled-link"}
+        >
+          {icon}
+          <h4>{title}</h4>
+        </Link>
+      )}
+    </>
   );
 };

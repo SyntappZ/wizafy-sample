@@ -8,7 +8,7 @@
   height: 90px;
   border-radius: 15px;
   background: white;
-  overflow: 'hidden';
+  overflow: "hidden";
   //  box-shadow: 0px 15px 10px -12px #99acdb80;
   padding: 0 30px 0 20px;
   transition: 1s ease-in-out;
@@ -28,10 +28,9 @@
     .play-icon-wrap {
       height: 100%;
       width: 80px;
-      display:flex;
+      display: flex;
       justify-content: center;
       align-items: center;
-      
     }
 
     .text-wrap {
@@ -65,12 +64,18 @@
     height: 90px;
     width: 100px;
     overflow: hidden;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
   }
 }
-
+.more-menu {
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor:pointer;
+}
 .more-icon {
   font-size: 30px;
   cursor: pointer;

@@ -10,7 +10,7 @@ const Tracklist = ({ tracklist, loadMore, favorites, next, updateNext }) => {
   const { favoriteCheck, fetchData, dispatch, trackConverter } = contextStore;
 
   useEffect(() => {
-    console.log(tracklist);
+   
     if (!favorites) {
       check(tracklist);
     }
@@ -40,6 +40,7 @@ const Tracklist = ({ tracklist, loadMore, favorites, next, updateNext }) => {
   return (
     <div className="tracklist">
       {renderTracks.map((track, i) => {
+        
         return (
           <TrackFull key={i} track={track} updateFavorite={updateFavorite} />
         );

@@ -39,8 +39,7 @@ const ContextProvider = ({ children }) => {
         }
       })
         .then(() => {
-          const action = method === "PUT" ? "added" : "removed";
-          resolve(action);
+          resolve('data sent!');
         })
         .catch(err => reject(err));
     });

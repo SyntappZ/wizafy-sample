@@ -5,24 +5,14 @@ import Search from "../components/Search";
 import PlaylistBrowser from "../components/PlaylistBrowser";
 const Playlists = () => {
   const contextStore = useContext(PlaylistStore);
-  const [state, setState] = useState({});
+
   const { loadMoreTracks } = contextStore;
-  const { playlists, username, morePlaylistsUrl } = contextStore.state;
+  const { myPlaylists, savedPlaylists, morePlaylistsUrl } = contextStore.state;
 
-  useEffect(() => {
-    const myPlaylists = [];
-    const savedPlaylists = [];
+ 
 
-    playlists.forEach(list => {
-      list.owner === username
-        ? myPlaylists.push(list)
-        : savedPlaylists.push(list);
-    });
-
-    setState({ myPlaylists, savedPlaylists });
-  }, [playlists]);
-
-  const { myPlaylists, savedPlaylists } = state;
+  
+  
 
   const loadMorePlaylists = () => {
     loadMoreTracks(morePlaylistsUrl, "playlists");

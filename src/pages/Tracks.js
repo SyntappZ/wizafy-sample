@@ -11,10 +11,14 @@ const Tracks = () => {
   const { state, fetchData } = contextStore;
   const { image, title, tracks, description } = state.selectedPlaylist;
   const [next, setNext] = useState("");
+
   useEffect(() => {
-    fetchData(tracks + "?limit=50", "GET").then(data => {
-      setNext(data.tracks.next)
-      const tracklist = convertTracks(data.tracks.items, image);
+    fetchData(tracks + "?limit=50", "GET").then((data) => {
+      data = data.items || data.tracks.items;
+
+      setNext(data.next);
+
+      const tracklist = convertTracks(data, image);
       setTracks(tracklist);
     });
   }, []);

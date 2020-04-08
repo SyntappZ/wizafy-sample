@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 import { convertTracks, convertDescription } from "../data/trackConverter.js";
-
+import noImage from '../images/no-image.png'
 
 
 const cleanState = {
@@ -9,7 +9,8 @@ const cleanState = {
   username: "",
   email: "",
   profileImage: "",
-  playlists: [],
+  myPlaylists: [],
+  savedPlaylists: [],
   morePlaylistsUrl: "",
   newReleaseAlbums: [],
   moreNewAlbums: "",
@@ -56,22 +57,41 @@ const userData = (state, action) => {
     }
 
     case "setPlaylists": {
-      const playlists = action.payload.items.map(playlist => {
+      const myPlaylists = [];
+      const savedPlaylists = []
+     action.payload.items.forEach(playlist => {
+        if(playlist.owner.display_name === state.username) {
+          
+          myPlaylists.push( {
+            id: playlist.id,
+            title: playlist.name,
+            description: convertDescription(playlist.description),
+            image: playlist.images.length > 0 ? playlist.images[0].url : noImage,
+            uri: playlist.uri,
+            tracks: playlist.tracks.href,
+            tracksAmount: playlist.tracks.total,
+            owner: playlist.owner.display_name
+          })
+        }else{
+          savedPlaylists.push({
+            id: playlist.id,
+            title: playlist.name,
+            description: convertDescription(playlist.description),
+            image: playlist.images.length > 0 ? playlist.images[0].url : noImage,
+            uri: playlist.uri,
+            tracks: playlist.tracks.href,
+            tracksAmount: playlist.tracks.total,
+            owner: playlist.owner.display_name
+          })
+        }
         
-        return {
-          id: playlist.id,
-          title: playlist.name,
-          description: convertDescription(playlist.description),
-          image: playlist.images[0].url,
-          uri: playlist.uri,
-          tracks: playlist.tracks.href,
-          tracksAmount: playlist.tracks.total,
-          owner: playlist.owner.display_name
-        };
       });
+
+      
       return {
         ...state,
-        playlists: [...state.playlists, ...playlists],
+        myPlaylists: [...state.myPlaylists, ...myPlaylists],
+        savedPlaylists: [...state.savedPlaylists, ...savedPlaylists],
         morePlaylistsUrl: action.payload.next
       };
     }

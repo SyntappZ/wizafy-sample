@@ -6,7 +6,7 @@ import visualizer from "../images/sound-visualizer.json";
 import { MdMoreHoriz, MdPause, MdPlayArrow } from "react-icons/md";
 import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
-
+import Menu from './Menu'
 const TrackFull = ({ track, updateFavorite }) => {
   const contextStore = useContext(PlaylistStore);
   const { sendData, dispatch } = contextStore;
@@ -15,6 +15,16 @@ const TrackFull = ({ track, updateFavorite }) => {
     lottiePaused: false,
     lottieStopped: true
   });
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { title, artist, image, duration, favorite, preview, id, uri } = track;
+
+
+  const addToPlaylist = (playlistId) => {
+    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`
+    sendData(url, 'POST').then(message => {
+      console.log(message)
+    })
+  }
 
   const heartOptions = {
     loop: false,
@@ -34,7 +44,6 @@ const TrackFull = ({ track, updateFavorite }) => {
     }
   };
 
-  const { title, artist, image, duration, favorite, preview, id } = track;
 
   const arr = title.split(" ");
 
@@ -114,8 +123,11 @@ const TrackFull = ({ track, updateFavorite }) => {
             height={150}
           />
         </div>
-
+        <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}> 
         <MdMoreHoriz className="more-icon" />
+       { menuOpen ? <Menu addToPlaylist={addToPlaylist} /> : null}
+        </div>
+       
       </div>
     </div>
   );
