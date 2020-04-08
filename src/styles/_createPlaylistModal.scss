@@ -1,0 +1,115 @@
+@import "./colors";
+
+$width: 100vw;
+
+.create-playlist-modal {
+  width: $width;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+
+  .modal {
+    width: 55%;
+    height: 60%;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .close {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .wrap {
+    display: flex;
+    width: 100%;
+    height: 70%;
+  }
+
+  .btn {
+    width: 140px;
+    height: 50px;
+    background: $purple;
+    color: white;
+    border-radius: 7px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 40px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 20px;
+  }
+
+  .upload-image {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eee;
+    border-radius: 15px;
+    flex-direction: column;
+    cursor: pointer;
+
+    h3 {
+      text-transform: uppercase;
+    }
+  }
+  .input-wrap {
+    flex: 4;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    .label {
+      font-size: 20px;
+      text-transform: capitalize;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: $light-text;
+      padding-bottom: 15px;
+    }
+
+    .search-wrap {
+      border-radius: 0;
+      padding: 10px 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+
+      input {
+        font-size: 16px;
+        letter-spacing: 1px;
+      }
+    }
+
+    .description-box {
+      width: 100%;
+      flex: 4;
+
+      textarea {
+        width: 100%;
+        height: 100%;
+        border: solid 1px #dadada;
+        border-radius: 5px;
+        outline: none;
+        padding: 10px 20px;
+        resize: none;
+        font-size: 16px;
+        font-weight: 400;
+        color: $light-text;
+        letter-spacing: 1px;
+
+        &::placeholder {
+          color: #cecece;
+        }
+      }
+    }
+  }
+}

@@ -6,12 +6,15 @@ import { GiRegeneration, GiCubes } from "react-icons/gi";
 import { FiSettings } from "react-icons/fi";
 import { PlaylistStore } from "../context/ContextProvider";
 import { Link, useLocation } from "react-router-dom";
+import CreatePlaylist from './CreatePlaylist'
 
 const SideNav = () => {
   const contextStore = useContext(PlaylistStore);
   const { username, profileImage, email, accessToken } = contextStore.state;
   const [page, setPage] = useState("/");
+  const [modal, setModal] = useState(false)
   const iconStyle = accessToken ? "icon" : "icon disabled-link";
+
   const links = [
     {
       title: "Home",
@@ -40,6 +43,9 @@ const SideNav = () => {
     },
   ];
 
+  const toggleModal = () => setModal(!modal)
+  
+
   let location = useLocation();
   useEffect(() => {
     let mounted = true;
@@ -53,6 +59,7 @@ const SideNav = () => {
 
   return (
     <div className="nav-container">
+     {modal ? <CreatePlaylist closeModal={toggleModal} /> : null}
       <div className="profile-wrap">
         <div className="picture-wrap">
           <img src={profileImage ? profileImage : img} alt="profile" />
@@ -81,6 +88,7 @@ const SideNav = () => {
           icon={<MdPlaylistAdd className={iconStyle} />}
           link={null}
           accessToken={accessToken}
+          openModal={toggleModal}
         />
       </div>
     </div>
@@ -89,7 +97,7 @@ const SideNav = () => {
 
 export default SideNav;
 
-const LinkContainer = ({ title, icon, link, page, accessToken }) => {
+const LinkContainer = ({ title, icon, link, page, accessToken, openModal }) => {
   const selectedStyle = {
     background: "#554fd8",
     color: "#fff",
@@ -109,6 +117,7 @@ const LinkContainer = ({ title, icon, link, page, accessToken }) => {
         </Link>
       ) : (
         <Link
+        onClick={openModal}
           className={accessToken ? "link" : "link disabled-link"}
         >
           {icon}
