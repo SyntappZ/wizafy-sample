@@ -13,6 +13,7 @@
 @import "./styles/tracksPage";
 @import "./styles/details";
 @import "./styles/album";
+
 @import "./styles/playlistBrowser";
 @import "./styles/menu";
 @import "./styles/trackFull";
@@ -26,13 +27,12 @@
   box-sizing: border-box;
   margin: 0;
   font-family: 'Baloo Da 2', cursive;
+  font-size: 14px;
 }
 .App {
-  
   font-family: 'Baloo Da 2', cursive;
   color: $text;
   overflow: hidden;
- 
 }
 
 .wrap  {
@@ -47,27 +47,27 @@
 }
 
 .nav-section {
-  flex: .3 3 250px;
+  flex: 1 3;
   border-right: solid 2px rgb(236, 236, 236);
 }
 
 
 
 .pages-section {
-  flex: 7 4;
+  flex: 6 4;
   overflow-y: auto;
 }
 .player-section {
   background: white;
   box-shadow: 0px -13px 30px -20px rgba(204, 204, 204, 1);
-  height: 95px;
+  height: 70px;
   width: 100%;
   position: absolute;
   bottom: 0;
 }
 
 .title {
-  font-size: calc(18px + .4vw);
+  font-size: calc(13px + .4vw);
   text-transform: capitalize;
   letter-spacing: 1px;
   padding: 30px 0;

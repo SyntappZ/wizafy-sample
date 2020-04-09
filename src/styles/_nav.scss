@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow-y: auto;
 
   .profile-wrap {
     flex: 4 70px;
@@ -53,25 +54,24 @@
 }
 .link {
   display: flex;
-  padding: 0 20px;
+  padding: 10px 12px;
   text-decoration: none;
   color: $text;
   margin: 10px 0;
-  height: 50px;
   border-radius: 7px;
   width: 100%;
   align-items: center;
   
   
   cursor: pointer;
-  h4 {
+  h5 {
     padding-left: 10px;
     letter-spacing: 1px;
   }
 
   .icon {
     color: $pink;
-    font-size: 25px;
+    font-size: 20px;
   }
 }
 

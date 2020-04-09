@@ -17,8 +17,8 @@
     display: flex;
     flex: 1;
     img {
-      width: 70px;
-      height: 70px;
+      width: 50px;
+      height: 50px;
       border-radius: 10px;
       box-shadow: 20px 15px 40px -12px #4d5a7a;
     }
@@ -62,8 +62,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 42px;
-  height: 42px;
+  width:35px;
+  height: 35px;
   background: $purple;
   border-radius: 12px;
   color: white;
@@ -103,5 +103,5 @@
 
 .volume-icon {
   color: $light-text;
-  font-size: 25px;
+  font-size: 20px;
 }

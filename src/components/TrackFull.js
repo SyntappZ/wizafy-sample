@@ -70,7 +70,7 @@ const TrackFull = ({ track, updateFavorite }) => {
 
   const trackTitle = arr.length > 4 ? arr.slice(0, 4).join(" ") + "..." : title;
   const iconStyle = {
-    fontSize: "30px",
+    fontSize: "25px",
     color: preview ? "#333" : "#aaa"
   };
  

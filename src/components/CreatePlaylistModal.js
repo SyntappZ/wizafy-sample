@@ -2,7 +2,7 @@ import React from "react";
 import { MdClose } from "react-icons/md";
 import { GoCloudUpload } from "react-icons/go";
 
-const CreatePlaylist = ({ closeModal }) => {
+const CreatePlaylistModal = ({ closeModal }) => {
   return (
     <div className="create-playlist-modal">
       <div className="modal">
@@ -31,7 +31,7 @@ const CreatePlaylist = ({ closeModal }) => {
             </div>
             <label className="label">description</label>
             <div className="description-box">
-              <textarea placeholder="Describe your playlist..." maxlength="30"></textarea>
+              <textarea placeholder="Describe your playlist..." maxLength="30"></textarea>
             </div>
           </div>
         </div>
@@ -45,4 +45,4 @@ const CreatePlaylist = ({ closeModal }) => {
   );
 };
 
-export default CreatePlaylist;
+export default CreatePlaylistModal

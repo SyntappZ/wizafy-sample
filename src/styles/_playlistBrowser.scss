@@ -5,10 +5,10 @@
   display: flex;
 
   .left {
-    flex: 1 3 500px;
+    flex: 4 3;
   }
   .right {
-    flex: 7 1 500px;
+    flex: 8 1;
     position: relative;
   }
 }
@@ -47,7 +47,7 @@
   align-items: center;
   height: 100px;
   h2 {
-    font-size: calc(18px + .4vw);
+    font-size: calc(14px + .4vw);
     text-transform: capitalize;
     letter-spacing: 1px;  
   }

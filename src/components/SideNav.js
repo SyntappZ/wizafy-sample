@@ -6,7 +6,7 @@ import { GiRegeneration, GiCubes } from "react-icons/gi";
 import { FiSettings } from "react-icons/fi";
 import { PlaylistStore } from "../context/ContextProvider";
 import { Link, useLocation } from "react-router-dom";
-import CreatePlaylist from './CreatePlaylist'
+import CreatePlaylist from './CreatePlaylistModal'
 
 const SideNav = () => {
   const contextStore = useContext(PlaylistStore);
@@ -113,16 +113,16 @@ const LinkContainer = ({ title, icon, link, page, accessToken, openModal }) => {
           className={accessToken ? "link" : "link disabled-link"}
         >
           {icon}
-          <h4>{title}</h4>
+          <h5>{title}</h5>
         </Link>
       ) : (
-        <Link
+        <div
         onClick={openModal}
           className={accessToken ? "link" : "link disabled-link"}
         >
           {icon}
-          <h4>{title}</h4>
-        </Link>
+          <h5>{title}</h5>
+        </div>
       )}
     </>
   );

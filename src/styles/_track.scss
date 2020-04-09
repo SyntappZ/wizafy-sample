@@ -1,8 +1,8 @@
 @import "./colors";
-$size:  calc(80px + 6vw);
+$size:  calc(40px + 6vw);
 .track {
   width: $size;
-  height: 300px;
+  min-height: 230px;
   margin: 10px 20px;
   .image-wrap {
     width: $size;

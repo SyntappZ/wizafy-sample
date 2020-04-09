@@ -10,13 +10,13 @@
 
     .icon {
         color: #cecece;
-        font-size: 25px;
+        font-size: 20px;
     }
 }
 
 .search-wrap {
     background: white;
-    padding: 15px 25px;
+    padding: 8px 20px;
     border-radius: 50px;
     border:solid 1px $light-grey;
     display: flex;
@@ -27,7 +27,6 @@
         outline: none;
         background: white;
         color: $light-text;
-        font-size: 20px;
         font-weight: 400;
         padding-left: 15px;
         &::placeholder {
