@@ -11,12 +11,12 @@ const CreatePlaylistModal = ({ closeModal }) => {
           <h2>Create Playlist</h2>
           <MdClose
             onClick={closeModal}
-            style={{ fontSize: 30, cursor: "pointer" }}
+            style={{ fontSize: 20, cursor: "pointer" }}
           />
         </div>
         <div className="wrap">
           <div className="upload-image">
-            <GoCloudUpload style={{ fontSize: 40 }} />
+            <GoCloudUpload style={{ fontSize: 30 }} />
 
             <h3>Upload image</h3>
           </div>
