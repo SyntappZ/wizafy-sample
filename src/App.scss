@@ -13,7 +13,7 @@
 @import "./styles/tracksPage";
 @import "./styles/details";
 @import "./styles/album";
-
+@import "./styles/generator";
 @import "./styles/playlistBrowser";
 @import "./styles/menu";
 @import "./styles/trackFull";
@@ -37,6 +37,28 @@
 
 .wrap  {
   padding: 0 50px;
+}
+
+.btn {
+  width: 140px;
+  height: 50px;
+  background: $purple;
+  color: white;
+  border-radius: 7px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    color: white;
+    padding-left: 20px;
+  }
+  .icon {
+    color: white;
+  }
 }
 .section-container {
   display: flex;

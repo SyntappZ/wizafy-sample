@@ -23,9 +23,11 @@ const cleanState = {
   playlistMessage: "",
   featuredPlaylists: [],
   categories: [],
+  generatedTracks: [],
   selectedCategory: {},
   selectedPlaylist: {},
   page: null,
+  topFiveIds: [],
   audio: new Audio(),
   isPlaying: false,
   isPaused: false
@@ -135,10 +137,12 @@ const userData = (state, action) => {
     }
     case "topTracks": {
       const tracks = convertTracks(action.payload.items);
-
+      const topFive = tracks.slice(0, 5).map(track => track.id)
+      
       return {
         ...state,
         myTopTracks: [...state.myTopTracks, ...tracks],
+        topFiveIds: topFive,
         moreTopTracks: action.payload.next
       };
     }
@@ -151,6 +155,13 @@ const userData = (state, action) => {
         favorites: [...state.favorites, ...tracks],
         moreFavorites: action.payload.next
       };
+    }
+
+    case "setGeneratedTracks" : {
+      return {
+        ...state,
+        generatedTracks: action.payload
+      }
     }
     case "setCatagories": {
       const categoryList = action.payload

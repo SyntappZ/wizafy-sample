@@ -25,29 +25,11 @@
       color: $pink;
     }
 
-    .btn {
-      width: 140px;
-      height: 50px;
-      background: $purple;
-      color: white;
-      border-radius: 7px;
-      text-transform: uppercase;
-      cursor: pointer;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      p {
-        color: white;
-        padding-left: 20px;
-      }
-      .icon {
-        color: white;
-      }
-    }
+   
   }
 }
+
+
 
 .home {
   height: 100%;

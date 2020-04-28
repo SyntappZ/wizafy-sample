@@ -75,6 +75,21 @@ const ContextProvider = ({ children }) => {
     });
   };
 
+
+  const getRecomendations = async (attributes, limit) => {
+    return new Promise((resolve, reject) => {
+      const url = 'https://api.spotify.com/v1/recommendations?'
+      fetchData(url + attributes + `&limit=${limit}`).then(data => {
+     
+        resolve(data)
+        // const tracks = []
+      //  dispatch({type: 'setGeneratedTracks', payload: tracks})
+      })
+      .catch(err => reject(err))
+    })
+  
+  }
+
   const loadMoreTracks = (url, type) => {
     fetchData(url).then(data => {
       favoriteCheck(data.items).then(tracks => {
@@ -150,7 +165,8 @@ const ContextProvider = ({ children }) => {
     loadMoreTracks: loadMoreTracks,
     fetchData: fetchData,
     sendData: sendData,
-    favoriteCheck: favoriteCheck
+    favoriteCheck: favoriteCheck,
+    getRecomendations: getRecomendations
   };
 
   return (
