@@ -1,3 +1,5 @@
+import defaultImage from "../images/no-image.png";
+
 const durationConverter = (millis) => {
   var minutes = Math.floor(millis / 60000);
   var seconds = ((millis % 60000) / 1000).toFixed(0);
@@ -9,7 +11,12 @@ const convertTracks = (data, image) => {
 
   data.forEach((track) => {
     track = track.track || track;
-    const trackImage = track.album ? track.album.images[1].url : image;
+
+    const trackImage = track.album
+      ? track.album.images.length > 0
+        ? track.album.images[1].url
+        : defaultImage
+      : image;
 
     if (track.id) {
       tracks.push({

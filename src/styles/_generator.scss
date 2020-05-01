@@ -1,35 +1,105 @@
 @import "./colors";
 
 .gen-title {
-    font-size: 40px;
-    letter-spacing: 1px;
-    text-transform: capitalize;
-    text-align: center;
-    padding-top: 50px;
+  font-size: 40px;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  text-align: center;
+  padding-top: 50px;
 }
 .basic {
-    padding-top: 50px;
+  padding-top: 50px;
 
-    h1 {
-        font-size: 18px;
-        font-weight: 100;
-        color: $light-text;
+  h1 {
+    font-size: 18px;
+    font-weight: 100;
+    color: $light-text;
+  }
+
+  .number-wrap {
+    display: flex;
+    width: 400px;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+
+    input {
+      width: 150px;
+      height: 40px;
+      border-radius: 5px;
+      outline: none;
+      border: solid 1px rgb(180, 180, 180);
+      padding: 0 5px;
     }
+  }
+}
 
-    .number-wrap {
-        display: flex;
-        width: 400px;
-        height: 100px;
-        align-items: center;
-        justify-content: space-between;
+.advanced {
+  min-height: 50px;
+  background: white;
+  margin-top: 100px;
+  border-radius: 15px;
 
-        input {
-            width: 150px;
-            height: 40px;
-            border-radius: 5px;
-            outline: none;
-            border: solid 1px rgb(180, 180, 180);
-            padding: 0 5px;
-        }
+  h1 {
+    font-size: 18px;
+    font-weight: 100;
+    color: $light-text;
+    text-transform: capitalize;
+  }
+  
+
+  .top {
+    display: flex;
+    height: 50px;
+    padding: 0 50px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .show {
+    cursor: pointer;
+    display: flex;
+    width: 100px;
+    justify-content: flex-end;
+    align-items: center;
+
+    h2 {
+      padding-right: 5px;
+      font-size: 18px;
+      font-weight: 500;
+      color: $light-text;
+      text-transform: capitalize;
     }
+  }
+}
+
+.generator-form {
+  min-height: 500px;
+  margin-top: 50px;
+}
+
+.genres {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.genre {
+  padding: 5px 10px;
+  margin: 5px;
+  border: solid 1px #b4b4b4;
+  border-radius: 50px;
+  color: #b4b4b4;
+  cursor: pointer;
+  text-transform: capitalize;
+
+}
+
+.choose-genre {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
 }

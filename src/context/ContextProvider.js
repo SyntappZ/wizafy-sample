@@ -150,7 +150,7 @@ const ContextProvider = ({ children }) => {
       });
     });
 
-    fetchData("https://api.spotify.com/v1/me/top/tracks").then(data => {
+    fetchData("https://api.spotify.com/v1/me/top/tracks?limit=40").then(data => {
       favoriteCheck(data.items).then(tracks => {
         data.items = tracks;
         dispatch({ type: "topTracks", payload: data });

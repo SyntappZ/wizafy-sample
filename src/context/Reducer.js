@@ -1,7 +1,6 @@
 import { useReducer } from "react";
 import { convertTracks, convertDescription } from "../data/trackConverter.js";
-import noImage from '../images/no-image.png'
-
+import noImage from "../images/no-image.png";
 
 const cleanState = {
   accessToken: "",
@@ -30,7 +29,7 @@ const cleanState = {
   topFiveIds: [],
   audio: new Audio(),
   isPlaying: false,
-  isPaused: false
+  isPaused: false,
 };
 
 const userData = (state, action) => {
@@ -41,65 +40,63 @@ const userData = (state, action) => {
         username: action.payload.display_name,
         email: action.payload.email,
         profileImage: action.payload.images ? action.payload.images[0].url : "",
-        isPremium: action.payload.product === "premium" ? true : false
+        isPremium: action.payload.product === "premium" ? true : false,
       };
     }
     case "setAccessToken": {
       return {
         ...state,
-        accessToken: action.payload
+        accessToken: action.payload,
       };
     }
 
     case "setPage": {
       return {
         ...state,
-        page: action.payload
+        page: action.payload,
       };
     }
 
     case "setPlaylists": {
       const myPlaylists = [];
-      const savedPlaylists = []
-     action.payload.items.forEach(playlist => {
-        if(playlist.owner.display_name === state.username) {
-          
-          myPlaylists.push( {
+      const savedPlaylists = [];
+      action.payload.items.forEach((playlist) => {
+        if (playlist.owner.display_name === state.username) {
+          myPlaylists.push({
             id: playlist.id,
             title: playlist.name,
             description: convertDescription(playlist.description),
-            image: playlist.images.length > 0 ? playlist.images[0].url : noImage,
+            image:
+              playlist.images.length > 0 ? playlist.images[0].url : noImage,
             uri: playlist.uri,
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
-            owner: playlist.owner.display_name
-          })
-        }else{
+            owner: playlist.owner.display_name,
+          });
+        } else {
           savedPlaylists.push({
             id: playlist.id,
             title: playlist.name,
             description: convertDescription(playlist.description),
-            image: playlist.images.length > 0 ? playlist.images[0].url : noImage,
+            image:
+              playlist.images.length > 0 ? playlist.images[0].url : noImage,
             uri: playlist.uri,
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
-            owner: playlist.owner.display_name
-          })
+            owner: playlist.owner.display_name,
+          });
         }
-        
       });
 
-      
       return {
         ...state,
         myPlaylists: [...state.myPlaylists, ...myPlaylists],
         savedPlaylists: [...state.savedPlaylists, ...savedPlaylists],
-        morePlaylistsUrl: action.payload.next
+        morePlaylistsUrl: action.payload.next,
       };
     }
     case "setNewReleases": {
-      const albums = action.payload.albums.items.map(album => {
-       
+      const albums = action.payload.albums.items.map((album) => {
         return {
           id: album.id,
           title: album.name,
@@ -107,17 +104,17 @@ const userData = (state, action) => {
           image: album.images[1].url,
           uri: album.uri,
           tracks: album.href,
-          tracksAmount: album.total_tracks
+          tracksAmount: album.total_tracks,
         };
       });
       return {
         ...state,
         newReleaseAlbums: [...state.newReleaseAlbums, ...albums],
-        moreNewAlbums: action.payload.albums.next
+        moreNewAlbums: action.payload.albums.next,
       };
     }
     case "setFeaturedPlaylists": {
-      const playlists = action.payload.playlists.items.map(playlist => {
+      const playlists = action.payload.playlists.items.map((playlist) => {
         return {
           id: playlist.id,
           title: playlist.name,
@@ -126,78 +123,81 @@ const userData = (state, action) => {
           uri: playlist.uri,
           tracks: playlist.tracks.href,
           tracksAmount: playlist.tracks.total,
-          owner: playlist.owner.display_name
+          owner: playlist.owner.display_name,
         };
       });
       return {
         ...state,
         playlistMessage: action.payload.message,
-        featuredPlaylists: [...state.featuredPlaylists, ...playlists]
+        featuredPlaylists: [...state.featuredPlaylists, ...playlists],
       };
     }
     case "topTracks": {
       const tracks = convertTracks(action.payload.items);
-      const topFive = tracks.slice(0, 5).map(track => track.id)
+      const rand = (n) => Math.floor(Math.random() * n);
+
+      let len = tracks.length;
+      const topFive = Array(5)
+        .fill(len)
+        .map((num) => {
+          return tracks[rand(num)].id
+        });
       
       return {
         ...state,
         myTopTracks: [...state.myTopTracks, ...tracks],
         topFiveIds: topFive,
-        moreTopTracks: action.payload.next
+        moreTopTracks: action.payload.next,
       };
     }
     case "favorites": {
       const tracks = convertTracks(action.payload.items);
-      
-     
+
       return {
         ...state,
         favorites: [...state.favorites, ...tracks],
-        moreFavorites: action.payload.next
+        moreFavorites: action.payload.next,
       };
     }
 
-    case "setGeneratedTracks" : {
+    case "setGeneratedTracks": {
       return {
         ...state,
-        generatedTracks: action.payload
-      }
+        generatedTracks: action.payload,
+      };
     }
     case "setCatagories": {
-      const categoryList = action.payload
+      const categoryList = action.payload;
       return {
         ...state,
-        categories: categoryList
+        categories: categoryList,
       };
     }
 
     case "setSelectedPlaylist": {
       return {
         ...state,
-        selectedPlaylist: action.payload
+        selectedPlaylist: action.payload,
       };
     }
     case "setSelectedCategory": {
       return {
         ...state,
-        selectedCategory: action.payload
+        selectedCategory: action.payload,
       };
     }
     case "loadCurrentTrack": {
-      
-   
       return {
         ...state,
         currentTrack: action.payload,
-      
       };
     }
     case "audioTracker": {
       return {
         ...state,
         isPlaying: action.payload.isPlaying,
-        isPaused: action.payload.isPaused
-      }
+        isPaused: action.payload.isPaused,
+      };
     }
     case "logout": {
       return cleanState;

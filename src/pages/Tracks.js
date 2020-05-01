@@ -11,6 +11,7 @@ const Tracks = () => {
   const { state, fetchData } = contextStore;
   const { image, title, tracks, description } = state.selectedPlaylist;
   const [next, setNext] = useState("");
+ 
 
   useEffect(() => {
     fetchData(tracks + "?limit=50", "GET").then((data) => {
@@ -29,6 +30,7 @@ const Tracks = () => {
       <h1 className="title" style={{ marginTop: "40px" }}>
         {title} Tracks
       </h1>
+      
 
       <Tracklist tracklist={playlistTracks} next={next} />
     </div>
