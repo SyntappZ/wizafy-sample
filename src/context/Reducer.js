@@ -156,11 +156,12 @@ const userData = (state, action) => {
       };
     }
     case "favorites": {
+      const refresh = action.payload.refresh
       const tracks = convertTracks(action.payload.items);
 
       return {
         ...state,
-        favorites: [...state.favorites, ...tracks],
+        favorites: refresh ? tracks : [...state.favorites, ...tracks],
         moreFavorites: action.payload.next,
       };
     }

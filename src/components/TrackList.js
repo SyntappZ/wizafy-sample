@@ -15,14 +15,29 @@ const Tracklist = ({
   const contextStore = useContext(PlaylistStore);
   const { favoriteCheck, fetchData, dispatch, trackConverter } = contextStore;
   // let renderTracks = favorites ? tracklist : tracks;
-  useEffect(() => {
-      check(tracklist); 
+  useEffect(() => { 
+    check(tracklist)
+    check(tracks)  
+    
   }, [tracklist, id]);
 
-  const check = async (tracks) => {
-    const data = await favoriteCheck(tracks);
-    setTracks(data);
+  const check = async (tracklist) => {
+    if(tracklist.length < 1) {
+      return
+    }
+    const fifty = tracklist.splice(0, 50) 
+
+
+    const data = await favoriteCheck(fifty);
+    setTracks([...tracks, ...data]);
+    return check(tracklist)
+    
   };
+
+  // const storeTracks = async () => {
+  //   const data = await check(tracklist); 
+    
+  // }
 
   // useEffect(() => {
   //  if(reverse !== undefined) {
@@ -33,18 +48,23 @@ const Tracklist = ({
 
   // }, [reverse]);
 
-  const loadMoreTracks = async () => {
-    fetchData(next).then((data) => {
-      updateNext(data.next);
-      const convert = convertTracks(data.items);
-      favoriteCheck(convert).then((newTracks) => {
-        setTracks([...tracks, ...newTracks]);
-      });
-    });
-  };
+  // const loadMoreTracks = async () => {
+  //   fetchData(next).then((data) => {
+  //     updateNext(data.next);
+  //     const convert = convertTracks(data.items);
+  //     favoriteCheck(convert).then((newTracks) => {
+  //       // setTracks([...tracks, ...newTracks]);
+  //     });
+  //   });
+  // };
 
-  const updateFavorite = (id, track) => {
-    setId(id);
+  
+
+  const updateFavorite = (nextId) => {
+    if(nextId === id) {
+      nextId = nextId + Math.floor(Math.random() + 1000).toString()
+    }
+    setId(nextId);
   };
 
   return (
@@ -58,7 +78,7 @@ const Tracklist = ({
       {next ? (
         <div
           className="track-list-more"
-          onClick={favorites ? loadMore : loadMoreTracks}
+          onClick={loadMore}
         >
           <IoMdCloudDownload className="cloud" />
           <h3>load more</h3>

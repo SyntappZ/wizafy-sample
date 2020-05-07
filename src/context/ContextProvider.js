@@ -30,11 +30,29 @@ const ContextProvider = ({ children }) => {
     });
   };
 
+  const addFavorites = (url, method) => {
+    return new Promise((resolve, reject) => {
+      fetch(url, {
+        method: method,
+        headers: {
+          Authorization: "Bearer " + accessToken,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          refreshData('favorites')
+          resolve(res)
+        })
+       
+        .catch((err) => reject(err));
+    });
+  };
+
   const sendData = (url, method, body) => {
     return new Promise((resolve, reject) => {
       fetch(url, {
         method: method,
-        body: JSON.stringify(body),
+        body: body ? JSON.stringify(body) : '',
         headers: {
           Authorization: "Bearer " + accessToken,
           "Content-Type": "application/json",
@@ -50,6 +68,7 @@ const ContextProvider = ({ children }) => {
 
   const favoriteCheck = (list) => {
     return new Promise((resolve, reject) => {
+      
       if (list.length > 0) {
         const ids = list.map((track) => {
           track = track.track || track;
@@ -150,6 +169,7 @@ const ContextProvider = ({ children }) => {
     fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then((data) => {
       favoriteCheck(data.items).then((tracks) => {
         data.items = tracks;
+        data.refresh = false
         dispatch({ type: "favorites", payload: data });
       });
     });
@@ -168,13 +188,22 @@ const ContextProvider = ({ children }) => {
   const refreshData = (type) => {
     switch (type) {
       case "playlists": {
-        console.log('worked')
         fetchData("https://api.spotify.com/v1/me/playlists?limit=50").then(
           (data) => {
             data.refresh = true
             dispatch({ type: "setPlaylists", payload: data });
           }
         );
+      }
+      case "favorites": {
+        fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then((data) => {
+          
+          favoriteCheck(data.items).then((tracks) => {
+            data.items = tracks;
+            data.refresh = true
+            dispatch({ type: "favorites", payload: data });
+          });
+        });
       }
     }
   };
@@ -188,6 +217,7 @@ const ContextProvider = ({ children }) => {
     favoriteCheck: favoriteCheck,
     getRecomendations: getRecomendations,
     refreshData: refreshData,
+    addFavorites: addFavorites
   };
 
   return (
