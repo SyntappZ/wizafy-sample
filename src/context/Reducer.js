@@ -6,6 +6,7 @@ const cleanState = {
   accessToken: "",
   isPremium: false,
   username: "",
+  userId: '',
   email: "",
   profileImage: "",
   myPlaylists: [],
@@ -30,15 +31,18 @@ const cleanState = {
   audio: new Audio(),
   isPlaying: false,
   isPaused: false,
+  generatedPlaylist: []
 };
 
 const userData = (state, action) => {
   switch (action.type) {
     case "setProfileData": {
+      
       return {
         ...state,
         username: action.payload.display_name,
         email: action.payload.email,
+        userId: action.payload.id,
         profileImage: action.payload.images ? action.payload.images[0].url : "",
         isPremium: action.payload.product === "premium" ? true : false,
       };
@@ -60,6 +64,7 @@ const userData = (state, action) => {
     case "setPlaylists": {
       const myPlaylists = [];
       const savedPlaylists = [];
+      const refresh = action.payload.refresh
       action.payload.items.forEach((playlist) => {
         if (playlist.owner.display_name === state.username) {
           myPlaylists.push({
@@ -90,8 +95,8 @@ const userData = (state, action) => {
 
       return {
         ...state,
-        myPlaylists: [...state.myPlaylists, ...myPlaylists],
-        savedPlaylists: [...state.savedPlaylists, ...savedPlaylists],
+        myPlaylists: refresh ? myPlaylists :  [...state.myPlaylists, ...myPlaylists],
+        savedPlaylists:  refresh ? savedPlaylists : [...state.savedPlaylists, ...savedPlaylists],
         morePlaylistsUrl: action.payload.next,
       };
     }
@@ -165,6 +170,14 @@ const userData = (state, action) => {
         ...state,
         generatedTracks: action.payload,
       };
+    }
+    case "setGeneratedPlaylist": {
+       const uris = action.payload ? action.payload.map(track => track.uri) : []
+    
+      return {
+        ...state,
+        generatedPlaylist: uris 
+      }
     }
     case "setCatagories": {
       const categoryList = action.payload;

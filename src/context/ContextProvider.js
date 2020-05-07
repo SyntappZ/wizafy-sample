@@ -14,41 +14,44 @@ const ContextProvider = ({ children }) => {
     }
   }, [accessToken]);
 
-  const fetchData = url => {
+  const fetchData = (url) => {
     return new Promise((resolve, reject) => {
       fetch(url, {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + accessToken
-        }
+          Authorization: "Bearer " + accessToken,
+        },
       })
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           resolve(data);
         })
-        .catch(err => reject(err));
+        .catch((err) => reject(err));
     });
   };
 
-  const sendData = (url, method) => {
+  const sendData = (url, method, body) => {
     return new Promise((resolve, reject) => {
       fetch(url, {
         method: method,
+        body: JSON.stringify(body),
         headers: {
-          Authorization: "Bearer " + accessToken
-        }
+          Authorization: "Bearer " + accessToken,
+          "Content-Type": "application/json",
+        },
       })
-        .then(() => {
-          resolve('data sent!');
+        .then((res) => res.json())
+        .then((data) => {
+          resolve(data);
         })
-        .catch(err => reject(err));
+        .catch((err) => reject(err));
     });
   };
 
-  const favoriteCheck = list => {
+  const favoriteCheck = (list) => {
     return new Promise((resolve, reject) => {
       if (list.length > 0) {
-        const ids = list.map(track => {
+        const ids = list.map((track) => {
           track = track.track || track;
           return track.id;
         });
@@ -57,7 +60,7 @@ const ContextProvider = ({ children }) => {
           `https://api.spotify.com/v1/me/tracks/contains?ids=${ids}`,
           "GET"
         )
-          .then(trackData => {
+          .then((trackData) => {
             const tracks = list.map((track, i) => {
               const year = track.added_at ? track.added_at.split("-")[0] : null;
               track = track.track || track;
@@ -65,34 +68,32 @@ const ContextProvider = ({ children }) => {
               return {
                 ...track,
                 favorite: trackData[i],
-                year: year
+                year: year,
               };
             });
             resolve(tracks);
           })
-          .catch(err => reject(err));
+          .catch((err) => reject(err));
       }
     });
   };
 
-
   const getRecomendations = async (attributes, limit) => {
     return new Promise((resolve, reject) => {
-      const url = 'https://api.spotify.com/v1/recommendations?'
-      fetchData(url + attributes + `&limit=${limit}`).then(data => {
-     
-        resolve(data)
-        // const tracks = []
-      //  dispatch({type: 'setGeneratedTracks', payload: tracks})
-      })
-      .catch(err => reject(err))
-    })
-  
-  }
+      const url = "https://api.spotify.com/v1/recommendations?";
+      fetchData(url + attributes + `&limit=${limit}`)
+        .then((data) => {
+          resolve(data);
+          // const tracks = []
+          //  dispatch({type: 'setGeneratedTracks', payload: tracks})
+        })
+        .catch((err) => reject(err));
+    });
+  };
 
   const loadMoreTracks = (url, type) => {
-    fetchData(url).then(data => {
-      favoriteCheck(data.items).then(tracks => {
+    fetchData(url).then((data) => {
+      favoriteCheck(data.items).then((tracks) => {
         data.items = tracks;
 
         dispatch({ type: type, payload: data });
@@ -101,25 +102,25 @@ const ContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    state.audio.onplaying = event => {
+    state.audio.onplaying = (event) => {
       const data = {
         isPlaying: true,
-        isPaused: false
+        isPaused: false,
       };
       dispatch({ type: "audioTracker", payload: data });
     };
 
-    state.audio.onpause = event => {
+    state.audio.onpause = (event) => {
       const data = {
         isPlaying: false,
-        isPaused: true
+        isPaused: true,
       };
       dispatch({ type: "audioTracker", payload: data });
     };
-    state.audio.onended = event => {
+    state.audio.onended = (event) => {
       const data = {
         isPlaying: false,
-        isPaused: false
+        isPaused: false,
       };
       dispatch({ type: "audioTracker", payload: data });
     };
@@ -128,35 +129,54 @@ const ContextProvider = ({ children }) => {
   const fetchStartupData = () => {
     dispatch({ type: "setCatagories", payload: categories });
 
-    fetchData("https://api.spotify.com/v1/me").then(data => {
+    fetchData("https://api.spotify.com/v1/me").then((data) => {
       dispatch({ type: "setProfileData", payload: data });
     });
-    fetchData("https://api.spotify.com/v1/me/playlists?limit=50").then(data => {
-      dispatch({ type: "setPlaylists", payload: data });
-    });
-    fetchData("https://api.spotify.com/v1/browse/new-releases").then(data => {
+    fetchData("https://api.spotify.com/v1/me/playlists?limit=50").then(
+      (data) => {
+        data.refresh = false
+        dispatch({ type: "setPlaylists", payload: data });
+      }
+    );
+    fetchData("https://api.spotify.com/v1/browse/new-releases").then((data) => {
       dispatch({ type: "setNewReleases", payload: data });
     });
 
     fetchData("https://api.spotify.com/v1/browse/featured-playlists").then(
-      data => {
+      (data) => {
         dispatch({ type: "setFeaturedPlaylists", payload: data });
       }
     );
-    fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then(data => {
-      favoriteCheck(data.items).then(tracks => {
+    fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then((data) => {
+      favoriteCheck(data.items).then((tracks) => {
         data.items = tracks;
         dispatch({ type: "favorites", payload: data });
       });
     });
 
-    fetchData("https://api.spotify.com/v1/me/top/tracks?limit=40").then(data => {
-      favoriteCheck(data.items).then(tracks => {
-        data.items = tracks;
-        dispatch({ type: "topTracks", payload: data });
-        dispatch({ type: "loadCurrentTrack", payload: data.items[0] });
-      });
-    });
+    fetchData("https://api.spotify.com/v1/me/top/tracks?limit=40").then(
+      (data) => {
+        favoriteCheck(data.items).then((tracks) => {
+          data.items = tracks;
+          dispatch({ type: "topTracks", payload: data });
+          dispatch({ type: "loadCurrentTrack", payload: data.items[0] });
+        });
+      }
+    );
+  };
+
+  const refreshData = (type) => {
+    switch (type) {
+      case "playlists": {
+        console.log('worked')
+        fetchData("https://api.spotify.com/v1/me/playlists?limit=50").then(
+          (data) => {
+            data.refresh = true
+            dispatch({ type: "setPlaylists", payload: data });
+          }
+        );
+      }
+    }
   };
 
   const data = {
@@ -166,7 +186,8 @@ const ContextProvider = ({ children }) => {
     fetchData: fetchData,
     sendData: sendData,
     favoriteCheck: favoriteCheck,
-    getRecomendations: getRecomendations
+    getRecomendations: getRecomendations,
+    refreshData: refreshData,
   };
 
   return (

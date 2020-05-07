@@ -12,8 +12,8 @@ $width: 100vw;
   z-index: 20;
 
   .modal {
-    width: 45%;
-    height: 50%;
+    
+    
     background: white;
     border-radius: 15px;
     display: flex;
@@ -50,7 +50,8 @@ $width: 100vw;
   }
 
   .upload-image {
-    flex: 3;
+    width: 600px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,7 +65,7 @@ $width: 100vw;
     }
   }
   .input-wrap {
-    flex: 4;
+ 
     padding: 0 20px;
     display: flex;
     flex-direction: column;
@@ -84,14 +85,13 @@ $width: 100vw;
       border-radius: 5px;
 
       input {
-        
         letter-spacing: 1px;
       }
     }
 
     .description-box {
-      width: 100%;
-      flex: 4;
+     height: 150px;
+     
 
       textarea {
         width: 100%;
@@ -112,4 +112,12 @@ $width: 100vw;
       }
     }
   }
+}
+
+.tracks-added {
+  color: $light-text;
+  letter-spacing: 1px;
+  padding-top: 20px;
+  font-size: 18px;
+  text-align: center;
 }

@@ -9,8 +9,10 @@
 }
 .basic {
   padding-top: 50px;
+  display: flex;
+  justify-content: space-between;
 
-  h1 {
+  h1, p {
     font-size: 18px;
     font-weight: 100;
     color: $light-text;
@@ -32,6 +34,19 @@
       padding: 0 5px;
     }
   }
+
+  .save-playlist {
+    display: flex;
+    height: 50px;
+    padding: 0 20px;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 8px;
+    background: rgb(243, 243, 243);
+    p {
+      padding-right: 10px;
+    }
+  }
 }
 
 .advanced {
@@ -39,7 +54,7 @@
   background: white;
   margin-top: 100px;
   border-radius: 15px;
-
+  
   h1 {
     font-size: 18px;
     font-weight: 100;
@@ -102,4 +117,22 @@
     justify-content: space-between;
     align-items: center;
     
+}
+
+.sliders {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 50px;
+  justify-content: center;
+}
+
+.tuneable {
+  width: 300px;
+  margin: 20px;
+  p {
+    font-size: 18px;
+    font-weight: 100;
+    color: $light-text;
+    text-transform: capitalize;
+  }
 }

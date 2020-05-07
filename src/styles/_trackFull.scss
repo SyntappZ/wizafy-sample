@@ -68,7 +68,18 @@
     justify-content: center;
     align-items: center;
   }
+
+  .generator-wrap {
+    height: 100%;
+    padding: 0 30px 0 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
+
+
 .more-menu {
   height: 100%;
   position: relative;

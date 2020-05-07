@@ -4,6 +4,8 @@ import Lottie from "react-lottie";
 import heart from "../images/heart.json";
 import visualizer from "../images/sound-visualizer.json";
 import { MdMoreHoriz, MdPause, MdPlayArrow } from "react-icons/md";
+import { GiRegeneration } from "react-icons/gi";
+
 import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
 import Menu from './Menu'
@@ -122,6 +124,9 @@ const TrackFull = ({ track, updateFavorite }) => {
             width={200}
             height={150}
           />
+        </div>
+        <div className='generator-wrap'>
+          <GiRegeneration style={{fontSize: '20px'}} />
         </div>
         <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}> 
         <MdMoreHoriz className="more-icon" />

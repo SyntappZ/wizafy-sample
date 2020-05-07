@@ -3,20 +3,34 @@ import { PlaylistStore } from "../context/ContextProvider";
 import { genres } from "../data/genres.js";
 import { convertTracks } from "../data/trackConverter.js";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { MdPlaylistAdd } from "react-icons/md";
+import Slider from "rc-slider";
 import Tracklist from "../components/Tracklist";
+
 const Generator = () => {
   const contextStore = useContext(PlaylistStore);
   const [playlist, setPlaylist] = useState([]);
-  const { getRecomendations, state } = contextStore;
+  const [amountValue, setAmountValue] = useState("");
+  const { getRecomendations, state, dispatch } = contextStore;
   const { topFiveIds } = state;
-  const trackAmountRef = useRef(null);
+  const trackAmountRef = useRef("");
   const [showAdvanced, setAdvanced] = useState(false);
-  const generateTopPlayed = async () => {
-    const limit = trackAmountRef.current.valueAsNumber;
-    const url = `&seed_tracks=${topFiveIds}`;
 
-    const data = await getRecomendations(url, limit);
+  const savePlaylist = () => {
+    dispatch({ type: "setGeneratedPlaylist", payload: playlist });
+  };
+
+  const getAmountValue = () => {
+    const limit = trackAmountRef.current.valueAsNumber;
+    const val = limit > 100 ? "100" : limit.toString();
+    setAmountValue(val);
+  };
+
+  const generateTopPlayed = async () => {
+    const url = `&seed_tracks=${topFiveIds}`;
+    const data = await getRecomendations(url, amountValue);
     const tracks = convertTracks(data.tracks);
+
     setPlaylist(tracks);
   };
   // {playlist.length > 0 ? <div style={{margin: '20px auto'}} className="btn">save playlist</div> : null}
@@ -25,20 +39,31 @@ const Generator = () => {
       <h1 className="gen-title">generator</h1>
 
       <div className="basic">
-        <h1>Generate based on your top played tracks</h1>
-        <div className="number-wrap">
-          <input
-            ref={trackAmountRef}
-            type="number"
-            placeholder="track amount"
-            min="1"
-            default="1"
-            max="100"
-          />
-          <div onClick={generateTopPlayed} className="btn">
-            generate
+        <div>
+          <h1>Generate based on your top played tracks</h1>
+          <div className="number-wrap">
+            <input
+              ref={trackAmountRef}
+              type="number"
+              placeholder="track amount"
+              min="0"
+              default="0"
+              max="100"
+              onChange={getAmountValue}
+              value={amountValue}
+            />
+            <div onClick={generateTopPlayed} className="btn">
+              generate
+            </div>
           </div>
         </div>
+
+        {playlist.length > 0 ? (
+          <div className="save-playlist" onClick={savePlaylist}>
+            <p>save playlist</p>
+            <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
+          </div>
+        ) : null}
       </div>
       <div className="advanced">
         <div className="top">
@@ -56,6 +81,9 @@ const Generator = () => {
         {showAdvanced ? (
           <div className="generator-form">
             <Genres genres={genres} />
+            <div className="sliders">
+              <TuneableAttribute title={"testing"} />
+            </div>
           </div>
         ) : null}
       </div>
@@ -74,6 +102,24 @@ const Generator = () => {
 
 export default Generator;
 
+const TuneableAttribute = ({ title }) => {
+  return (
+    <div className="tuneable">
+      <p>{title}</p>
+      <Slider
+        handleStyle={{ borderColor: "#554fd8" }}
+        trackStyle={{ background: "#554fd8" }}
+        activeDotStyle={{ borderColor: "#554fd8" }}
+        min={0}
+        defaultValue={0}
+        max={1.0}
+        marks={{ 0: 0, 0.2: 2, 0.4: 4, 0.6: 6, 0.8: 8, 1.0: 10 }}
+        step={null}
+      />
+    </div>
+  );
+};
+
 const Genre = ({ title, chosenGenres, arr }) => {
   const [chosen, setChosen] = useState(false);
   const purple = "#554fd8";
@@ -81,15 +127,14 @@ const Genre = ({ title, chosenGenres, arr }) => {
   const grey = "#b4b4b4";
 
   useEffect(() => {
-    if(arr.includes(title)) {
-      setChosen(true)
-    }else{
-      setChosen(false)
+    if (arr.includes(title)) {
+      setChosen(true);
+    } else {
+      setChosen(false);
     }
-  }, [arr])
+  }, [arr]);
 
   const selectGenre = () => {
-    
     chosenGenres(title);
   };
 
