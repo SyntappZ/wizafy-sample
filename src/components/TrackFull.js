@@ -8,6 +8,7 @@ import { GiRegeneration } from "react-icons/gi";
 
 import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
+
 import Menu from "./Menu";
 const TrackFull = ({ track, updateFavorite }) => {
   const contextStore = useContext(PlaylistStore);

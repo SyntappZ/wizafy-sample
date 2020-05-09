@@ -15,6 +15,14 @@ const Generator = () => {
   const { topFiveIds } = state;
   const trackAmountRef = useRef("");
   const [showAdvanced, setAdvanced] = useState(false);
+  const [attributes, setAttributes] = useState([
+    "acousticness",
+    'danceability',
+    'energy',
+    'instrumentalness',
+    'liveness',
+    'valence',
+  ])
 
   const savePlaylist = () => {
     dispatch({ type: "setGeneratedPlaylist", payload: playlist });
@@ -81,8 +89,10 @@ const Generator = () => {
         {showAdvanced ? (
           <div className="generator-form">
             <Genres genres={genres} />
+            <h1 style={{marginTop: '50px'}}>attributes</h1>
             <div className="sliders">
-              <TuneableAttribute title={"testing"} />
+            
+              {attributes.map(attribute => <TuneableAttribute title={attribute} />)}
             </div>
           </div>
         ) : null}
@@ -104,7 +114,7 @@ export default Generator;
 
 const TuneableAttribute = ({ title }) => {
   return (
-    <div className="tuneable">
+    <div className="attribute">
       <p>{title}</p>
       <Slider
         handleStyle={{ borderColor: "#554fd8" }}
@@ -181,7 +191,7 @@ const Genres = ({ genres }) => {
     }
   };
   return (
-    <div className="wrap">
+    <div>
       <div className="choose-genre">
         <h1>choose up to 5 genres</h1>
         <h1>chosen: {genresArray.length}/5</h1>

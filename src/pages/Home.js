@@ -29,6 +29,8 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
   );
 };
 
+
+
 const HomeContent = () => {
   const contextStore = useContext(PlaylistStore);
 
@@ -42,11 +44,13 @@ const HomeContent = () => {
     moreTopTracks
   } = state;
   const [years, setYears] = useState([]);
+  const [next, setNext] = useState('')
 
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
-
+  
   useEffect(() => {
+   
     const arr = ["All"];
 
     favorites.forEach(track => {
@@ -56,6 +60,15 @@ const HomeContent = () => {
     });
     setYears(arr);
   }, [favorites]);
+
+  
+  useEffect(() => {
+    setNext(moreFavorites)
+  }, [moreFavorites])
+
+  const updateNext = (newNext) => {
+    setNext(newNext)
+  }
 
   const changeCurrentYear = date => {
     setCurrentYear(date);
@@ -130,9 +143,9 @@ const HomeContent = () => {
             </div>
             <Tracklist
               tracklist={favoriteTracks}
-              loadMore={loadMoreFavs}
               favorites={true}
-              next={moreFavorites}
+              next={next}
+              updateNext={updateNext}
             />
           </div>
         </div>

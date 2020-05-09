@@ -17,20 +17,18 @@ const Tracklist = ({
   // let renderTracks = favorites ? tracklist : tracks;
   useEffect(() => { 
     check(tracklist)
-    check(tracks)  
+    console.log(next)
     
   }, [tracklist, id]);
 
   const check = async (tracklist) => {
-    if(tracklist.length < 1) {
-      return
-    }
-    const fifty = tracklist.splice(0, 50) 
+   
+  //  const fifty = tracklist.splice(0, 50) 
+ 
 
-
-    const data = await favoriteCheck(fifty);
-    setTracks([...tracks, ...data]);
-    return check(tracklist)
+    const data = await favoriteCheck(tracklist);
+    setTracks(data);
+    // return check(tracklist)
     
   };
 
@@ -48,21 +46,23 @@ const Tracklist = ({
 
   // }, [reverse]);
 
-  // const loadMoreTracks = async () => {
-  //   fetchData(next).then((data) => {
-  //     updateNext(data.next);
-  //     const convert = convertTracks(data.items);
-  //     favoriteCheck(convert).then((newTracks) => {
-  //       // setTracks([...tracks, ...newTracks]);
-  //     });
-  //   });
-  // };
+  const loadMoreTracks = async () => {
+    
+    fetchData(next).then((data) => {
+      console.log(data)
+      updateNext(data.next);
+      const convert = convertTracks(data.items);
+      favoriteCheck(convert).then((newTracks) => {
+        setTracks([...tracks, ...newTracks]);
+      });
+    });
+  };
 
   
 
   const updateFavorite = (nextId) => {
     if(nextId === id) {
-      nextId = nextId + Math.floor(Math.random() + 1000).toString()
+      nextId = nextId + Math.floor(Math.random() + 10000).toString()
     }
     setId(nextId);
   };
@@ -78,7 +78,7 @@ const Tracklist = ({
       {next ? (
         <div
           className="track-list-more"
-          onClick={loadMore}
+          onClick={loadMoreTracks}
         >
           <IoMdCloudDownload className="cloud" />
           <h3>load more</h3>

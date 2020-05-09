@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Lottie from "react-lottie";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import heartBeat from "../images/heartBeat.json";
 import { MdPlaylistAdd } from "react-icons/md";
+import { PlaylistStore } from "../context/ContextProvider";
 
 const Details = ({ image, title, description, category }) => {
   const history = useHistory();
-
+  const contextStore = useContext(PlaylistStore);
+  const { dispatch } = contextStore;
   const savePlaylist = () => {};
 
   const defaultOptions = {
@@ -18,12 +20,18 @@ const Details = ({ image, title, description, category }) => {
       preserveAspectRatio: "xMidYMid slice"
     }
   };
+
+  const goBack = () => {
+    dispatch({type: 'setSelectedPlaylist', payload: {}})
+    
+    history.goBack()
+  }
   return (
     <div className="details">
       <div className="top-bar">
         <FaRegArrowAltCircleLeft
           className="back-icon"
-          onClick={() => history.goBack()}
+          onClick={goBack}
         />
 
         <div
