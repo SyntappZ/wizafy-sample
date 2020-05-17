@@ -19,8 +19,8 @@ const Tracks = () => {
 
       setNext(data.next);
 
-      const tracklist = convertTracks(data, image);
-      setTracks(tracklist);
+      const list = convertTracks(data, image);
+      setTracks(list);
     });
   }, []);
 

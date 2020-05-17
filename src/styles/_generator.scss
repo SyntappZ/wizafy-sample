@@ -12,27 +12,11 @@
   display: flex;
   justify-content: space-between;
 
-  h1, p {
+  h1,
+  p {
     font-size: 18px;
     font-weight: 100;
     color: $light-text;
-  }
-
-  .number-wrap {
-    display: flex;
-    width: 400px;
-    height: 100px;
-    align-items: center;
-    justify-content: space-between;
-
-    input {
-      width: 150px;
-      height: 40px;
-      border-radius: 5px;
-      outline: none;
-      border: solid 1px rgb(180, 180, 180);
-      padding: 0 5px;
-    }
   }
 
   .save-playlist {
@@ -48,20 +32,34 @@
     }
   }
 }
+.number-wrap {
+  display: flex;
+  width: 400px;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
 
+  input {
+    width: 150px;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: solid 1px rgb(180, 180, 180);
+    padding: 0 5px;
+  }
+}
 .advanced {
   min-height: 50px;
   background: white;
   margin-top: 100px;
   border-radius: 15px;
-  
+
   h1 {
     font-size: 18px;
     font-weight: 100;
     color: $light-text;
     text-transform: capitalize;
   }
-  
 
   .top {
     display: flex;
@@ -91,14 +89,13 @@
 .generator-form {
   min-height: 500px;
   margin-top: 50px;
-  padding: 0 50px;
+  padding: 0 50px 50px 50px;
 }
 
 .genres {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-
 }
 
 .genre {
@@ -109,31 +106,56 @@
   color: #b4b4b4;
   cursor: pointer;
   text-transform: capitalize;
-
 }
 
 .choose-genre {
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .sliders {
   display: flex;
   flex-wrap: wrap;
-  
+
   justify-content: center;
 }
 
 .attribute {
   width: 300px;
   margin: 50px;
+  position: relative;
   p {
     font-size: 18px;
     font-weight: 100;
     color: $light-text;
     text-transform: capitalize;
+  }
+
+  .switch-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+  }
+
+  .info {
+    position: absolute;
+    left: 0;
+    bottom: 70px;
+    width: 100%;
+    min-height: 70px;
+    border-radius: 8px;
+    border: solid 1px rgb(202, 202, 202);
+    background: white;
+    padding: 20px;
+
+    p {
+      font-size: 14px;
+      color: rgb(97, 97, 97);
+      letter-spacing: 0;
+      line-height: 16px;
+    }
   }
 }
