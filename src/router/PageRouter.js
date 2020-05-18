@@ -5,7 +5,7 @@ import Settings from "../pages/Settings";
 import Home from "../pages/Home";
 import Explore from "../pages/Explore";
 import { PlaylistStore } from "../context/ContextProvider";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import Tracks from "../pages/Tracks";
 import CategoryPlaylists from "../pages/CategoryPlaylists";
 import queryString from "query-string";
@@ -47,11 +47,22 @@ const PageRouter = () => {
   const parsed = queryString.parse(window.location.search);
   const contextStore = useContext(PlaylistStore);
   const { dispatch } = contextStore;
-  const { accessToken, selectedCategory, selectedPlaylist } = contextStore.state;
+  const { accessToken, selectedCategory, selectedPlaylist, songToGenerate } = contextStore.state;
   const history = useHistory();
+  const location = useLocation()
+  
+  useEffect(() => {
+    if(location.pathname !== "/generator") {
+      dispatch({ type: "setSongToGenerate", payload: {} });
+    }
+  }, [location])
  
 
-
+  useEffect(() => {
+    if (Object.keys(songToGenerate).length > 0) {
+      history.push("/generator");
+    }
+  }, [songToGenerate]);
 
 
   useEffect(() => {

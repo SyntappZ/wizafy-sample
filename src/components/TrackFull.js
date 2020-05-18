@@ -28,7 +28,9 @@ const TrackFull = ({ track, updateFavorite }) => {
     });
   };
 
-  const addToGenerator = () => {};
+  const sendToGenerator = () => {
+    dispatch({ type: "setSongToGenerate", payload: track });
+  };
 
   const heartOptions = {
     loop: false,
@@ -65,8 +67,7 @@ const TrackFull = ({ track, updateFavorite }) => {
   const handleFavorite = async () => {
     const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
     const method = favorite ? "DELETE" : "PUT";
-     const action = await addFavorites(url, method);
-     
+    const action = await addFavorites(url, method);
 
     updateFavorite(id, track);
   };
@@ -130,7 +131,7 @@ const TrackFull = ({ track, updateFavorite }) => {
             height={150}
           />
         </div>
-        <div className="generator-wrap" onClick={addToGenerator}>
+        <div className="generator-wrap" onClick={sendToGenerator}>
           <GiRegeneration style={{ fontSize: "20px" }} />
         </div>
         <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}>

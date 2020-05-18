@@ -6,7 +6,7 @@ import heartBeat from "../images/heartBeat.json";
 import { MdPlaylistAdd } from "react-icons/md";
 import { PlaylistStore } from "../context/ContextProvider";
 
-const Details = ({ image, title, description, category }) => {
+const Details = ({ image, title, description, category, isGenerator }) => {
   const history = useHistory();
   const contextStore = useContext(PlaylistStore);
   const { dispatch } = contextStore;
@@ -17,31 +17,31 @@ const Details = ({ image, title, description, category }) => {
     autoplay: true,
     animationData: heartBeat,
     rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
 
   const goBack = () => {
-    dispatch({type: 'setSelectedPlaylist', payload: {}})
-    
-    history.goBack()
-  }
+    dispatch({ type: "setSelectedPlaylist", payload: {} });
+    dispatch({ type: "setSongToGenerate", payload: {} });
+
+    history.goBack();
+  };
+
   return (
     <div className="details">
       <div className="top-bar">
-        <FaRegArrowAltCircleLeft
-          className="back-icon"
-          onClick={goBack}
-        />
-
-        <div
-          className="title-wrap"
-          style={{ cursor: category ? "default" : "pointer" }}
-          onClick={category ? null : savePlaylist}
-        >
-          <h4>{title}</h4>
-          {category ? null : <MdPlaylistAdd className="icon" />}
-        </div>
+        <FaRegArrowAltCircleLeft className="back-icon" onClick={goBack} />
+        {isGenerator ? <h3>Generate from song</h3> : (
+          <div
+            className="title-wrap"
+            style={{ cursor: category ? "default" : "pointer" }}
+            onClick={category ? null : savePlaylist}
+          >
+            <h4>{title}</h4>
+            {category ? null : <MdPlaylistAdd className="icon" />}
+          </div>
+        )}
       </div>
 
       <div className="details-bar">
@@ -63,7 +63,8 @@ const Details = ({ image, title, description, category }) => {
         </div>
         <div className="right">
           <div className="text-wrap">
-            <h2>{category ? "Category" : "Playlist"}</h2>
+            {isGenerator ? null : <h2>{category ? "Category" : "Playlist"}</h2>}
+
             <h1>{title}</h1>
             <h3>{description ? description : `All of ${title}'s tracks`}</h3>
           </div>

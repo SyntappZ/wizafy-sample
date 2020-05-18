@@ -7,18 +7,20 @@ import { MdPlaylistAdd } from "react-icons/md";
 import Slider from "rc-slider";
 import Tracklist from "../components/Tracklist";
 import ToggleSwitch from "../components/ToggleSwitch";
-
+import Details from "../components/Details";
+import im from "../images/tempAlbum.jpg";
 const Generator = () => {
   const contextStore = useContext(PlaylistStore);
   const [playlist, setPlaylist] = useState([]);
   const [amountValue, setAmountValue] = useState("");
   const [advAmountValue, setAdvAmountValue] = useState("");
   const { getRecomendations, state, dispatch } = contextStore;
-  const { topFiveIds } = state;
+  const { topFiveIds, songToGenerate } = state;
   const trackAmountRef = useRef("");
   const advTrackAmountRef = useRef("");
   const [showAdvanced, setAdvanced] = useState(false);
   const [genresArray, setGenresArray] = useState([]);
+  const { title, image, id } = songToGenerate;
   const [attributes] = useState([
     {
       title: "acousticness",
@@ -90,6 +92,15 @@ const Generator = () => {
     attributes[attribute.id].value = attribute.value;
   };
 
+  const generateSingleSong = async () => {
+    const url = `&seed_tracks=${id}`;
+    const data = await getRecomendations(url, amountValue);
+    const tracks = convertTracks(data.tracks);
+
+    setPlaylist(tracks);
+    clearInput();
+  };
+
   const generateAdvanced = async () => {
     let convertedAttributes = "";
     attributes.forEach((attribute) => {
@@ -113,147 +124,212 @@ const Generator = () => {
     setAmountValue("");
     setAdvAmountValue("");
   };
- 
+
+  const isSingleSong = Object.keys(songToGenerate).length > 0 ? true : false;
+
+  useEffect(() => {
+    setPlaylist([]);
+  }, [isSingleSong, songToGenerate]);
+
   return (
     <div className="wrap">
-      <h1 className="gen-title">generator</h1>
-
-      <div className="basic">
-        <div>
-          <h1>Generate based on your top played tracks</h1>
-          <div className="number-wrap">
-            <input
-              ref={trackAmountRef}
-              type="number"
-              placeholder="track amount"
-              min="0"
-              default="0"
-              max="100"
-              onChange={getAmountValue}
-              value={amountValue}
-            />
-            <div
-              onClick={amountValue ? generateTopPlayed : null}
-              className="btn"
-            >
-              generate
+      {isSingleSong ? (
+        <div className="song-generator">
+          <Details
+            title={title}
+            image={image}
+            description={`Generate a playlist with song's like ${title}`}
+            isGenerator={true}
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <div className="number-wrap">
+              <input
+                ref={trackAmountRef}
+                type="number"
+                placeholder="track amount"
+                min="0"
+                default="0"
+                max="100"
+                onChange={getAmountValue}
+                value={amountValue}
+              />
+              <div
+                onClick={amountValue ? generateSingleSong : null}
+                className="btn"
+              >
+                generate
+              </div>
             </div>
-          </div>
-        </div>
 
-        {playlist.length > 0 ? (
-          <div className="save-playlist" onClick={savePlaylist}>
-            <p>save playlist</p>
-            <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
+            {playlist.length > 0 ? (
+              <div className="save-playlist" onClick={savePlaylist}>
+                <p>save playlist</p>
+                <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-      <div className="advanced">
-        <div className="top">
-          <h1>Advanced</h1>
-          <div className="show" onClick={() => setAdvanced(!showAdvanced)}>
-            <h2>{showAdvanced ? "hide" : "show"}</h2>
+          {playlist.length > 0 ? (
+            <div className="generated-tracks">
+              <Tracklist
+                tracklist={playlist}
+                loadMore={null}
+                favorites={false}
+                next={null}
+              />
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <>
+          <h1 className="gen-title">generator</h1>
+          <div className="basic">
+            <div>
+              <h1>Generate based on your top played tracks</h1>
+              <div className="number-wrap">
+                <input
+                  ref={trackAmountRef}
+                  type="number"
+                  placeholder="track amount"
+                  min="0"
+                  default="0"
+                  max="100"
+                  onChange={getAmountValue}
+                  value={amountValue}
+                />
+                <div
+                  onClick={amountValue ? generateTopPlayed : null}
+                  className="btn"
+                >
+                  generate
+                </div>
+              </div>
+            </div>
+
+            {playlist.length > 0 ? (
+              <div className="save-playlist" onClick={savePlaylist}>
+                <p>save playlist</p>
+                <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
+              </div>
+            ) : null}
+          </div>
+          <div className="advanced">
+            <div className="top">
+              <h1>Advanced</h1>
+              <div className="show" onClick={() => setAdvanced(!showAdvanced)}>
+                <h2>{showAdvanced ? "hide" : "show"}</h2>
+                {showAdvanced ? (
+                  <FiChevronUp style={{ fontSize: "24px", color: "#949494" }} />
+                ) : (
+                  <FiChevronDown
+                    style={{ fontSize: "24px", color: "#949494" }}
+                  />
+                )}
+              </div>
+            </div>
+
             {showAdvanced ? (
-              <FiChevronUp style={{ fontSize: "24px", color: "#949494" }} />
-            ) : (
-              <FiChevronDown style={{ fontSize: "24px", color: "#949494" }} />
-            )}
-          </div>
-        </div>
-
-        {showAdvanced ? (
-          <div className="generator-form">
-            <h1
-              style={{
-                fontSize: "25px",
-                color: "#333",
-                textAlign: "center",
-              }}
-            >
-              Genres
-            </h1>
-
-            <p
-              style={{
-                color: "#aaa",
-                textAlign: "center",
-              }}
-            >
-              Choose 1 or more genres to show attributes.
-            </p>
-
-            <Genres
-              genres={genres}
-              genresArray={genresArray}
-              setGenresArray={setGenresArray}
-            />
-            {genresArray.length > 0 ? (
-              <>
+              <div className="generator-form">
                 <h1
                   style={{
-                    marginTop: "50px",
                     fontSize: "25px",
                     color: "#333",
                     textAlign: "center",
                   }}
                 >
-                  attributes
+                  Genres
                 </h1>
+
                 <p
                   style={{
                     color: "#aaa",
                     textAlign: "center",
                   }}
                 >
-                  Hover over the title for information.
+                  Choose 1 or more genres to show attributes.
                 </p>
-                <div className="sliders">
-                  {attributes.map((attribute, i) => (
-                    <TuneableAttribute
-                      key={i}
-                      id={i}
-                      title={attribute.title}
-                      info={attribute.info}
-                      value={attribute.value}
-                      updateAttributeValue={updateAttributeValue}
-                    />
-                  ))}
-                </div>
-                <div
-                  className="number-wrap"
-                  style={{ margin: "30px auto 0 auto" }}
-                >
-                  <input
-                    ref={advTrackAmountRef}
-                    type="number"
-                    placeholder="track amount"
-                    min="0"
-                    default="0"
-                    max="100"
-                    onChange={getAdvAmountValue}
-                    value={advAmountValue}
-                  />
-                  <div
-                    onClick={advAmountValue ? generateAdvanced : null}
-                    className="btn"
-                  >
-                    generate
-                  </div>
-                </div>
-              </>
+
+                <Genres
+                  genres={genres}
+                  genresArray={genresArray}
+                  setGenresArray={setGenresArray}
+                />
+                {genresArray.length > 0 ? (
+                  <>
+                    <h1
+                      style={{
+                        marginTop: "50px",
+                        fontSize: "25px",
+                        color: "#333",
+                        textAlign: "center",
+                      }}
+                    >
+                      attributes
+                    </h1>
+                    <p
+                      style={{
+                        color: "#aaa",
+                        textAlign: "center",
+                      }}
+                    >
+                      Hover over the title for information.
+                    </p>
+                    <div className="sliders">
+                      {attributes.map((attribute, i) => (
+                        <TuneableAttribute
+                          key={i}
+                          id={i}
+                          title={attribute.title}
+                          info={attribute.info}
+                          value={attribute.value}
+                          updateAttributeValue={updateAttributeValue}
+                        />
+                      ))}
+                    </div>
+                    <div
+                      className="number-wrap"
+                      style={{ margin: "30px auto 0 auto" }}
+                    >
+                      <input
+                        ref={advTrackAmountRef}
+                        type="number"
+                        placeholder="track amount"
+                        min="0"
+                        default="0"
+                        max="100"
+                        onChange={getAdvAmountValue}
+                        value={advAmountValue}
+                      />
+                      <div
+                        onClick={advAmountValue ? generateAdvanced : null}
+                        className="btn"
+                      >
+                        generate
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+              </div>
             ) : null}
           </div>
-        ) : null}
-      </div>
 
-      <div className="generated-tracks">
-        <Tracklist
-          tracklist={playlist}
-          loadMore={null}
-          favorites={false}
-          next={null}
-        />
-      </div>
+          {playlist.length > 0 ? (
+            <div className="generated-tracks">
+              <Tracklist
+                tracklist={playlist}
+                loadMore={null}
+                favorites={false}
+                next={null}
+              />
+            </div>
+          ) : null}
+        </>
+      )}
     </div>
   );
 };
@@ -263,7 +339,7 @@ export default Generator;
 const TuneableAttribute = ({ title, info, id, updateAttributeValue }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [sliderValue, setSliderValue] = useState(null);
-  const [showInfo, setInfo] = useState(false)
+  const [showInfo, setInfo] = useState(false);
   const toggleHandler = () => setIsChecked(!isChecked);
 
   useEffect(() => {
@@ -279,9 +355,11 @@ const TuneableAttribute = ({ title, info, id, updateAttributeValue }) => {
   };
   return (
     <div className="attribute">
-     {showInfo ? (<div className="info">
-     <p>{info}</p>
-     </div>)  : null} 
+      {showInfo ? (
+        <div className="info">
+          <p>{info}</p>
+        </div>
+      ) : null}
       <div className="switch-wrap">
         <p
           style={{ cursor: "pointer" }}

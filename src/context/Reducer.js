@@ -31,7 +31,8 @@ const cleanState = {
   audio: new Audio(),
   isPlaying: false,
   isPaused: false,
-  generatedPlaylist: []
+  generatedPlaylist: [],
+  songToGenerate: {}
 };
 
 const userData = (state, action) => {
@@ -171,6 +172,14 @@ const userData = (state, action) => {
         ...state,
         generatedTracks: action.payload,
       };
+    }
+
+    case "setSongToGenerate" : {
+      const song = action.payload
+      return {
+        ...state,
+        songToGenerate: song
+      }
     }
     case "setGeneratedPlaylist": {
        const uris = action.payload ? action.payload.map(track => track.uri) : []

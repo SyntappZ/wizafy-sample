@@ -19,17 +19,19 @@
     color: $light-text;
   }
 
-  .save-playlist {
-    display: flex;
-    height: 50px;
-    padding: 0 20px;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 8px;
-    background: rgb(243, 243, 243);
-    p {
-      padding-right: 10px;
-    }
+ 
+}
+
+.save-playlist {
+  display: flex;
+  height: 50px;
+  padding: 0 20px;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  background: rgb(243, 243, 243);
+  p {
+    padding-right: 10px;
   }
 }
 .number-wrap {
