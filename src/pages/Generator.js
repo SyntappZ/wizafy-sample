@@ -5,7 +5,8 @@ import { convertTracks } from "../data/trackConverter.js";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { MdPlaylistAdd } from "react-icons/md";
 import Slider from "rc-slider";
-import Tracklist from "../components/Tracklist";
+import Tracklist from '../components/Tracklist'
+
 import ToggleSwitch from "../components/ToggleSwitch";
 import Details from "../components/Details";
 import Tooltip from "../components/Tooltip";

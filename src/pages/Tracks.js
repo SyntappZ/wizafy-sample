@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PlaylistStore } from "../context/ContextProvider";
 import Details from "../components/Details";
-import Tracklist from "../components/Tracklist";
+import Tracklist from '../components/Tracklist'
+
 
 import { convertTracks } from "../data/trackConverter.js";
 
