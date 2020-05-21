@@ -6,7 +6,7 @@ import { PlaylistStore } from "../context/ContextProvider";
 import { convertTracks } from "../data/trackConverter.js";
 import { MdPlaylistAdd, MdPlaylistAddCheck } from "react-icons/md";
 
-import Tracklist from "./Tracklist";
+import TrackList from "./TrackList";
 import Tooltip from "../components/Tooltip";
 const PlaylistBrowser = ({ playlists, title }) => {
   const contextStore = useContext(PlaylistStore);
@@ -105,7 +105,7 @@ const PlaylistBrowser = ({ playlists, title }) => {
             <h3>{playlistDesc}</h3>
           </div>
         </div>
-        <Tracklist tracklist={tracks} next={next} updateNext={updateNext} />
+        <TrackList tracklist={tracks} next={next} updateNext={updateNext} />
       </div>
     </div>
   );
