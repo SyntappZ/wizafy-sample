@@ -84,7 +84,8 @@ const HomeContent = () => {
   }, [currentYear, favorites]);
 
   const logout = () => {
-    dispatch({ type: "logout" });
+    // dispatch({ type: "logout" });
+    
   };
 
   const loadMoreFavs = () => {
@@ -111,10 +112,10 @@ const HomeContent = () => {
             </div>
             <p className="username">{username}</p>
             <div className="image-section">
-              <div className="logout" onClick={logout}>
+              <a className="logout" href="https://spotify.com/logout">
                 <p>Logout</p>
                 <FiLogOut />
-              </div>
+              </a>
               <img src={profileImage} alt="profile" />
             </div>
           </div>

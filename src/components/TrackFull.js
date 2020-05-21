@@ -24,7 +24,7 @@ const TrackFull = ({ track, updateFavorite }) => {
   const addToPlaylist = (playlistId) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`;
     sendData(url, "POST").then((message) => {
-      console.log(message);
+      
     });
   };
 

@@ -18,26 +18,36 @@
 @import "./styles/menu";
 @import "./styles/trackFull";
 @import "./styles/toggleSwitch";
-@import url('https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap');
-
-
-
-
+@import url("https://fonts.googleapis.com/css?family=Baloo+Da+2&display=swap");
 
 * {
   box-sizing: border-box;
   margin: 0;
-  font-family: 'Baloo Da 2', cursive;
+  font-family: "Baloo Da 2", cursive;
   font-size: 14px;
 }
 .App {
-  font-family: 'Baloo Da 2', cursive;
+  font-family: "Baloo Da 2", cursive;
   color: $text;
   overflow: hidden;
 }
 
-.wrap  {
+.wrap {
   padding: 0 50px;
+}
+
+.tooltip {
+  position: absolute;
+  left: 0;
+  bottom: 70px;
+  border-radius: 8px;
+  border: solid 1px rgb(202, 202, 202);
+  background: white;
+  font-size: 14px;
+  color: rgb(97, 97, 97);
+  letter-spacing: 0;
+  line-height: 16px;
+  
 }
 
 .btn {
@@ -74,8 +84,6 @@
   border-right: solid 2px rgb(236, 236, 236);
 }
 
-
-
 .pages-section {
   flex: 6 4;
   overflow-y: auto;
@@ -90,18 +98,16 @@
 }
 
 .title {
-  font-size: calc(13px + .4vw);
+  font-size: calc(13px + 0.4vw);
   text-transform: capitalize;
   letter-spacing: 1px;
   padding: 30px 0;
-    
 }
 
 .title-wrap {
   width: 100%;
   display: flex;
   justify-content: space-between;
- 
 }
 
 .track-list-more {
@@ -120,8 +126,6 @@
   }
 }
 
-
-
 ::-webkit-scrollbar {
   width: 12px;
   height: 10px;
@@ -129,11 +133,11 @@
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }

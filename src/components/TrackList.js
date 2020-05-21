@@ -17,39 +17,22 @@ const Tracklist = ({
   // let renderTracks = favorites ? tracklist : tracks;
   useEffect(() => { 
     check(tracklist)
-    console.log(next)
     
   }, [tracklist, id]);
 
   const check = async (tracklist) => {
    
-  //  const fifty = tracklist.splice(0, 50) 
- 
-
     const data = await favoriteCheck(tracklist);
     setTracks(data);
     // return check(tracklist)
     
   };
 
-  // const storeTracks = async () => {
-  //   const data = await check(tracklist); 
-    
-  // }
-
-  // useEffect(() => {
-  //  if(reverse !== undefined) {
-  //    let flip = tracks.reverse()
-  //    setTracks(flip)
-
-  //  }
-
-  // }, [reverse]);
+  
 
   const loadMoreTracks = async () => {
     
     fetchData(next).then((data) => {
-      console.log(data)
       updateNext(data.next);
       const convert = convertTracks(data.items);
       favoriteCheck(convert).then((newTracks) => {

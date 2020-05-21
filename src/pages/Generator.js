@@ -8,6 +8,7 @@ import Slider from "rc-slider";
 import Tracklist from "../components/Tracklist";
 import ToggleSwitch from "../components/ToggleSwitch";
 import Details from "../components/Details";
+import Tooltip from "../components/Tooltip";
 import im from "../images/tempAlbum.jpg";
 const Generator = () => {
   const contextStore = useContext(PlaylistStore);
@@ -355,11 +356,8 @@ const TuneableAttribute = ({ title, info, id, updateAttributeValue }) => {
   };
   return (
     <div className="attribute">
-      {showInfo ? (
-        <div className="info">
-          <p>{info}</p>
-        </div>
-      ) : null}
+      <Tooltip message={info} toggle={showInfo} />
+
       <div className="switch-wrap">
         <p
           style={{ cursor: "pointer" }}

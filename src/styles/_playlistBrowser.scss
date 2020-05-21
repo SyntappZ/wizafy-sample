@@ -46,6 +46,7 @@
   justify-content: space-between;
   align-items: center;
   height: 100px;
+
   h2 {
     font-size: calc(14px + .4vw);
     text-transform: capitalize;
@@ -61,7 +62,7 @@
     cursor: pointer;
     height: 100%;
     width: 100px;
-    
+    position: relative;
     .icon {
       font-size: 25px;
       color: $light-text;

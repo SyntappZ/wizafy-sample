@@ -40,10 +40,10 @@ const ContextProvider = ({ children }) => {
         },
       })
         .then((res) => {
-          refreshData('favorites')
-          resolve(res)
+          refreshData("favorites");
+          resolve(res);
         })
-       
+
         .catch((err) => reject(err));
     });
   };
@@ -52,7 +52,7 @@ const ContextProvider = ({ children }) => {
     return new Promise((resolve, reject) => {
       fetch(url, {
         method: method,
-        body: body ? JSON.stringify(body) : '',
+        body: body ? JSON.stringify(body) : "",
         headers: {
           Authorization: "Bearer " + accessToken,
           "Content-Type": "application/json",
@@ -68,7 +68,6 @@ const ContextProvider = ({ children }) => {
 
   const favoriteCheck = (list) => {
     return new Promise((resolve, reject) => {
-      
       if (list.length > 0) {
         const ids = list.map((track) => {
           track = track.track || track;
@@ -96,6 +95,24 @@ const ContextProvider = ({ children }) => {
       }
     });
   };
+
+  const savePlaylist = async (id) => {
+    console.log(id)
+    const url = `https://api.spotify.com/v1/me/albums`;
+    const method = "PUT";
+  
+    const data = await sendData(url, method, [id]);
+    console.log(data)
+  };
+
+  const removePlaylist = (id) => {};
+
+  // const savedPlaylistCheck = async (ids) => {
+  //   const url = `https://api.spotify.com/v1/me/albums/contains?ids=${[ids]}`
+  //   const data = await fetchData(url)
+
+  //  return data
+  // }
 
   const getRecomendations = async (attributes, limit) => {
     return new Promise((resolve, reject) => {
@@ -153,7 +170,7 @@ const ContextProvider = ({ children }) => {
     });
     fetchData("https://api.spotify.com/v1/me/playlists?limit=50").then(
       (data) => {
-        data.refresh = false
+        data.refresh = false;
         dispatch({ type: "setPlaylists", payload: data });
       }
     );
@@ -169,7 +186,7 @@ const ContextProvider = ({ children }) => {
     fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then((data) => {
       favoriteCheck(data.items).then((tracks) => {
         data.items = tracks;
-        data.refresh = false
+        data.refresh = false;
         dispatch({ type: "favorites", payload: data });
       });
     });
@@ -190,20 +207,21 @@ const ContextProvider = ({ children }) => {
       case "playlists": {
         fetchData("https://api.spotify.com/v1/me/playlists?limit=50").then(
           (data) => {
-            data.refresh = true
+            data.refresh = true;
             dispatch({ type: "setPlaylists", payload: data });
           }
         );
       }
       case "favorites": {
-        fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then((data) => {
-          
-          favoriteCheck(data.items).then((tracks) => {
-            data.items = tracks;
-            data.refresh = true
-            dispatch({ type: "favorites", payload: data });
-          });
-        });
+        fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then(
+          (data) => {
+            favoriteCheck(data.items).then((tracks) => {
+              data.items = tracks;
+              data.refresh = true;
+              dispatch({ type: "favorites", payload: data });
+            });
+          }
+        );
       }
     }
   };
@@ -217,7 +235,9 @@ const ContextProvider = ({ children }) => {
     favoriteCheck: favoriteCheck,
     getRecomendations: getRecomendations,
     refreshData: refreshData,
-    addFavorites: addFavorites
+    addFavorites: addFavorites,
+    savePlaylist: savePlaylist,
+    removePlaylist: removePlaylist,
   };
 
   return (

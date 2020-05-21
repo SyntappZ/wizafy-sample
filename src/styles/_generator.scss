@@ -142,22 +142,4 @@
     height: 50px;
   }
 
-  .info {
-    position: absolute;
-    left: 0;
-    bottom: 70px;
-    width: 100%;
-    min-height: 70px;
-    border-radius: 8px;
-    border: solid 1px rgb(202, 202, 202);
-    background: white;
-    padding: 20px;
-
-    p {
-      font-size: 14px;
-      color: rgb(97, 97, 97);
-      letter-spacing: 0;
-      line-height: 16px;
-    }
-  }
 }

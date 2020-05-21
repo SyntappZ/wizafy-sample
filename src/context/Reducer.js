@@ -78,6 +78,7 @@ const userData = (state, action) => {
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
             owner: playlist.owner.display_name,
+            saved: true
           });
         } else {
           savedPlaylists.push({
@@ -90,6 +91,7 @@ const userData = (state, action) => {
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
             owner: playlist.owner.display_name,
+           saved: true
           });
         }
       });
@@ -111,6 +113,7 @@ const userData = (state, action) => {
           uri: album.uri,
           tracks: album.href,
           tracksAmount: album.total_tracks,
+         
         };
       });
       return {
@@ -130,6 +133,7 @@ const userData = (state, action) => {
           tracks: playlist.tracks.href,
           tracksAmount: playlist.tracks.total,
           owner: playlist.owner.display_name,
+          
         };
       });
       return {
