@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { PlaylistStore } from "../context/ContextProvider";
 import Details from "../components/Details";
-import Tracklist from '../components/Tracklist'
+import TrackList from '../components/TrackList'
 
 
 import { convertTracks } from "../data/trackConverter.js";
@@ -33,7 +33,7 @@ const Tracks = () => {
       </h1>
       
 
-      <Tracklist tracklist={playlistTracks} next={next} />
+      <TrackList tracklist={playlistTracks} next={next} />
     </div>
   );
 };

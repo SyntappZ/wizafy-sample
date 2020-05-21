@@ -5,7 +5,7 @@ import { convertTracks } from "../data/trackConverter.js";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { MdPlaylistAdd } from "react-icons/md";
 import Slider from "rc-slider";
-import Tracklist from '../components/Tracklist'
+import TrackList from '../components/TrackList'
 
 import ToggleSwitch from "../components/ToggleSwitch";
 import Details from "../components/Details";
@@ -178,7 +178,7 @@ const Generator = () => {
           </div>
           {playlist.length > 0 ? (
             <div className="generated-tracks">
-              <Tracklist
+              <TrackList
                 tracklist={playlist}
                 loadMore={null}
                 favorites={false}
@@ -322,7 +322,7 @@ const Generator = () => {
 
           {playlist.length > 0 ? (
             <div className="generated-tracks">
-              <Tracklist
+              <TrackList
                 tracklist={playlist}
                 loadMore={null}
                 favorites={false}

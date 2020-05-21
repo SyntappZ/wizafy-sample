@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { MdPerson, MdArrowDownward, MdArrowForward } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
-import Tracklist from '../components/Tracklist'
+import TrackList from '../components/TrackList'
 import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
 
@@ -142,7 +142,7 @@ const HomeContent = () => {
                 ))}
               </div>
             </div>
-            <Tracklist
+            <TrackList
               tracklist={favoriteTracks}
               favorites={true}
               next={next}

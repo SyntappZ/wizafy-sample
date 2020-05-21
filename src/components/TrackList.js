@@ -3,7 +3,7 @@ import TrackFull from "./TrackFull";
 import { PlaylistStore } from "../context/ContextProvider";
 import { IoMdCloudDownload } from "react-icons/io";
 import { convertTracks } from "../data/trackConverter.js";
-const Tracklist = ({
+const TrackList = ({
   tracklist,
   loadMore,
   favorites,
@@ -71,4 +71,4 @@ const Tracklist = ({
   );
 };
 
-export default Tracklist;
+export default TrackList;
