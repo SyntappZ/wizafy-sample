@@ -174,7 +174,7 @@ const ContextProvider = ({ children }) => {
         dispatch({ type: "setPlaylists", payload: data });
       }
     );
-    fetchData("https://api.spotify.com/v1/browse/new-releases").then((data) => {
+    fetchData("https://api.spotify.com/v1/browse/new-releases?limit=50").then((data) => {
       dispatch({ type: "setNewReleases", payload: data });
     });
 

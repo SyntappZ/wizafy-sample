@@ -4,7 +4,8 @@ import TrackScroller from "../components/TrackScroller";
 import { PlaylistStore } from "../context/ContextProvider";
 import im from "../images/tempAlbum.jpg";
 import Playlist from "../components/Playlist";
-import {convertDescription} from '../data/trackConverter.js'
+import { convertDescription } from "../data/trackConverter.js";
+
 const Explore = () => {
   const [isSearch, setIsSearch] = useState(false);
   const contextStore = useContext(PlaylistStore);
@@ -26,22 +27,22 @@ const ExploreMain = ({ store, state }) => {
     moreNewAlbums,
     playlistMessage,
     featuredPlaylists,
-    categories
+    categories,
   } = state;
 
-  const loadMoreAlbums = () => {
-    loadMoreTracks(moreNewAlbums, "setNewReleases");
-  };
+  // const loadMoreAlbums = () => {
+  //   console.log(moreNewAlbums)
+  //   loadMoreTracks(moreNewAlbums, "setNewReleases");
+  // };
 
-  const getPlaylistDetails = playlist => {
-    
+  const getPlaylistDetails = (playlist) => {
     dispatch({ type: "setSelectedPlaylist", payload: playlist });
   };
 
   return (
     <>
       <TrackScroller
-        loadMoreTracks={loadMoreAlbums}
+        loadMoreTracks={null}
         tracks={newReleaseAlbums}
         title={`${playlistMessage} Album's`}
         album={true}
@@ -86,11 +87,11 @@ const Catagory = ({ name, icon, id, dispatch, fetchData }) => {
     fetchData(
       `https://api.spotify.com/v1/browse/categories/${id}/playlists?limit=50`,
       "GET"
-    ).then(data => {
+    ).then((data) => {
       const playlists = {
         title: name,
         image: icon,
-        playlists: data.playlists.items.map(playlist => {
+        playlists: data.playlists.items.map((playlist) => {
           return {
             id: playlist.id,
             title: playlist.name,
@@ -99,9 +100,9 @@ const Catagory = ({ name, icon, id, dispatch, fetchData }) => {
             uri: playlist.uri,
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
-            owner: playlist.owner.display_name
+            owner: playlist.owner.display_name,
           };
-        })
+        }),
       };
       dispatch({ type: "setSelectedCategory", payload: playlists });
     });
