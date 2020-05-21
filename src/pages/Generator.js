@@ -5,12 +5,12 @@ import { convertTracks } from "../data/trackConverter.js";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { MdPlaylistAdd } from "react-icons/md";
 import Slider from "rc-slider";
-import TrackList from '../components/TrackList'
+import TrackList from "../components/TrackList";
 
 import ToggleSwitch from "../components/ToggleSwitch";
 import Details from "../components/Details";
 import Tooltip from "../components/Tooltip";
-import im from "../images/tempAlbum.jpg";
+
 const Generator = () => {
   const contextStore = useContext(PlaylistStore);
   const [playlist, setPlaylist] = useState([]);

@@ -9,16 +9,11 @@ const Playlists = () => {
   const { loadMoreTracks } = contextStore;
   const { myPlaylists, savedPlaylists, morePlaylistsUrl } = contextStore.state;
 
- 
-
-  
-  
-
   const loadMorePlaylists = () => {
     loadMoreTracks(morePlaylistsUrl, "playlists");
   };
   return (
-    <div className='wrap'>
+    <div className="wrap">
       <Search />
       {myPlaylists ? (
         <TrackScroller

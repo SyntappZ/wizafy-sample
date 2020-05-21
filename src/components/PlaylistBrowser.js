@@ -4,10 +4,10 @@ import Playlist from "../components/Playlist";
 
 import { PlaylistStore } from "../context/ContextProvider";
 import { convertTracks } from "../data/trackConverter.js";
-import { MdPlaylistAdd, MdPlaylistAddCheck } from "react-icons/md";
+
 
 import TrackList from "./TrackList";
-import Tooltip from "../components/Tooltip";
+
 const PlaylistBrowser = ({ playlists, title }) => {
   const contextStore = useContext(PlaylistStore);
 
@@ -17,11 +17,9 @@ const PlaylistBrowser = ({ playlists, title }) => {
   const [playlistTitle, setPlaylistTitle] = useState("");
   const [playlistDesc, setPlaylistDesc] = useState("");
   const [playlistImage, setPlaylistImage] = useState("");
-  const [playlistId, setPlaylistId] = useState("");
-  const [playlistSaved, setPlaylistSaved] = useState(false);
   const [next, setNext] = useState("");
   const [tracks, setTracks] = useState([]);
-  const [showTip, showTooltip] = useState(false);
+  
 
   const getPlaylistDetails = (playlist, firstStart) => {
     const top = playlistScroll.current.offsetTop;
@@ -29,28 +27,18 @@ const PlaylistBrowser = ({ playlists, title }) => {
       page.scrollTo(0, top - 20);
     }
 
-    const { tracks, title, description, image, saved, id } = playlist;
+    const { tracks, title, description, image } = playlist;
 
     setPlaylistTitle(title);
     setPlaylistDesc(description);
     setPlaylistImage(image);
-    setPlaylistSaved(saved);
-    setPlaylistId(id);
+  
 
     fetchData(tracks + "?limit=50", "GET").then((data) => {
       setNext(data.next);
       const tracklist = convertTracks(data.items);
       setTracks(tracklist);
     });
-  };
-
-  const addAndRemovePlayist = () => {
-    if(playlistSaved) {
-      removePlaylist(playlistId)
-    }else{
-      savePlaylist(playlistId)
-    }
-   
   };
 
   const updateNext = (newNext) => {
@@ -76,23 +64,11 @@ const PlaylistBrowser = ({ playlists, title }) => {
       <div className="right">
         <div className="save-wrap">
           <h2>{playlistTitle} playlist</h2>
-          
+
           <div
             className="save"
-            onMouseOver={() => showTooltip(true)}
-            onMouseLeave={() => showTooltip(false)}
-            onClick={addAndRemovePlayist}
           >
-            <Tooltip message={playlistSaved ? "Remove playlist" : 'Save playlist'} toggle={showTip} mini={true} />
-            {playlistSaved ? (
-              <div>
-                <MdPlaylistAddCheck className="icon" />
-              </div>
-            ) : (
-              <div>
-                <MdPlaylistAdd className="icon" />
-              </div>
-            )}
+            <h3>{tracks.length} Tracks</h3>
           </div>
         </div>
         <div className="tracklist-bar">

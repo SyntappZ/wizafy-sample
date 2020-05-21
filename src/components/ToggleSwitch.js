@@ -1,7 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 
-const ToggleSwitch = ({setIsChecked}) => {
-
+const ToggleSwitch = ({ setIsChecked }) => {
   return (
     <label className="switch">
       <input type="checkbox" onChange={setIsChecked} />

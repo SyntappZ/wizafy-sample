@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import img from "../images/tempAlbum.jpg";
-import { FaStepForward, FaVolumeUp, FaStepBackward, FaLongArrowAltDown } from "react-icons/fa";
+
+import { FaStepForward, FaVolumeUp, FaStepBackward } from "react-icons/fa";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 
 import { PlaylistStore } from "../context/ContextProvider";
@@ -14,7 +14,6 @@ const Player = () => {
   const [time, setTime] = useState(0);
   const { currentTrack, audio, isPlaying, isPaused } = contextStore.state;
 
-  
 
   useEffect(() => {
     if (currentTrack) {

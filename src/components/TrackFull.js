@@ -3,13 +3,13 @@ import Lottie from "react-lottie";
 
 import heart from "../images/heart.json";
 import visualizer from "../images/sound-visualizer.json";
-import { MdMoreHoriz, MdPause, MdPlayArrow } from "react-icons/md";
+import { MdMoreHoriz, MdPlayArrow } from "react-icons/md";
 import { GiRegeneration } from "react-icons/gi";
-
+import Tooltip from "../components/Tooltip";
 import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
-
 import Menu from "./Menu";
+
 const TrackFull = ({ track, updateFavorite }) => {
   const contextStore = useContext(PlaylistStore);
   const { addFavorites, sendData, dispatch } = contextStore;
@@ -18,16 +18,14 @@ const TrackFull = ({ track, updateFavorite }) => {
     lottiePaused: false,
     lottieStopped: true,
   });
+  const [showTip, showTooltip] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { title, artist, image, duration, favorite, preview, id, uri } = track;
 
   const addToPlaylist = (playlistId) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`;
-    sendData(url, "POST").then((message) => {
-      
-    });
+    sendData(url, "POST").then((message) => {});
   };
-
   const sendToGenerator = () => {
     dispatch({ type: "setSongToGenerate", payload: track });
   };
@@ -68,7 +66,7 @@ const TrackFull = ({ track, updateFavorite }) => {
     const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
     const method = favorite ? "DELETE" : "PUT";
     const action = await addFavorites(url, method);
-
+    //toast here!!
     updateFavorite(id, track);
   };
 
@@ -131,7 +129,13 @@ const TrackFull = ({ track, updateFavorite }) => {
             height={150}
           />
         </div>
-        <div className="generator-wrap" onClick={sendToGenerator}>
+        <div
+          className="generator-wrap"
+          onMouseOver={() => showTooltip(true)}
+          onMouseLeave={() => showTooltip(false)}
+          onClick={sendToGenerator}
+        >
+          <Tooltip message={"Generator"} toggle={showTip} mini={true} />
           <GiRegeneration style={{ fontSize: "20px" }} />
         </div>
         <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}>

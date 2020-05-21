@@ -6,7 +6,7 @@ const cleanState = {
   accessToken: "",
   isPremium: false,
   username: "",
-  userId: '',
+  userId: "",
   email: "",
   profileImage: "",
   myPlaylists: [],
@@ -32,13 +32,12 @@ const cleanState = {
   isPlaying: false,
   isPaused: false,
   generatedPlaylist: [],
-  songToGenerate: {}
+  songToGenerate: {},
 };
 
 const userData = (state, action) => {
   switch (action.type) {
     case "setProfileData": {
-      
       return {
         ...state,
         username: action.payload.display_name,
@@ -65,7 +64,7 @@ const userData = (state, action) => {
     case "setPlaylists": {
       const myPlaylists = [];
       const savedPlaylists = [];
-      const refresh = action.payload.refresh
+      const refresh = action.payload.refresh;
       action.payload.items.forEach((playlist) => {
         if (playlist.owner.display_name === state.username) {
           myPlaylists.push({
@@ -78,7 +77,7 @@ const userData = (state, action) => {
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
             owner: playlist.owner.display_name,
-            saved: true
+            saved: true,
           });
         } else {
           savedPlaylists.push({
@@ -91,15 +90,19 @@ const userData = (state, action) => {
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
             owner: playlist.owner.display_name,
-           saved: true
+            saved: true,
           });
         }
       });
 
       return {
         ...state,
-        myPlaylists: refresh ? myPlaylists :  [...state.myPlaylists, ...myPlaylists],
-        savedPlaylists:  refresh ? savedPlaylists : [...state.savedPlaylists, ...savedPlaylists],
+        myPlaylists: refresh
+          ? myPlaylists
+          : [...state.myPlaylists, ...myPlaylists],
+        savedPlaylists: refresh
+          ? savedPlaylists
+          : [...state.savedPlaylists, ...savedPlaylists],
         morePlaylistsUrl: action.payload.next,
       };
     }
@@ -113,7 +116,6 @@ const userData = (state, action) => {
           uri: album.uri,
           tracks: album.href,
           tracksAmount: album.total_tracks,
-         
         };
       });
       return {
@@ -133,7 +135,6 @@ const userData = (state, action) => {
           tracks: playlist.tracks.href,
           tracksAmount: playlist.tracks.total,
           owner: playlist.owner.display_name,
-          
         };
       });
       return {
@@ -150,9 +151,9 @@ const userData = (state, action) => {
       const topFive = Array(5)
         .fill(len)
         .map((num) => {
-          return tracks[rand(num)].id
+          return tracks[rand(num)].id;
         });
-      
+
       return {
         ...state,
         myTopTracks: [...state.myTopTracks, ...tracks],
@@ -161,7 +162,7 @@ const userData = (state, action) => {
       };
     }
     case "favorites": {
-      const refresh = action.payload.refresh
+      const refresh = action.payload.refresh;
       const tracks = convertTracks(action.payload.items);
 
       return {
@@ -178,20 +179,22 @@ const userData = (state, action) => {
       };
     }
 
-    case "setSongToGenerate" : {
-      const song = action.payload
+    case "setSongToGenerate": {
+      const song = action.payload;
       return {
         ...state,
-        songToGenerate: song
-      }
+        songToGenerate: song,
+      };
     }
     case "setGeneratedPlaylist": {
-       const uris = action.payload ? action.payload.map(track => track.uri) : []
-    
+      const uris = action.payload
+        ? action.payload.map((track) => track.uri)
+        : [];
+
       return {
         ...state,
-        generatedPlaylist: uris 
-      }
+        generatedPlaylist: uris,
+      };
     }
     case "setCatagories": {
       const categoryList = action.payload;

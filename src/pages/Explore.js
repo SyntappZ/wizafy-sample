@@ -1,13 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Search from "../components/Search";
 import TrackScroller from "../components/TrackScroller";
 import { PlaylistStore } from "../context/ContextProvider";
-import im from "../images/tempAlbum.jpg";
 import Playlist from "../components/Playlist";
 import { convertDescription } from "../data/trackConverter.js";
 
 const Explore = () => {
-  const [isSearch, setIsSearch] = useState(false);
   const contextStore = useContext(PlaylistStore);
 
   return (
@@ -24,16 +22,10 @@ const ExploreMain = ({ store, state }) => {
   const { loadMoreTracks, dispatch, fetchData } = store;
   const {
     newReleaseAlbums,
-    moreNewAlbums,
     playlistMessage,
     featuredPlaylists,
     categories,
   } = state;
-
-  // const loadMoreAlbums = () => {
-  //   console.log(moreNewAlbums)
-  //   loadMoreTracks(moreNewAlbums, "setNewReleases");
-  // };
 
   const getPlaylistDetails = (playlist) => {
     dispatch({ type: "setSelectedPlaylist", payload: playlist });

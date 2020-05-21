@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { MdClose } from "react-icons/md";
-import { GoCloudUpload } from "react-icons/go";
 import { PlaylistStore } from "../context/ContextProvider";
 const CreatePlaylistModal = ({ closeModal }) => {
   const contextStore = useContext(PlaylistStore);
@@ -10,36 +9,32 @@ const CreatePlaylistModal = ({ closeModal }) => {
   const descriptionRef = useRef("");
   const [tracksAmount, setTracksAmount] = useState(0);
 
-
   const addToPlaylist = (playlistId, uris) => {
-    const body = {uris: uris}
-    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`
-    sendData(url, 'POST', body).then(data => {
-      refreshData('playlists')
-      dispatch({type: 'setGeneratedPlaylist', payload: null})
-      closeModal()
-    })
-  }
+    const body = { uris: uris };
+    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+    sendData(url, "POST", body).then((data) => {
+      refreshData("playlists");
+      dispatch({ type: "setGeneratedPlaylist", payload: null });
+      closeModal();
+    });
+  };
 
   const createPlaylist = () => {
     const name = titleRef.current.value;
     const description = descriptionRef.current.value;
-    const body = {'name': name, 'description': description}
+    const body = { name: name, description: description };
     const url = `https://api.spotify.com/v1/users/${userId}/playlists`;
 
     sendData(url, "POST", body).then((data) => {
-      
-      if(tracksAmount) {
-        const playlistId = data.id
-         addToPlaylist(playlistId, generatedPlaylist)
-      }else{
-        refreshData('playlists')
-        closeModal()
+      if (tracksAmount) {
+        const playlistId = data.id;
+        addToPlaylist(playlistId, generatedPlaylist);
+      } else {
+        refreshData("playlists");
+        closeModal();
       }
     });
   };
-
-
 
   useEffect(() => {
     setTracksAmount(generatedPlaylist.length);
@@ -56,11 +51,6 @@ const CreatePlaylistModal = ({ closeModal }) => {
           />
         </div>
         <div className="wrap">
-          {/* <div className="upload-image">
-            <GoCloudUpload style={{ fontSize: 30 }} />
-
-            <h3>Upload image</h3>
-          </div> */}
           <div className="input-wrap">
             <label className="label">title</label>
             <div className="search-wrap">
@@ -80,9 +70,7 @@ const CreatePlaylistModal = ({ closeModal }) => {
           </div>
         </div>
         <div className="send">
-          <p className="tracks-added">
-         {tracksAmount} Tracks Added 
-          </p>
+          <p className="tracks-added">{tracksAmount} Tracks Added</p>
           <div className="btn" onClick={createPlaylist}>
             <p>create</p>
           </div>

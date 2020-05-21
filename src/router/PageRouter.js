@@ -14,56 +14,58 @@ const routes = [
   {
     path: "/",
     exact: true,
-    main: () => <Home />
+    main: () => <Home />,
   },
   {
     path: "/explore",
-    main: () => <Explore />
+    main: () => <Explore />,
   },
   {
     path: "/generator",
-    main: () => <Generator />
+    main: () => <Generator />,
   },
   {
     path: "/playlists",
-    main: () => <Playlists />
+    main: () => <Playlists />,
   },
   {
     path: "/settings",
-    main: () => <Settings />
+    main: () => <Settings />,
   },
   {
     path: "/tracks",
-    main: () => <Tracks />
+    main: () => <Tracks />,
   },
   {
     path: "/categoryPlaylists",
-    main: () => <CategoryPlaylists />
-  }
-
+    main: () => <CategoryPlaylists />,
+  },
 ];
 
 const PageRouter = () => {
   const parsed = queryString.parse(window.location.search);
   const contextStore = useContext(PlaylistStore);
   const { dispatch } = contextStore;
-  const { accessToken, selectedCategory, selectedPlaylist, songToGenerate } = contextStore.state;
+  const {
+    accessToken,
+    selectedCategory,
+    selectedPlaylist,
+    songToGenerate,
+  } = contextStore.state;
   const history = useHistory();
-  const location = useLocation()
-  
+  const location = useLocation();
+
   useEffect(() => {
-    if(location.pathname !== "/generator") {
+    if (location.pathname !== "/generator") {
       dispatch({ type: "setSongToGenerate", payload: {} });
     }
-  }, [location])
- 
+  }, [location]);
 
   useEffect(() => {
     if (Object.keys(songToGenerate).length > 0) {
       history.push("/generator");
     }
   }, [songToGenerate]);
-
 
   useEffect(() => {
     if (parsed.access_token) {

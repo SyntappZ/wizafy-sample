@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import Track from "./Track";
 import Album from "./Album";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";

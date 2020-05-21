@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import "./App.scss";
 import SideNav from "./components/SideNav";
 import PageRouter from "./router/PageRouter";
@@ -8,7 +8,6 @@ import ContextProvider from "./context/ContextProvider";
 import Player from "./components/Player";
 
 function App() {
-
   const pageWrap = useRef(null);
 
   return (
@@ -19,7 +18,7 @@ function App() {
             <div className="nav-section">
               <SideNav />
             </div>
-            <div ref={pageWrap}  className="pages-section">
+            <div ref={pageWrap} className="pages-section">
               <ScrollToTop pageWrap={pageWrap} />
               <PageRouter />
             </div>

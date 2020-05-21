@@ -1,18 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 import { MdPerson, MdArrowDownward, MdArrowForward } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
-import TrackList from '../components/TrackList'
+import TrackList from "../components/TrackList";
 import { PlaylistStore } from "../context/ContextProvider";
 import LoadingScreen from "../components/LoadingScreen";
 
 import { serverUrl } from "../serverUrl";
 import TrackScroller from "../components/TrackScroller";
-// import im from "../images/tempAlbum.jpg";
+
 const Home = () => {
   const contextStore = useContext(PlaylistStore);
-
   const { accessToken } = contextStore.state;
-
   return accessToken ? <HomeContent /> : <SignIn />;
 };
 
@@ -29,48 +27,46 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
   );
 };
 
-
-
 const HomeContent = () => {
   const contextStore = useContext(PlaylistStore);
 
-  const { loadMoreTracks, dispatch, state, favoriteCheck } = contextStore;
+  const { loadMoreTracks, state } = contextStore;
   const {
     myTopTracks,
     profileImage,
     username,
     favorites,
     moreFavorites,
-    moreTopTracks
+    moreTopTracks,
   } = state;
   const [years, setYears] = useState([]);
-  const [next, setNext] = useState('')
+  const [next, setNext] = useState("");
 
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
-  
+
   useEffect(() => {
-   
     const arr = ["All"];
 
-    favorites.forEach(track => {
+    favorites.forEach((track) => {
       if (!arr.includes(track.year)) {
         arr.push(track.year);
       }
     });
+
     setYears(arr);
+    console.log(favorites);
   }, [favorites]);
 
-  
   useEffect(() => {
-    setNext(moreFavorites)
-  }, [moreFavorites])
+    setNext(moreFavorites);
+  }, [moreFavorites]);
 
   const updateNext = (newNext) => {
-    setNext(newNext)
-  }
+    setNext(newNext);
+  };
 
-  const changeCurrentYear = date => {
+  const changeCurrentYear = (date) => {
     setCurrentYear(date);
   };
 
@@ -78,19 +74,11 @@ const HomeContent = () => {
     if (currentYear === "All") {
       setFavoriteTracks(favorites);
     } else {
-      const tracks = favorites.filter(track => track.year === currentYear);
+      const tracks = favorites.filter((track) => track.year === currentYear);
       setFavoriteTracks(tracks);
     }
   }, [currentYear, favorites]);
 
-  const logout = () => {
-    // dispatch({ type: "logout" });
-    
-  };
-
-  const loadMoreFavs = () => {
-    loadMoreTracks(moreFavorites, "favorites");
-  };
   const loadMoreTopTracks = () => {
     loadMoreTracks(moreTopTracks, "topTracks");
   };

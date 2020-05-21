@@ -58,7 +58,6 @@ const ContextProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
       })
-        .then((res) => res.json())
         .then((data) => {
           resolve(data);
         })
@@ -97,12 +96,11 @@ const ContextProvider = ({ children }) => {
   };
 
   const savePlaylist = async (id) => {
-    console.log(id)
     const url = `https://api.spotify.com/v1/me/albums`;
     const method = "PUT";
-  
+
     const data = await sendData(url, method, [id]);
-    console.log(data)
+    console.log(data);
   };
 
   const removePlaylist = (id) => {};
@@ -174,7 +172,7 @@ const ContextProvider = ({ children }) => {
         dispatch({ type: "setPlaylists", payload: data });
       }
     );
-    fetchData("https://api.spotify.com/v1/browse/new-releases?limit=50").then((data) => {
+    fetchData("https://api.spotify.com/v1/browse/new-releases").then((data) => {
       dispatch({ type: "setNewReleases", payload: data });
     });
 

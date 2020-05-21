@@ -8,8 +8,8 @@ const LoadingScreen = () => {
     autoplay: true,
     animationData: loader,
     rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
   return (
     <div className="loader">
