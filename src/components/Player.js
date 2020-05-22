@@ -95,14 +95,14 @@ const Player = () => {
 
         <div className="controls">
           <div className="controls-wrap">
-            <FaStepBackward className="player-icon" />
+            {/* <FaStepBackward className="player-icon" /> */}
             <div className="play-wrap" onClick={playSample}>
              {isPlaying ? <MdPause /> : <MdPlayArrow />}
             </div>
-            <FaStepForward
+            {/* <FaStepForward
               className="player-icon"
               onClick={() => console.log(audio.currentTime)}
-            />
+            /> */}
           </div>
         </div>
       </div>

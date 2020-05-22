@@ -57,7 +57,7 @@ const ContextProvider = ({ children }) => {
           Authorization: "Bearer " + accessToken,
           "Content-Type": "application/json",
         },
-      })
+      }).then(res => res.json())
         .then((data) => {
           resolve(data);
         })
@@ -95,31 +95,12 @@ const ContextProvider = ({ children }) => {
     });
   };
 
-  const savePlaylist = async (id) => {
-    const url = `https://api.spotify.com/v1/me/albums`;
-    const method = "PUT";
-
-    const data = await sendData(url, method, [id]);
-    console.log(data);
-  };
-
-  const removePlaylist = (id) => {};
-
-  // const savedPlaylistCheck = async (ids) => {
-  //   const url = `https://api.spotify.com/v1/me/albums/contains?ids=${[ids]}`
-  //   const data = await fetchData(url)
-
-  //  return data
-  // }
-
   const getRecomendations = async (attributes, limit) => {
     return new Promise((resolve, reject) => {
       const url = "https://api.spotify.com/v1/recommendations?";
       fetchData(url + attributes + `&limit=${limit}`)
         .then((data) => {
           resolve(data);
-          // const tracks = []
-          //  dispatch({type: 'setGeneratedTracks', payload: tracks})
         })
         .catch((err) => reject(err));
     });
@@ -234,8 +215,7 @@ const ContextProvider = ({ children }) => {
     getRecomendations: getRecomendations,
     refreshData: refreshData,
     addFavorites: addFavorites,
-    savePlaylist: savePlaylist,
-    removePlaylist: removePlaylist,
+  
   };
 
   return (

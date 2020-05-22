@@ -55,7 +55,6 @@ const HomeContent = () => {
     });
 
     setYears(arr);
-    console.log(favorites);
   }, [favorites]);
 
   useEffect(() => {
