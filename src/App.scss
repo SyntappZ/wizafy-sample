@@ -47,7 +47,6 @@
   color: rgb(97, 97, 97);
   letter-spacing: 0;
   line-height: 16px;
-  
 }
 
 .btn {
@@ -71,6 +70,35 @@
     color: white;
   }
 }
+
+.start-screen {
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+  padding: 300px 0 100px 0;
+  background: white;
+
+  .wrap {
+    text-align: center;
+    text-transform: capitalize;
+    margin: auto;
+
+    .down-arrow {
+      font-size: 30px;
+      margin: 20px 0;
+      color: $pink;
+    }
+
+    h1 {
+      text-transform: capitalize;
+      font-size: 40px;
+    }
+    h3 {
+      color: $pink;
+    }
+  }
+}
+
 .section-container {
   display: flex;
   width: 100%;

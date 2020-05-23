@@ -1,8 +1,9 @@
 import { useReducer } from "react";
 import { convertTracks, convertDescription } from "../data/trackConverter.js";
 import noImage from "../images/no-image.png";
+import defaultImg from "../images/tempProfile.jpg";
 
-const cleanState = {
+const userState = {
   accessToken: "",
   isPremium: false,
   username: "",
@@ -43,7 +44,10 @@ const userData = (state, action) => {
         username: action.payload.display_name,
         email: action.payload.email,
         userId: action.payload.id,
-        profileImage: action.payload.images ? action.payload.images[0].url : "",
+        profileImage:
+          action.payload.images.length > 0
+            ? action.payload.images[0].url
+            : defaultImg,
         isPremium: action.payload.product === "premium" ? true : false,
       };
     }
@@ -163,7 +167,10 @@ const userData = (state, action) => {
     }
     case "favorites": {
       const refresh = action.payload.refresh;
-      const tracks = convertTracks(action.payload.items);
+      const tracks =
+        action.payload.items.length > 0
+          ? convertTracks(action.payload.items)
+          : "none";
 
       return {
         ...state,
@@ -229,16 +236,12 @@ const userData = (state, action) => {
         isPaused: action.payload.isPaused,
       };
     }
-    case "logout": {
-      return cleanState;
-    }
-
     default:
       break;
   }
   return state;
 };
 
-const userState = cleanState;
+
 
 export const Reducer = () => useReducer(userData, userState);

@@ -150,24 +150,12 @@ const Generator = () => {
               alignItems: "center",
             }}
           >
-            <div className="number-wrap">
-              <input
-                ref={trackAmountRef}
-                type="number"
-                placeholder="track amount"
-                min="0"
-                default="0"
-                max="100"
-                onChange={getAmountValue}
-                value={amountValue}
-              />
-              <div
-                onClick={amountValue ? generateSingleSong : null}
-                className="btn"
-              >
-                generate
-              </div>
-            </div>
+            <NumberInput
+              inputRef={trackAmountRef}
+              onChangeEvent={getAmountValue}
+              amountValue={amountValue}
+              buttonHandler={generateSingleSong}
+            />
 
             {playlist.length > 0 ? (
               <div className="save-playlist" onClick={savePlaylist}>
@@ -193,24 +181,12 @@ const Generator = () => {
           <div className="basic">
             <div>
               <h1>Generate based on your top played tracks</h1>
-              <div className="number-wrap">
-                <input
-                  ref={trackAmountRef}
-                  type="number"
-                  placeholder="track amount"
-                  min="0"
-                  default="0"
-                  max="100"
-                  onChange={getAmountValue}
-                  value={amountValue}
-                />
-                <div
-                  onClick={amountValue ? generateTopPlayed : null}
-                  className="btn"
-                >
-                  generate
-                </div>
-              </div>
+              <NumberInput
+                inputRef={trackAmountRef}
+                onChangeEvent={getAmountValue}
+                amountValue={amountValue}
+                buttonHandler={generateTopPlayed}
+              />
             </div>
 
             {playlist.length > 0 ? (
@@ -293,27 +269,13 @@ const Generator = () => {
                         />
                       ))}
                     </div>
-                    <div
-                      className="number-wrap"
-                      style={{ margin: "30px auto 0 auto" }}
-                    >
-                      <input
-                        ref={advTrackAmountRef}
-                        type="number"
-                        placeholder="track amount"
-                        min="0"
-                        default="0"
-                        max="100"
-                        onChange={getAdvAmountValue}
-                        value={advAmountValue}
-                      />
-                      <div
-                        onClick={advAmountValue ? generateAdvanced : null}
-                        className="btn"
-                      >
-                        generate
-                      </div>
-                    </div>
+                    <NumberInput
+                      inputRef={advTrackAmountRef}
+                      onChangeEvent={getAdvAmountValue}
+                      amountValue={advAmountValue}
+                      buttonHandler={generateAdvanced}
+                      advanced={true}
+                    />
                   </>
                 ) : null}
               </div>
@@ -337,6 +299,42 @@ const Generator = () => {
 };
 
 export default Generator;
+
+const NumberInput = ({
+  inputRef,
+  onChangeEvent,
+  amountValue,
+  buttonHandler,
+  advanced,
+}) => {
+  const keyPress = (e) => {
+    if (e.keyCode == 13 && amountValue) {
+      buttonHandler();
+    }
+  };
+
+  return (
+    <div
+      className="number-wrap"
+      style={advanced ? { margin: "30px auto 0 auto" } : null}
+    >
+      <input
+        ref={inputRef}
+        type="number"
+        placeholder="track amount"
+        min="0"
+        default="0"
+        max="100"
+        onChange={onChangeEvent}
+        value={amountValue}
+        onKeyDown={keyPress}
+      />
+      <div onClick={amountValue ? buttonHandler : null} className="btn">
+        generate
+      </div>
+    </div>
+  );
+};
 
 const TuneableAttribute = ({ title, info, id, updateAttributeValue }) => {
   const [isChecked, setIsChecked] = useState(false);

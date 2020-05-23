@@ -48,11 +48,11 @@ const SideNav = () => {
       link: "/generator",
       icon: <GiRegeneration className={iconStyle} />,
     },
-    {
-      title: "Settings",
-      link: "/settings",
-      icon: <FiSettings className={iconStyle} />,
-    },
+    // {
+    //   title: "Settings",
+    //   link: "/settings",
+    //   icon: <FiSettings className={iconStyle} />,
+    // },
   ];
 
   const toggleModal = () => setModal(!modal);

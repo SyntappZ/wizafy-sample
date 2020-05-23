@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { PlaylistStore } from "../context/ContextProvider";
 
-const Menu = ({ addToPlaylist }) => {
+const Menu = ({ addToPlaylist, setMenuOpen }) => {
   const contextStore = useContext(PlaylistStore);
   const { myPlaylists } = contextStore.state;
 
   return (
-    <div className="menu">
+    <div className="menu" onMouseLeave={() => setMenuOpen(false)}>
       <h3>Add to playlist</h3>
       <div className="playlist-wrap">
         {myPlaylists.map((list, i) => {

@@ -7,15 +7,22 @@ const TrackList = ({ tracklist, next, updateNext }) => {
   const [tracks, setTracks] = useState([]);
   const [id, setId] = useState("");
   const contextStore = useContext(PlaylistStore);
-  const { favoriteCheck, fetchData, dispatch, trackConverter } = contextStore;
-
+  const { favoriteCheck, fetchData } = contextStore;
+  let _mounted = false;
   useEffect(() => {
+    _mounted = true;
     check(tracklist);
+    return () => {
+      _mounted = false;
+    };
   }, [tracklist, id]);
+  
 
   const check = async (tracklist) => {
     const data = await favoriteCheck(tracklist);
-    setTracks(data);
+    if (_mounted) {
+      setTracks(data);
+    }
   };
 
   const loadMoreTracks = async () => {
@@ -32,6 +39,7 @@ const TrackList = ({ tracklist, next, updateNext }) => {
     if (nextId === id) {
       nextId = nextId + Math.floor(Math.random() + 10000).toString();
     }
+
     setId(nextId);
   };
 

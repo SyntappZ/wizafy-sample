@@ -2,7 +2,7 @@ import React from "react";
 import Lottie from "react-lottie";
 import loader from "../images/loading.json";
 
-const LoadingScreen = () => {
+const Loading = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -11,11 +11,7 @@ const LoadingScreen = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  return (
-    <div className="loader">
-      <Lottie options={defaultOptions} height={450} width={450} />
-    </div>
-  );
+  return <Lottie options={defaultOptions} height={450} width={450} />;
 };
 
-export default LoadingScreen;
+export default Loading;

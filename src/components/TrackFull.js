@@ -13,7 +13,7 @@ import Menu from "./Menu";
 const TrackFull = ({ track, updateFavorite }) => {
   const contextStore = useContext(PlaylistStore);
   const { addFavorites, sendData, dispatch } = contextStore;
-  const { isPlaying, isPaused, audio, currentTrack } = contextStore.state;
+  const { isPlaying, isPaused, currentTrack } = contextStore.state;
   const [state, setState] = useState({
     lottiePaused: false,
     lottieStopped: true,
@@ -51,6 +51,7 @@ const TrackFull = ({ track, updateFavorite }) => {
   const arr = title.split(" ");
 
   useEffect(() => {
+   
     if (favorite) {
       setState({ lottieStopped: false, lottiePaused: false });
     } else {
@@ -135,12 +136,17 @@ const TrackFull = ({ track, updateFavorite }) => {
           onMouseLeave={() => showTooltip(false)}
           onClick={sendToGenerator}
         >
-          <Tooltip message={"Generator"} toggle={showTip} mini={true} />
+          <Tooltip message={"Generate"} toggle={showTip} mini={true} />
           <GiRegeneration style={{ fontSize: "20px" }} />
         </div>
-        <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}>
+        <div
+          className="more-menu"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
           <MdMoreHoriz className="more-icon" />
-          {menuOpen ? <Menu addToPlaylist={addToPlaylist} /> : null}
+          {menuOpen ? (
+            <Menu addToPlaylist={addToPlaylist} setMenuOpen={setMenuOpen} />
+          ) : null}
         </div>
       </div>
     </div>
