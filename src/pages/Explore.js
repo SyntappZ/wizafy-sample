@@ -1,17 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Search from "../components/Search";
 import TrackScroller from "../components/TrackScroller";
 import { PlaylistStore } from "../context/ContextProvider";
 import Playlist from "../components/Playlist";
 import { convertDescription } from "../data/trackConverter.js";
-
+import SearchResults from "../components/SearchResults";
 const Explore = () => {
+  const [inputVal, setInputValue] = useState(null);
+  const [searchTracks, setTracks] = useState([]);
   const contextStore = useContext(PlaylistStore);
-
+  const { state } = contextStore;
+  const { searchData } = state;
+ 
+  // const inputValue = (val) => setVal(val)
   return (
     <div className="explore wrap">
-      <Search />
-      <ExploreMain store={contextStore} state={contextStore.state} />
+      <Search inputValue={setInputValue} placeholder={"Search for songs..."} />
+      {inputVal ? (
+        <SearchResults title={inputVal} />
+      ) : (
+        <ExploreMain store={contextStore} state={state} />
+      )}
     </div>
   );
 };

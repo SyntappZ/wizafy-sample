@@ -34,6 +34,8 @@ const userState = {
   isPaused: false,
   generatedPlaylist: [],
   songToGenerate: {},
+  searchData: null,
+  searchTracks: null
 };
 
 const userData = (state, action) => {
@@ -177,6 +179,25 @@ const userData = (state, action) => {
         favorites: refresh ? tracks : [...state.favorites, ...tracks],
         moreFavorites: action.payload.next,
       };
+    }
+    case "setSearchData": {
+      const data = action.payload 
+     
+
+      return {
+        ...state,
+        searchData: data
+      }
+    }
+    case "setSearchTracks": {
+      
+      const data = convertTracks(action.payload.tracks.items)
+     
+
+      return {
+        ...state,
+        searchTracks: data
+      }
     }
 
     case "setGeneratedTracks": {
