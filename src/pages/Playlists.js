@@ -9,14 +9,24 @@ const Playlists = () => {
   const contextStore = useContext(PlaylistStore);
   const [inputVal, setInputValue] = useState(null);
   const { loadMoreTracks } = contextStore;
-  const { myPlaylists, savedPlaylists, morePlaylistsUrl } = contextStore.state;
+  const {
+    myPlaylists,
+    savedPlaylists,
+    morePlaylistsUrl,
+    selectedPlaylist,
+  } = contextStore.state;
 
   const loadMorePlaylists = () => {
     loadMoreTracks(morePlaylistsUrl, "playlists");
   };
+
   return (
     <div className="wrap">
-      <Search isPlaylists={true} placeholder={"Search for albums & playlists..."} inputValue={setInputValue} />
+      <Search
+        isPlaylists={true}
+        placeholder={"Search for albums & playlists..."}
+        inputValue={setInputValue}
+      />
       {inputVal ? (
         <SearchResults isPlaylists={true} />
       ) : (
@@ -29,13 +39,12 @@ const Playlists = () => {
               album={true}
             />
           ) : null}
-          {savedPlaylists ? (
-            <PlaylistBrowser playlists={savedPlaylists} title={"My Saved"} />
-          ) : null}
+
+          <PlaylistBrowser playlists={savedPlaylists} title={"My Saved"} />
         </div>
       )}
     </div>
   );
 };
-
+// style={selectedPlaylist ? {overflow: 'hidden'} : null}
 export default Playlists;

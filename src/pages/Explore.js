@@ -10,14 +10,14 @@ const Explore = () => {
   const [searchTracks, setTracks] = useState([]);
   const contextStore = useContext(PlaylistStore);
   const { state } = contextStore;
-  const { searchData } = state;
+  const { searchData, selectedPlaylist } = state;
  
   // const inputValue = (val) => setVal(val)
   return (
-    <div className="explore wrap">
+    <div className="explore wrap" style={selectedPlaylist ? {overflow: 'hidden'} : null}>
       <Search inputValue={setInputValue} placeholder={"Search for songs..."} />
       {inputVal ? (
-        <SearchResults title={inputVal} />
+        <SearchResults />
       ) : (
         <ExploreMain store={contextStore} state={state} />
       )}

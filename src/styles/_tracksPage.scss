@@ -1,4 +1,13 @@
+@import './colors';
+
 .tracks {
-  position: relative;
+  position: absolute;
+  z-index: 200;
+  left: 0;
+  top: 0;
   padding: 0 50px;
+  background: $background;
+  width: 100%;
+  min-height: 100%;
+  
 }

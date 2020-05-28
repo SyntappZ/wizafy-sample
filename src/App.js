@@ -9,6 +9,7 @@ import { MdPerson, MdArrowDownward } from "react-icons/md";
 import Loading from "./components/Loading";
 import Player from "./components/Player";
 import { PlaylistStore } from "./context/ContextProvider";
+import Tracks from "./pages/Tracks";
 import { serverUrl } from "./serverUrl";
 const Screen = () => {
   const [signedIn, setSignedIn] = useState(false);
@@ -23,7 +24,7 @@ const Screen = () => {
   return (
     <div className="screen">
       {signedIn ? null : <StartScreen />}
-      <MainApp />
+      <MainApp contextStore={contextStore} />
     </div>
   );
 };
@@ -61,7 +62,12 @@ function App() {
 
 export default App;
 
-const MainApp = () => {
+const MainApp = ({ contextStore }) => {
+  const { selectedPlaylist } = contextStore.state;
+
+  useEffect(() => {
+    console.log(selectedPlaylist);
+  }, [selectedPlaylist]);
   const pageWrap = useRef(null);
   return (
     <div className="App">
@@ -70,6 +76,8 @@ const MainApp = () => {
           <SideNav />
         </div>
         <div ref={pageWrap} className="pages-section">
+          {selectedPlaylist ? <Tracks /> : null}
+          {/* <Tracks /> */}
           <ScrollToTop pageWrap={pageWrap} />
           <PageRouter />
         </div>

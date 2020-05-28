@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Generator from "../pages/Generator";
 import Playlists from "../pages/Playlists";
 import Settings from "../pages/Settings";
@@ -45,13 +45,14 @@ const routes = [
 const PageRouter = () => {
   const parsed = queryString.parse(window.location.search);
   const contextStore = useContext(PlaylistStore);
-  const { dispatch } = contextStore;
+  const { dispatch, state } = contextStore;
+
   const {
     accessToken,
     selectedCategory,
     selectedPlaylist,
     songToGenerate,
-  } = contextStore.state;
+  } = state;
   const history = useHistory();
   const location = useLocation();
 
@@ -59,6 +60,10 @@ const PageRouter = () => {
     if (location.pathname !== "/generator") {
       dispatch({ type: "setSongToGenerate", payload: {} });
     }
+    if(location.pathname !== "/playlists") {
+      dispatch({ type: "clearSearch" });
+    }
+   
   }, [location]);
 
   useEffect(() => {
@@ -82,11 +87,11 @@ const PageRouter = () => {
     }
   }, [selectedCategory]);
 
-  useEffect(() => {
-    if (Object.keys(selectedPlaylist).length > 0) {
-      history.push("/tracks");
-    }
-  }, [selectedPlaylist]);
+  // useEffect(() => {
+  //   if (Object.keys(selectedPlaylist).length > 0) {
+  //     history.push("/tracks");
+  //   }
+  // }, [selectedPlaylist]);
 
   return (
     <Switch>
@@ -96,6 +101,7 @@ const PageRouter = () => {
           path={route.path}
           exact={route.exact}
           children={<route.main />}
+          
         />
       ))}
     </Switch>

@@ -26,7 +26,7 @@ const userState = {
   categories: [],
   generatedTracks: [],
   selectedCategory: {},
-  selectedPlaylist: {},
+  selectedPlaylist: null,
   page: null,
   topFiveIds: [],
   audio: new Audio(),
@@ -34,8 +34,46 @@ const userState = {
   isPaused: false,
   generatedPlaylist: [],
   songToGenerate: {},
-  searchData: null,
-  searchTracks: null
+  searchAlbums: null,
+  searchPlaylists: null,
+  searchTracks: null,
+  searchTitle: "",
+  savedSearch: false
+};
+
+const convertAlbums = (albums) => {
+  const albumsList = albums
+    ? albums.map((album) => {
+        return {
+          id: album.id,
+          title: album.name,
+          artist: album.artists[0].name.split("-")[0],
+          image: album.images.length > 0 ? album.images[1].url : noImage,
+          uri: album.uri,
+          tracks: album.href,
+          tracksAmount: album.total_tracks,
+        };
+      })
+    : null;
+  return albumsList;
+};
+
+const convertPlaylists = (playlists) => {
+  const list = playlists
+    ? playlists.map((playlist) => {
+        return {
+          id: playlist.id,
+          title: playlist.name,
+          description: convertDescription(playlist.description),
+          image: playlist.images.length > 0 ? playlist.images[0].url : noImage,
+          uri: playlist.uri,
+          tracks: playlist.tracks.href,
+          tracksAmount: playlist.tracks.total,
+          owner: playlist.owner.display_name,
+        };
+      })
+    : null;
+  return list;
 };
 
 const userData = (state, action) => {
@@ -83,7 +121,6 @@ const userData = (state, action) => {
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
             owner: playlist.owner.display_name,
-            saved: true,
           });
         } else {
           savedPlaylists.push({
@@ -96,7 +133,6 @@ const userData = (state, action) => {
             tracks: playlist.tracks.href,
             tracksAmount: playlist.tracks.total,
             owner: playlist.owner.display_name,
-            saved: true,
           });
         }
       });
@@ -113,17 +149,7 @@ const userData = (state, action) => {
       };
     }
     case "setNewReleases": {
-      const albums = action.payload.albums.items.map((album) => {
-        return {
-          id: album.id,
-          title: album.name,
-          artist: album.artists[0].name.split("-")[0],
-          image: album.images[1].url,
-          uri: album.uri,
-          tracks: album.href,
-          tracksAmount: album.total_tracks,
-        };
-      });
+      const albums = convertAlbums(action.payload.albums.items);
       return {
         ...state,
         newReleaseAlbums: [...state.newReleaseAlbums, ...albums],
@@ -131,18 +157,7 @@ const userData = (state, action) => {
       };
     }
     case "setFeaturedPlaylists": {
-      const playlists = action.payload.playlists.items.map((playlist) => {
-        return {
-          id: playlist.id,
-          title: playlist.name,
-          description: convertDescription(playlist.description),
-          image: playlist.images[0].url,
-          uri: playlist.uri,
-          tracks: playlist.tracks.href,
-          tracksAmount: playlist.tracks.total,
-          owner: playlist.owner.display_name,
-        };
-      });
+      const playlists = convertPlaylists(action.payload.playlists.items);
       return {
         ...state,
         playlistMessage: action.payload.message,
@@ -180,24 +195,57 @@ const userData = (state, action) => {
         moreFavorites: action.payload.next,
       };
     }
+
+    case "clearSearch": {
+      return {
+        ...state,
+        searchPlaylists: null,
+        searchAlbums: null,
+        searchTracks: null,
+        searchTitle: "",
+        savedSearch: false
+      };
+    }
+
+    case "setSavedData": {
+      const {
+        searchAlbums,
+        searchPlaylists,
+        searchTracks,
+        searchTitle,
+      } = action.payload;
+      return {
+        ...state,
+        searchAlbums: searchAlbums,
+        searchPlaylists: searchPlaylists,
+        searchTracks: searchTracks,
+        searchTitle: searchTitle,
+        savedSearch: true
+      };
+    }
+
     case "setSearchData": {
-      const data = action.payload 
-     
+      const data = action.payload.data;
+
+      const albums = convertAlbums(data.albums.items);
+      const playlists = convertPlaylists(data.playlists.items);
 
       return {
         ...state,
-        searchData: data
-      }
+        searchPlaylists: playlists,
+        searchAlbums: albums,
+        searchTitle: action.payload.val,
+      };
     }
     case "setSearchTracks": {
-      
-      const data = convertTracks(action.payload.tracks.items)
-     
+      const data = action.payload.data.tracks.items;
+      const tracks = data ? convertTracks(data) : null;
 
       return {
         ...state,
-        searchTracks: data
-      }
+        searchTracks: tracks,
+        searchTitle: action.payload.val,
+      };
     }
 
     case "setGeneratedTracks": {
@@ -224,6 +272,7 @@ const userData = (state, action) => {
         generatedPlaylist: uris,
       };
     }
+
     case "setCatagories": {
       const categoryList = action.payload;
       return {
@@ -262,7 +311,5 @@ const userData = (state, action) => {
   }
   return state;
 };
-
-
 
 export const Reducer = () => useReducer(userData, userState);

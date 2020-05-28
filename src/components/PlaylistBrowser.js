@@ -5,13 +5,12 @@ import Playlist from "../components/Playlist";
 import { PlaylistStore } from "../context/ContextProvider";
 import { convertTracks } from "../data/trackConverter.js";
 
-
 import TrackList from "./TrackList";
 
 const PlaylistBrowser = ({ playlists, title }) => {
   const contextStore = useContext(PlaylistStore);
 
-  const { fetchData, state, savePlaylist, removePlaylist } = contextStore;
+  const { fetchData, state } = contextStore;
   const { page } = state;
   const playlistScroll = useRef(null);
   const [playlistTitle, setPlaylistTitle] = useState("");
@@ -19,7 +18,6 @@ const PlaylistBrowser = ({ playlists, title }) => {
   const [playlistImage, setPlaylistImage] = useState("");
   const [next, setNext] = useState("");
   const [tracks, setTracks] = useState([]);
-  
 
   const getPlaylistDetails = (playlist, firstStart) => {
     const top = playlistScroll.current.offsetTop;
@@ -28,26 +26,35 @@ const PlaylistBrowser = ({ playlists, title }) => {
     }
 
     const { tracks, title, description, image } = playlist;
-
-    setPlaylistTitle(title);
-    setPlaylistDesc(description);
-    setPlaylistImage(image);
   
-
+      setPlaylistTitle(title);
+      setPlaylistDesc(description);
+      setPlaylistImage(image);
+    
     fetchData(tracks + "?limit=50", "GET").then((data) => {
-      setNext(data.next);
+      
+        setNext(data.next);
+      
+
       const tracklist = convertTracks(data.items);
-      setTracks(tracklist);
+     
+        setTracks(tracklist);
+      
     });
   };
 
   const updateNext = (newNext) => {
-    setNext(newNext);
+  
+      setNext(newNext);
+    
   };
 
+ 
+
   useEffect(() => {
+   
     getPlaylistDetails(playlists[0], true);
-  }, []);
+  }, [playlists]);
 
   return (
     <div ref={playlistScroll} className="playlist-browser">
@@ -65,9 +72,7 @@ const PlaylistBrowser = ({ playlists, title }) => {
         <div className="save-wrap">
           <h2>{playlistTitle} playlist</h2>
 
-          <div
-            className="save"
-          >
+          <div className="save">
             <h3>{tracks.length} Tracks</h3>
           </div>
         </div>

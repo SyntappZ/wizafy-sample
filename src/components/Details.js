@@ -21,10 +21,8 @@ const Details = ({ image, title, description, category, isGenerator, id }) => {
   };
 
   const goBack = () => {
-    dispatch({ type: "setSelectedPlaylist", payload: {} });
+    dispatch({ type: "setSelectedPlaylist", payload: null });
     dispatch({ type: "setSongToGenerate", payload: {} });
-
-    history.goBack();
   };
 
   return (

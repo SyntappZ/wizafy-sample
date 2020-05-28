@@ -17,7 +17,7 @@ const Generator = () => {
   const [amountValue, setAmountValue] = useState("");
   const [advAmountValue, setAdvAmountValue] = useState("");
   const { getRecomendations, state, dispatch } = contextStore;
-  const { topFiveIds, songToGenerate } = state;
+  const { topFiveIds, songToGenerate, selectedPlaylist } = state;
   const trackAmountRef = useRef("");
   const advTrackAmountRef = useRef("");
   const [showAdvanced, setAdvanced] = useState(false);
@@ -134,7 +134,7 @@ const Generator = () => {
   }, [isSingleSong, songToGenerate]);
 
   return (
-    <div className="wrap">
+    <div className="wrap" style={selectedPlaylist ? {overflow: 'hidden'} : null}>
       {isSingleSong ? (
         <div className="song-generator">
           <Details

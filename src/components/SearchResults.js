@@ -3,39 +3,37 @@ import { PlaylistStore } from "../context/ContextProvider";
 import TrackList from "./TrackList";
 import PlaylistBrowser from "./PlaylistBrowser";
 import TrackScroller from "./TrackScroller";
-const SearchResults = ({ isPlaylists, title }) => {
+const SearchResults = ({ isPlaylists }) => {
   const contextStore = useContext(PlaylistStore);
   const { state, dispatch } = contextStore;
-  const { searchTracks, searchData } = state;
-  //   const {albums, playlists} = searchData
-  useEffect(() => {
-    console.log("delete");
-    dispatch({ type: "setSearchData", payload: null });
-    dispatch({ type: "setSearchTracks", payload: null });
-  }, [title]);
-  useEffect(() => {
-    console.log(searchTracks);
-  }, [searchTracks]);
+  const { searchTracks, searchPlaylists, searchAlbums, searchTitle } = state;
+ 
+ 
 
   return (
     <div className="search-results">
-      <div>
-        {searchData ? (
-          <TrackScroller
-            loadMoreTracks={null}
-            tracks={[]}
-            title={`${title} Album's`}
-            album={true}
-          />
-        ) : null}
-        {searchData ? <PlaylistBrowser playlists={[]} title={title} /> : null}
-      </div>
-      {searchTracks ? (
+      {isPlaylists ? (
         <div>
-          <h2 style={{ padding: "20px 0" }}>Search results for {title}</h2>
-          <TrackList tracklist={searchTracks} />
+          {searchAlbums ? (
+            <TrackScroller
+              loadMoreTracks={null}
+              tracks={searchAlbums}
+              title={`${searchTitle} Album's`}
+              album={true}
+            />
+          ) : null}
+          {searchPlaylists ? <PlaylistBrowser playlists={searchPlaylists} title={searchTitle} /> : null}
         </div>
-      ) : null}
+      ) : (
+        <div>
+          {searchTracks ? (
+            <div>
+              <h2 style={{ padding: "20px 0" }}>Search results for {searchTitle}</h2>
+              <TrackList tracklist={searchTracks} />
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };
