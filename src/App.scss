@@ -27,10 +27,13 @@
   font-family: "Baloo Da 2", cursive;
   font-size: 14px;
 }
+body {
+  overflow: hidden;
+}
 .App {
   font-family: "Baloo Da 2", cursive;
   color: $text;
-  overflow: hidden;
+ 
  
 }
 
@@ -108,6 +111,7 @@
   height: 100vh;
   padding-bottom: 95px;
   background: $background;
+ 
 }
 
 .nav-section {
@@ -119,6 +123,7 @@
   flex: 6 4;
   overflow-y: auto;
   position: relative;
+  
 }
 // .page-wrap {
 //   width: 100%;

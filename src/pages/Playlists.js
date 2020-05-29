@@ -4,7 +4,7 @@ import TrackScroller from "../components/TrackScroller";
 import Search from "../components/Search";
 import PlaylistBrowser from "../components/PlaylistBrowser";
 import SearchResults from "../components/SearchResults";
-
+import NoTracksLottie from "../components/NoTracksLottie";
 const Playlists = () => {
   const contextStore = useContext(PlaylistStore);
   const [inputVal, setInputValue] = useState(null);
@@ -21,7 +21,10 @@ const Playlists = () => {
   };
 
   return (
-    <div className="wrap" style={selectedPlaylist ? {overflow: 'hidden', height: '100%'} : null} >
+    <div
+      className="wrap"
+      style={selectedPlaylist ? { overflow: "hidden", height: "100%" } : null}
+    >
       <Search
         isPlaylists={true}
         placeholder={"Search for albums & playlists..."}
@@ -40,7 +43,11 @@ const Playlists = () => {
             />
           ) : null}
 
-          <PlaylistBrowser playlists={savedPlaylists} title={"My Saved"} />
+          {savedPlaylists.length > 0 ? (
+            <PlaylistBrowser playlists={savedPlaylists} title={"My Saved"} />
+          ) : (
+            <NoTracksLottie />
+          )}
         </div>
       )}
     </div>

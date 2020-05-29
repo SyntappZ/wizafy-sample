@@ -48,6 +48,8 @@ const ContextProvider = ({ children }) => {
     });
   };
 
+  const toggleModal = () => dispatch({type: "ToggleModal"})
+
   const sendData = (url, method, body) => {
     return new Promise((resolve, reject) => {
       fetch(url, {
@@ -215,6 +217,7 @@ const ContextProvider = ({ children }) => {
     getRecomendations: getRecomendations,
     refreshData: refreshData,
     addFavorites: addFavorites,
+    toggleModal: toggleModal
   
   };
 

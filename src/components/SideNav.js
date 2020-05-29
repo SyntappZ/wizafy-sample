@@ -6,24 +6,26 @@ import { GiRegeneration, GiCubes } from "react-icons/gi";
 import { FiSettings } from "react-icons/fi";
 import { PlaylistStore } from "../context/ContextProvider";
 import { Link, useLocation } from "react-router-dom";
-import CreatePlaylist from "./CreatePlaylistModal";
+
 
 const SideNav = () => {
   const contextStore = useContext(PlaylistStore);
+  const {toggleModal} = contextStore
   const {
     username,
     profileImage,
     email,
     accessToken,
     generatedPlaylist,
+    
   } = contextStore.state;
   const [page, setPage] = useState("/");
-  const [modal, setModal] = useState(false);
+
   const iconStyle = accessToken ? "icon" : "icon disabled-link";
 
   useEffect(() => {
     if (generatedPlaylist.length > 0) {
-      setModal(true);
+      toggleModal();
     }
   }, [generatedPlaylist]);
 
@@ -55,7 +57,7 @@ const SideNav = () => {
     // },
   ];
 
-  const toggleModal = () => setModal(!modal);
+
 
   let location = useLocation();
   useEffect(() => {
@@ -70,7 +72,7 @@ const SideNav = () => {
 
   return (
     <div className="nav-container">
-      {modal ? <CreatePlaylist closeModal={toggleModal} /> : null}
+      
       <div className="profile-wrap">
         <div className="picture-wrap">
           <img src={profileImage ? profileImage : img} alt="profile" />

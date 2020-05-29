@@ -90,11 +90,13 @@ const Generator = () => {
 
   const generateTopPlayed = async () => {
     const url = `&seed_tracks=${topFiveIds}`;
-    const data = await getRecomendations(url, amountValue);
-    const tracks = convertTracks(data.tracks);
+    if (topFiveIds.length > 0) {
+      const data = await getRecomendations(url, amountValue);
+      const tracks = convertTracks(data.tracks);
 
-    setPlaylist(tracks);
-    clearInput();
+      setPlaylist(tracks);
+      clearInput();
+    }
   };
 
   const updateAttributeValue = (attribute) => {

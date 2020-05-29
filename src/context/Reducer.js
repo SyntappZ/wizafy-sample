@@ -38,7 +38,8 @@ const userState = {
   searchPlaylists: null,
   searchTracks: null,
   searchTitle: "",
-  savedSearch: false
+  savedSearch: false,
+  modalOpen: false
 };
 
 const convertAlbums = (albums) => {
@@ -236,6 +237,13 @@ const userData = (state, action) => {
         searchAlbums: albums,
         searchTitle: action.payload.val,
       };
+    }
+
+    case "ToggleModal": {
+      return {
+        ...state,
+        modalOpen: !state.modalOpen
+      }
     }
     case "setSearchTracks": {
       const data = action.payload.data.tracks.items;

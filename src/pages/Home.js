@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import Lottie from "react-lottie";
+
 import { MdArrowForward } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 import TrackList from "../components/TrackList";
 import { PlaylistStore } from "../context/ContextProvider";
+import NoTracksLottie from '../components/NoTracksLottie'
 
-import noTrackslottie from "../images/no-music-files.json";
 
 import TrackScroller from "../components/TrackScroller";
 
@@ -23,7 +23,7 @@ const Year = ({ date, currentYear, changeCurrentYear }) => {
 const Home = () => {
   const contextStore = useContext(PlaylistStore);
 
-  const { loadMoreTracks, state } = contextStore;
+  const { loadMoreTracks, state, toggleModal } = contextStore;
   const {
     myTopTracks,
     profileImage,
@@ -34,7 +34,7 @@ const Home = () => {
   } = state;
   const [years, setYears] = useState([]);
   const [next, setNext] = useState("");
-
+  
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
 
@@ -74,14 +74,9 @@ const Home = () => {
   const loadMoreTopTracks = () => {
     loadMoreTracks(moreTopTracks, "topTracks");
   };
-  const lottieOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: noTrackslottie,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+
+ 
+ 
 
   return (
     <div className="home">
@@ -91,7 +86,7 @@ const Home = () => {
             <h1>playlist wizard</h1>
             <h2>Create or generate awesome playlists.</h2>
           </div>
-          <div className="create">
+          <div className="create" onClick={toggleModal}>
             <h3>Create new playlist</h3>
             <MdArrowForward className="arrow" />
           </div>
@@ -136,7 +131,8 @@ const Home = () => {
             updateNext={updateNext}
           />
         ) : (
-          <Lottie options={lottieOptions} width={500} height={250} />
+          <NoTracksLottie />
+
         )}
       </div>
     </div>

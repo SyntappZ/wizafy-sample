@@ -10,6 +10,7 @@ import Loading from "./components/Loading";
 import Player from "./components/Player";
 import { PlaylistStore } from "./context/ContextProvider";
 import Tracks from "./pages/Tracks";
+import CreatePlaylist from "./components/CreatePlaylistModal";
 import { serverUrl } from "./serverUrl";
 const Screen = () => {
   const [signedIn, setSignedIn] = useState(false);
@@ -63,7 +64,7 @@ function App() {
 export default App;
 
 const MainApp = ({ contextStore }) => {
-  const { selectedPlaylist } = contextStore.state;
+  const { selectedPlaylist, modalOpen } = contextStore.state;
 
   // useEffect(() => {
   //   console.log(selectedPlaylist);
@@ -71,6 +72,7 @@ const MainApp = ({ contextStore }) => {
   const pageWrap = useRef(null);
   return (
     <div className="App">
+      <CreatePlaylist modalOpen={modalOpen}   /> 
       <div className="section-container">
         <div className="nav-section">
           <SideNav />
