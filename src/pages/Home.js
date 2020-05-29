@@ -25,12 +25,13 @@ const Home = () => {
 
   const { loadMoreTracks, state, toggleModal } = contextStore;
   const {
-    myTopTracks,
     profileImage,
     username,
     favorites,
     moreFavorites,
-    moreTopTracks,
+    savedAlbums,
+    moreSavedAlbums,
+    selectedPlaylist
   } = state;
   const [years, setYears] = useState([]);
   const [next, setNext] = useState("");
@@ -72,14 +73,14 @@ const Home = () => {
   }, [currentYear, favorites]);
 
   const loadMoreTopTracks = () => {
-    loadMoreTracks(moreTopTracks, "topTracks");
+    loadMoreTracks(moreSavedAlbums, "topTracks");
   };
 
  
  
 
   return (
-    <div className="home">
+    <div className="home" style={selectedPlaylist ? {overflow: 'hidden'} : null}>
       <div className="welcome">
         <div className="text-wrap">
           <div>
@@ -102,10 +103,10 @@ const Home = () => {
       </div>
       <div className="wrap" style={{ paddingTop: "20px" }}>
         <TrackScroller
-          title="my top tracks"
+          title="my saved albums"
           loadMoreTracks={loadMoreTopTracks}
-          tracks={myTopTracks}
-          album={null}
+          tracks={savedAlbums}
+          album={true}
         />
       </div>
 

@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import { PlaylistStore } from "../context/ContextProvider";
 
-const Album = ({ album }) => {
+const Album = ({ album, created }) => {
   const contextStore = useContext(PlaylistStore);
   const { dispatch } = contextStore;
 
   const setAlbum = () => {
     dispatch({ type: "setSelectedPlaylist", payload: album });
+    dispatch({ type: "setIsCreated", payload: !created });
+    
   };
   return (
     <div className="album">

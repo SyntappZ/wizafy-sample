@@ -9,7 +9,7 @@ import { MdPerson, MdArrowDownward } from "react-icons/md";
 import Loading from "./components/Loading";
 import Player from "./components/Player";
 import { PlaylistStore } from "./context/ContextProvider";
-import Tracks from "./pages/Tracks";
+import AlbumPage from "./pages/AlbumPage";
 import CreatePlaylist from "./components/CreatePlaylistModal";
 import { serverUrl } from "./serverUrl";
 const Screen = () => {
@@ -78,7 +78,7 @@ const MainApp = ({ contextStore }) => {
           <SideNav />
         </div>
         <div ref={pageWrap} className="pages-section">
-          {selectedPlaylist ? <Tracks /> : null}
+          {selectedPlaylist ? <AlbumPage /> : null}
 
           <ScrollToTop pageWrap={pageWrap} />
           <PageRouter />

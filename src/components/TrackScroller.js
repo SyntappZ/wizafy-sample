@@ -3,7 +3,7 @@ import Track from "./Track";
 import Album from "./Album";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
-const TrackScroller = ({ loadMoreTracks, title, tracks, album }) => {
+const TrackScroller = ({ loadMoreTracks, title, tracks, album, created }) => {
   const scrollerRef = useRef(null);
 
   const scroller = (direction) => {
@@ -32,7 +32,7 @@ const TrackScroller = ({ loadMoreTracks, title, tracks, album }) => {
       <div className="scroller-tracks" ref={scrollerRef}>
         {tracks.map((track, i) => {
           return album ? (
-            <Album key={i} album={track} id={track.id} />
+            <Album key={i} album={track} id={track.id} created={created} />
           ) : (
             <Track key={i} track={track} id={track.id} />
           );

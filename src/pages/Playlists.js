@@ -40,6 +40,7 @@ const Playlists = () => {
               tracks={myPlaylists}
               title={"My Created Playlists"}
               album={true}
+              created={true}
             />
           ) : null}
 

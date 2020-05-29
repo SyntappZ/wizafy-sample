@@ -3,10 +3,11 @@ import { PlaylistStore } from "../context/ContextProvider";
 import { genres } from "../data/genres.js";
 import { convertTracks } from "../data/trackConverter.js";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { MdPlaylistAdd } from "react-icons/md";
+
 import Slider from "rc-slider";
 import TrackList from "../components/TrackList";
-
+import TrackScroller from "../components/TrackScroller";
+import SaveButton from '../components/SaveButton'
 import ToggleSwitch from "../components/ToggleSwitch";
 import Details from "../components/Details";
 import Tooltip from "../components/Tooltip";
@@ -16,8 +17,8 @@ const Generator = () => {
   const [playlist, setPlaylist] = useState([]);
   const [amountValue, setAmountValue] = useState("");
   const [advAmountValue, setAdvAmountValue] = useState("");
-  const { getRecomendations, state, dispatch } = contextStore;
-  const { topFiveIds, songToGenerate, selectedPlaylist } = state;
+  const { getRecomendations, state, dispatch, loadMoreTracks } = contextStore;
+  const { topFiveIds, songToGenerate, selectedPlaylist, myTopTracks, moreTopTracks } = state;
   const trackAmountRef = useRef("");
   const advTrackAmountRef = useRef("");
   const [showAdvanced, setAdvanced] = useState(false);
@@ -72,6 +73,10 @@ const Generator = () => {
 
   const savePlaylist = () => {
     dispatch({ type: "setGeneratedPlaylist", payload: playlist });
+  };
+
+  const loadMoreTopTracks = () => {
+    loadMoreTracks(moreTopTracks, "topTracks");
   };
 
   const getAmountValue = () => {
@@ -173,6 +178,7 @@ const Generator = () => {
             <SaveButton
               showButton={playlist.length > 0}
               savePlaylist={savePlaylist}
+              title={'save playlist'}
             />
           </div>
           {playlist.length > 0 ? (
@@ -188,8 +194,15 @@ const Generator = () => {
         </div>
       ) : (
         <>
-          <h1 className="gen-title">generator</h1>
+          <h4 className="gen-title">generator</h4>
+          <TrackScroller
+              title="my top played tracks"
+              loadMoreTracks={loadMoreTopTracks}
+              tracks={myTopTracks}
+              album={null}
+            />
           <div className="basic">
+           
             <div>
               <h1>Generate based on your top played tracks</h1>
               <NumberInput
@@ -203,6 +216,8 @@ const Generator = () => {
             <SaveButton
               showButton={playlist.length > 0}
               savePlaylist={savePlaylist}
+              title={'save playlist'}
+
             />
           </div>
           <div className="advanced">
@@ -310,6 +325,8 @@ const Generator = () => {
               <SaveButton
                 showButton={playlist.length > 0}
                 savePlaylist={savePlaylist}
+                title={'save playlist'}
+
               />
             </div>
           ) : null}
@@ -332,18 +349,7 @@ const Generator = () => {
 
 export default Generator;
 
-const SaveButton = ({ showButton, savePlaylist }) => {
-  return (
-    <>
-      {showButton ? (
-        <div className="save-playlist" onClick={savePlaylist}>
-          <p>save playlist</p>
-          <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
-        </div>
-      ) : null}
-    </>
-  );
-};
+
 
 const NumberInput = ({
   inputRef,

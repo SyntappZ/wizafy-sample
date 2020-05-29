@@ -10,7 +10,7 @@
 @import "./styles/playlist";
 @import "./styles/category";
 @import "./styles/trackScroller";
-@import "./styles/tracksPage";
+@import "./styles/albumsPage";
 @import "./styles/details";
 @import "./styles/album";
 @import "./styles/generator";
@@ -73,6 +73,21 @@ body {
   }
   .icon {
     color: white;
+  }
+}
+
+.save-button {
+  display: flex;
+  height: 50px;
+  padding: 0 20px;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  background: #e4e4e4;
+  p {
+    padding-right: 10px;
+    font-size: 18px;
+    color: $light-text;
   }
 }
 

@@ -1,11 +1,11 @@
 @import "./colors";
 
 .gen-title {
-  font-size: 40px;
+  padding-top: 30px;
   letter-spacing: 1px;
   text-transform: capitalize;
   text-align: center;
-  padding-top: 50px;
+  font-size: 20px;
 }
 .basic {
   padding-top: 50px;
@@ -20,18 +20,7 @@
   }
 }
 
-.save-playlist {
-  display: flex;
-  height: 50px;
-  padding: 0 20px;
-  align-items: center;
-  cursor: pointer;
-  border-radius: 8px;
-  background: #e4e4e4;
-  p {
-    padding-right: 10px;
-  }
-}
+
 
 .button-wrap {
   display: flex;

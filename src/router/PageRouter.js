@@ -6,7 +6,7 @@ import Home from "../pages/Home";
 import Explore from "../pages/Explore";
 import { PlaylistStore } from "../context/ContextProvider";
 import { Switch, Route, useHistory, useLocation } from "react-router-dom";
-import Tracks from "../pages/Tracks";
+
 import CategoryPlaylists from "../pages/CategoryPlaylists";
 import queryString from "query-string";
 
@@ -31,10 +31,6 @@ const routes = [
   {
     path: "/settings",
     main: () => <Settings />,
-  },
-  {
-    path: "/tracks",
-    main: () => <Tracks />,
   },
   {
     path: "/categoryPlaylists",

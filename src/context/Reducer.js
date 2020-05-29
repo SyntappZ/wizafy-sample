@@ -11,6 +11,8 @@ const userState = {
   email: "",
   profileImage: "",
   myPlaylists: [],
+  savedAlbums: [],
+  moreSavedAlbums: '',
   savedPlaylists: [],
   morePlaylistsUrl: "",
   newReleaseAlbums: [],
@@ -39,12 +41,14 @@ const userState = {
   searchTracks: null,
   searchTitle: "",
   savedSearch: false,
-  modalOpen: false
+  modalOpen: false,
+  isCreated: true
 };
 
 const convertAlbums = (albums) => {
   const albumsList = albums
     ? albums.map((album) => {
+      album = album.album || album
         return {
           id: album.id,
           title: album.name,
@@ -149,8 +153,18 @@ const userData = (state, action) => {
         morePlaylistsUrl: action.payload.next,
       };
     }
+    case "setSavedAlbums": {
+       const albums = convertAlbums(action.payload.items);
+       const refresh = action.payload.refresh;
+      return {
+        ...state,
+        savedAlbums: refresh ? albums : [...state.savedAlbums, ...albums],
+        moreSavedAlbums: action.payload.next,
+      }
+    }
     case "setNewReleases": {
       const albums = convertAlbums(action.payload.albums.items);
+      
       return {
         ...state,
         newReleaseAlbums: [...state.newReleaseAlbums, ...albums],
@@ -208,22 +222,6 @@ const userData = (state, action) => {
       };
     }
 
-    case "setSavedData": {
-      const {
-        searchAlbums,
-        searchPlaylists,
-        searchTracks,
-        searchTitle,
-      } = action.payload;
-      return {
-        ...state,
-        searchAlbums: searchAlbums,
-        searchPlaylists: searchPlaylists,
-        searchTracks: searchTracks,
-        searchTitle: searchTitle,
-        savedSearch: true
-      };
-    }
 
     case "setSearchData": {
       const data = action.payload.data;
@@ -254,6 +252,13 @@ const userData = (state, action) => {
         searchTracks: tracks,
         searchTitle: action.payload.val,
       };
+    }
+
+    case "setIsCreated": {
+      return {
+        ...state,
+        isCreated: action.payload
+      }
     }
 
     case "setGeneratedTracks": {
