@@ -65,9 +65,9 @@ export default App;
 const MainApp = ({ contextStore }) => {
   const { selectedPlaylist } = contextStore.state;
 
-  useEffect(() => {
-    console.log(selectedPlaylist);
-  }, [selectedPlaylist]);
+  // useEffect(() => {
+  //   console.log(selectedPlaylist);
+  // }, [selectedPlaylist]);
   const pageWrap = useRef(null);
   return (
     <div className="App">
@@ -77,7 +77,7 @@ const MainApp = ({ contextStore }) => {
         </div>
         <div ref={pageWrap} className="pages-section">
           {selectedPlaylist ? <Tracks /> : null}
-          {/* <Tracks /> */}
+
           <ScrollToTop pageWrap={pageWrap} />
           <PageRouter />
         </div>

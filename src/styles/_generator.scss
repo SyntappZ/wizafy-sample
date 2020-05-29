@@ -18,8 +18,6 @@
     font-weight: 100;
     color: $light-text;
   }
-
- 
 }
 
 .save-playlist {
@@ -33,6 +31,14 @@
   p {
     padding-right: 10px;
   }
+}
+
+.button-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100px;
 }
 .number-wrap {
   display: flex;
@@ -141,5 +147,23 @@
     align-items: center;
     height: 50px;
   }
+}
 
+.popularity {
+  width: 75%;
+  margin: 50px auto;
+  position: relative;
+  p {
+    font-size: 18px;
+    font-weight: 100;
+    color: $light-text;
+    text-transform: capitalize;
+  }
+
+  .switch-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+  }
 }

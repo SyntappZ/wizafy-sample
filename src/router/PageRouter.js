@@ -63,7 +63,7 @@ const PageRouter = () => {
     if(location.pathname !== "/playlists") {
       dispatch({ type: "clearSearch" });
     }
-   
+    dispatch({ type: "setSelectedPlaylist", payload: null });
   }, [location]);
 
   useEffect(() => {

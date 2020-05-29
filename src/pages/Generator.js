@@ -23,6 +23,7 @@ const Generator = () => {
   const [showAdvanced, setAdvanced] = useState(false);
   const [genresArray, setGenresArray] = useState([]);
   const { title, image, id } = songToGenerate;
+
   const [attributes] = useState([
     {
       title: "acousticness",
@@ -60,6 +61,12 @@ const Generator = () => {
       value: null,
       info:
         "A measure from 0 to 10 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).",
+    },
+    {
+      title: "popularity",
+      value: null,
+      info:
+        "	The popularity of the track. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are.",
     },
   ]);
 
@@ -133,8 +140,12 @@ const Generator = () => {
     setPlaylist([]);
   }, [isSingleSong, songToGenerate]);
 
+  const openAdvanced = () => {
+    setPlaylist([]);
+    setAdvanced(!showAdvanced);
+  };
   return (
-    <div className="wrap" style={selectedPlaylist ? {overflow: 'hidden'} : null}>
+    <div className="wrap">
       {isSingleSong ? (
         <div className="song-generator">
           <Details
@@ -157,12 +168,10 @@ const Generator = () => {
               buttonHandler={generateSingleSong}
             />
 
-            {playlist.length > 0 ? (
-              <div className="save-playlist" onClick={savePlaylist}>
-                <p>save playlist</p>
-                <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
-              </div>
-            ) : null}
+            <SaveButton
+              showButton={playlist.length > 0}
+              savePlaylist={savePlaylist}
+            />
           </div>
           {playlist.length > 0 ? (
             <div className="generated-tracks">
@@ -189,17 +198,15 @@ const Generator = () => {
               />
             </div>
 
-            {playlist.length > 0 ? (
-              <div className="save-playlist" onClick={savePlaylist}>
-                <p>save playlist</p>
-                <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
-              </div>
-            ) : null}
+            <SaveButton
+              showButton={playlist.length > 0}
+              savePlaylist={savePlaylist}
+            />
           </div>
           <div className="advanced">
             <div className="top">
               <h1>Advanced</h1>
-              <div className="show" onClick={() => setAdvanced(!showAdvanced)}>
+              <div className="show" onClick={openAdvanced}>
                 <h2>{showAdvanced ? "hide" : "show"}</h2>
                 {showAdvanced ? (
                   <FiChevronUp style={{ fontSize: "24px", color: "#949494" }} />
@@ -258,16 +265,30 @@ const Generator = () => {
                       Hover over the title for information.
                     </p>
                     <div className="sliders">
-                      {attributes.map((attribute, i) => (
-                        <TuneableAttribute
-                          key={i}
-                          id={i}
-                          title={attribute.title}
-                          info={attribute.info}
-                          value={attribute.value}
-                          updateAttributeValue={updateAttributeValue}
-                        />
-                      ))}
+                      {attributes.map((attribute, i) => {
+                        if (attribute.title !== "popularity") {
+                          return (
+                            <TuneableAttribute
+                              key={i}
+                              id={i}
+                              title={attribute.title}
+                              info={attribute.info}
+                              value={attribute.value}
+                              updateAttributeValue={updateAttributeValue}
+                            />
+                          );
+                        }
+                      })}
+                    </div>
+                    <div className="popularity">
+                      <TuneableAttribute
+                        id={6}
+                        title={attributes[6].title}
+                        info={attributes[6].info}
+                        value={attributes[6].value}
+                        updateAttributeValue={updateAttributeValue}
+                        isPopularity={true}
+                      />
                     </div>
                     <NumberInput
                       inputRef={advTrackAmountRef}
@@ -281,6 +302,15 @@ const Generator = () => {
               </div>
             ) : null}
           </div>
+          {playlist.length > 0 && genresArray.length > 0 ? (
+            <div className="button-wrap">
+              <h4>Tracks: {playlist.length}</h4>
+              <SaveButton
+                showButton={playlist.length > 0}
+                savePlaylist={savePlaylist}
+              />
+            </div>
+          ) : null}
 
           {playlist.length > 0 ? (
             <div className="generated-tracks">
@@ -299,6 +329,19 @@ const Generator = () => {
 };
 
 export default Generator;
+
+const SaveButton = ({ showButton, savePlaylist }) => {
+  return (
+    <>
+      {showButton ? (
+        <div className="save-playlist" onClick={savePlaylist}>
+          <p>save playlist</p>
+          <MdPlaylistAdd style={{ fontSize: "18px", color: "grey" }} />
+        </div>
+      ) : null}
+    </>
+  );
+};
 
 const NumberInput = ({
   inputRef,
@@ -336,7 +379,13 @@ const NumberInput = ({
   );
 };
 
-const TuneableAttribute = ({ title, info, id, updateAttributeValue }) => {
+const TuneableAttribute = ({
+  title,
+  info,
+  id,
+  updateAttributeValue,
+  isPopularity,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
   const [sliderValue, setSliderValue] = useState(null);
   const [showInfo, setInfo] = useState(false);
@@ -347,14 +396,29 @@ const TuneableAttribute = ({ title, info, id, updateAttributeValue }) => {
   }, [isChecked]);
 
   useEffect(() => {
+    console.log(sliderValue);
     updateAttributeValue({ title: title, id: id, value: sliderValue });
   }, [sliderValue]);
 
   const getSliderValue = (value) => {
     setSliderValue(value);
   };
+
+  let marks = {};
+  Array(11)
+    .fill(0)
+    .forEach((num, i) => {
+      marks[i * 10] = i * 10;
+    });
+
+  const sliderAts = {
+    max: isPopularity ? 100 : 1.0,
+    marks: isPopularity
+      ? marks
+      : { 0: 0, 0.2: 2, 0.4: 4, 0.6: 6, 0.8: 8, 1.0: 10 },
+  };
   return (
-    <div className="attribute">
+    <div className={isPopularity ? "popularity" : "attribute"}>
       <Tooltip message={info} toggle={showInfo} />
 
       <div className="switch-wrap">
@@ -378,8 +442,8 @@ const TuneableAttribute = ({ title, info, id, updateAttributeValue }) => {
           min={0}
           value={sliderValue}
           defaultValue={0}
-          max={1.0}
-          marks={{ 0: 0, 0.2: 2, 0.4: 4, 0.6: 6, 0.8: 8, 1.0: 10 }}
+          max={sliderAts.max}
+          marks={sliderAts.marks}
           step={null}
         />
       </div>

@@ -21,7 +21,7 @@ const Playlists = () => {
   };
 
   return (
-    <div className="wrap">
+    <div className="wrap" style={selectedPlaylist ? {overflow: 'hidden', height: '100%'} : null} >
       <Search
         isPlaylists={true}
         placeholder={"Search for albums & playlists..."}

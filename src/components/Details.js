@@ -9,7 +9,7 @@ import { PlaylistStore } from "../context/ContextProvider";
 const Details = ({ image, title, description, category, isGenerator, id }) => {
   const history = useHistory();
   const contextStore = useContext(PlaylistStore);
-  const { dispatch } = contextStore;
+  const { dispatch, state } = contextStore;
 
   const defaultOptions = {
     loop: true,
@@ -21,7 +21,12 @@ const Details = ({ image, title, description, category, isGenerator, id }) => {
   };
 
   const goBack = () => {
+    if(state.selectedPlaylist) {
     dispatch({ type: "setSelectedPlaylist", payload: null });
+
+    }else{
+      history.goBack()
+    }
     dispatch({ type: "setSongToGenerate", payload: {} });
   };
 
