@@ -20,7 +20,7 @@
   align-items: flex-end;
 
   .image-wrap {
-    width: 200px;
+    width: 200px;  
 
     img {
       width: 100%;
@@ -31,7 +31,12 @@
  
 
   .text-wrap {
-    padding: 10px 20px;
+    padding: 10px 0 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    width: 100%;
+    min-height: 100px;
 
     h3 {
       color: $light-text;

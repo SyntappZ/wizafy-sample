@@ -203,6 +203,12 @@ const ContextProvider = ({ children }) => {
     );
   };
 
+  const setToastMessage = (message) => {
+    console.log(message)
+
+    dispatch({type: 'setToastMessage', payload: message})
+  }
+
   const refreshData = (type) => {
     switch (type) {
       case "playlists": {
@@ -246,7 +252,8 @@ const ContextProvider = ({ children }) => {
     getRecomendations: getRecomendations,
     refreshData: refreshData,
     addFavorites: addFavorites,
-    toggleModal: toggleModal
+    toggleModal: toggleModal,
+    setToastMessage: setToastMessage
   
   };
 

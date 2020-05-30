@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ContextProvider from "./context/ContextProvider";
 import { MdPerson, MdArrowDownward } from "react-icons/md";
 import Loading from "./components/Loading";
+import Toast from './components/Toast'
 import Player from "./components/Player";
 import { PlaylistStore } from "./context/ContextProvider";
 import AlbumPage from "./pages/AlbumPage";
@@ -79,7 +80,7 @@ const MainApp = ({ contextStore }) => {
         </div>
         <div ref={pageWrap} className="pages-section">
           {selectedPlaylist ? <AlbumPage /> : null}
-
+          <Toast />
           <ScrollToTop pageWrap={pageWrap} />
           <PageRouter />
         </div>

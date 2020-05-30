@@ -42,7 +42,8 @@ const userState = {
   searchTitle: "",
   savedSearch: false,
   modalOpen: false,
-  isCreated: true
+  isCreated: true,
+  toastMessage: ''
 };
 
 const convertAlbums = (albums) => {
@@ -108,6 +109,13 @@ const userData = (state, action) => {
         ...state,
         page: action.payload,
       };
+    }
+
+    case 'setToastMessage': {
+      return {
+        ...state,
+        toastMessage: action.payload
+      }
     }
 
     case "setPlaylists": {

@@ -33,8 +33,6 @@ body {
 .App {
   font-family: "Baloo Da 2", cursive;
   color: $text;
- 
- 
 }
 
 .wrap {
@@ -77,10 +75,12 @@ body {
 }
 
 .save-button {
+  min-width: 190px;
   display: flex;
   height: 50px;
   padding: 0 20px;
   align-items: center;
+  justify-content: space-evenly;
   cursor: pointer;
   border-radius: 8px;
   background: #e4e4e4;

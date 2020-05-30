@@ -8,7 +8,13 @@ import { convertTracks } from "../data/trackConverter.js";
 const AlbumPage = () => {
   const contextStore = useContext(PlaylistStore);
   const [playlistTracks, setTracks] = useState([]);
-  const { state, fetchData, putData, refreshData } = contextStore;
+  const {
+    state,
+    fetchData,
+    putData,
+    setToastMessage,
+    refreshData,
+  } = contextStore;
   const { isCreated } = state;
   const { image, title, tracks, description, id } = state.selectedPlaylist;
   const [next, setNext] = useState("");
@@ -23,17 +29,17 @@ const AlbumPage = () => {
   const albumHandler = async (method) => {
     const url = `https://api.spotify.com/v1/me/albums`;
     const body = [id];
-    const del = method === 'DELETE'
+    const del = method === "DELETE";
     const data = await putData(url, method, body);
     if (data.status === 200) {
-      console.log("added album");
+      const message = del ? "Album removed." : "Album added.";
+      setToastMessage(message);
       setIsSaved(!del);
     } else {
       console.log("error code" + data.status);
     }
-    refreshData('albums')
+    refreshData("albums");
   };
- 
 
   useEffect(() => {
     savedCheck();
@@ -54,7 +60,7 @@ const AlbumPage = () => {
         <h1 className="title">{title} Tracks</h1>
         <SaveButton
           showButton={isCreated}
-          savePlaylist={() => albumHandler(isSaved ? 'DELETE' : 'PUT')}
+          savePlaylist={() => albumHandler(isSaved ? "DELETE" : "PUT")}
           title={isSaved ? "remove album" : "save album"}
           isSaved={isSaved}
         />

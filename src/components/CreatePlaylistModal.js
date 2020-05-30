@@ -5,7 +5,7 @@ import { PlaylistStore } from "../context/ContextProvider";
 import ToggleSwitch from "./ToggleSwitch";
 const CreatePlaylistModal = () => {
   const contextStore = useContext(PlaylistStore);
-  const { sendData, state, refreshData, dispatch, toggleModal } = contextStore;
+  const { sendData, state, refreshData, dispatch, toggleModal, setToastMessage } = contextStore;
   const { generatedPlaylist, userId, modalOpen,  } = state;
   const titleRef = useRef("");
   const descriptionRef = useRef("");
@@ -18,6 +18,7 @@ const CreatePlaylistModal = () => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
     sendData(url, "POST", body).then((data) => {
       refreshData("playlists");
+      setToastMessage("Playlist added.")
       dispatch({ type: "setGeneratedPlaylist", payload: null });
       toggleModal();
     });
@@ -35,6 +36,7 @@ const CreatePlaylistModal = () => {
         addToPlaylist(playlistId, generatedPlaylist);
       } else {
         refreshData("playlists");
+        setToastMessage("Playlist created.")
         toggleModal();
       }
     });

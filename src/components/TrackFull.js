@@ -12,7 +12,7 @@ import Menu from "./Menu";
 
 const TrackFull = ({ track, updateFavorite }) => {
   const contextStore = useContext(PlaylistStore);
-  const { addFavorites, sendData, dispatch } = contextStore;
+  const { addFavorites, sendData, dispatch, setToastMessage } = contextStore;
   const { isPlaying, isPaused, currentTrack } = contextStore.state;
   const [state, setState] = useState({
     lottiePaused: false,
@@ -66,8 +66,11 @@ const TrackFull = ({ track, updateFavorite }) => {
   const handleFavorite = async () => {
     const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
     const method = favorite ? "DELETE" : "PUT";
+    const message = favorite ? 'Removed from favorites.' : 'Added to favorites.'
     const action = await addFavorites(url, method);
-    //toast here!!
+    if(action.status === 200) {
+      setToastMessage(message)
+    }
     updateFavorite(id, track);
   };
 
