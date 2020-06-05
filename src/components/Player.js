@@ -100,7 +100,7 @@ const Player = () => {
     <div className="player-container">
       <div className="now-playing">
         <div className="image-wrap">
-          <img src={image} alt="album art" />
+        { image ? <img src={image} alt="album art" /> : null}
           <div className="text-wrap">
             <h3>{title}</h3>
             <p>{artist}</p>

@@ -43,6 +43,7 @@ const userState = {
   savedSearch: false,
   modalOpen: false,
   isCreated: true,
+  isFeatured: false,
   toastMessage: ''
 };
 
@@ -109,6 +110,13 @@ const userData = (state, action) => {
         ...state,
         page: action.payload,
       };
+    }
+
+    case "setFeatured" : {
+      return  {
+        ...state,
+        isFeatured: action.payload
+      }
     }
 
     case 'setToastMessage': {

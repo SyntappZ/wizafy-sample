@@ -204,8 +204,6 @@ const ContextProvider = ({ children }) => {
   };
 
   const setToastMessage = (message) => {
-    console.log(message)
-
     dispatch({type: 'setToastMessage', payload: message})
   }
 

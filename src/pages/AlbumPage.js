@@ -14,14 +14,15 @@ const AlbumPage = () => {
     putData,
     setToastMessage,
     refreshData,
+    dispatch
   } = contextStore;
-  const { isCreated } = state;
+  const { isCreated, isFeatured, userId } = state;
   const { image, title, tracks, description, id } = state.selectedPlaylist;
   const [next, setNext] = useState("");
   const [isSaved, setIsSaved] = useState(false);
 
   const savedCheck = async () => {
-    const url = `https://api.spotify.com/v1/me/albums/contains?ids=${id}`;
+    const url = isFeatured ? `https://api.spotify.com/v1/playlists/${id}/followers/contains?ids=${userId}` : `https://api.spotify.com/v1/me/albums/contains?ids=${id}`;
     const data = await fetchData(url, "GET");
     setIsSaved(data[0]);
   };
@@ -41,6 +42,22 @@ const AlbumPage = () => {
     refreshData("albums");
   };
 
+  const playlistHandler = async (method) => {
+    const url = `https://api.spotify.com/v1/playlists/${id}/followers`;
+    const del = method === "DELETE";
+
+    const data = await putData(url, method);
+    if (data.status === 200) {
+      const message = del ? "Playlist removed." : "playlist added.";
+      setToastMessage(message);
+      setIsSaved(!del);
+    } else {
+      console.log("error code" + data.status);
+    }
+    dispatch({ type: "setFeatured", payload: false });
+    refreshData("playlists");
+  };
+
   useEffect(() => {
     savedCheck();
     fetchData(tracks + "?limit=50", "GET").then((data) => {
@@ -58,12 +75,21 @@ const AlbumPage = () => {
       <Details title={title} image={image} description={description} id={id} />
       <div className="save-btn-wrap">
         <h1 className="title">{title} Tracks</h1>
-        <SaveButton
-          showButton={isCreated}
-          savePlaylist={() => albumHandler(isSaved ? "DELETE" : "PUT")}
-          title={isSaved ? "remove album" : "save album"}
-          isSaved={isSaved}
-        />
+        {isFeatured ? (
+          <SaveButton
+            showButton={isCreated}
+            savePlaylist={() => playlistHandler(isSaved ? "DELETE" : "PUT")}
+            title={isSaved ? "remove playlist" : "save playlist"}
+            isSaved={isSaved}
+          />
+        ) : (
+          <SaveButton
+            showButton={isCreated}
+            savePlaylist={() => albumHandler(isSaved ? "DELETE" : "PUT")}
+            title={isSaved ? "remove album" : "save album"}
+            isSaved={isSaved}
+          />
+        )}
       </div>
 
       <TrackList tracklist={playlistTracks} next={next} />

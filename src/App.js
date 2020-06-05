@@ -5,14 +5,14 @@ import PageRouter from "./router/PageRouter";
 import ScrollToTop from "./router/ScrollToTop";
 import { BrowserRouter as Router } from "react-router-dom";
 import ContextProvider from "./context/ContextProvider";
-import { MdPerson, MdArrowDownward } from "react-icons/md";
-import Loading from "./components/Loading";
+import StartScreen from './components/StartScreen'
+
 import Toast from './components/Toast'
 import Player from "./components/Player";
 import { PlaylistStore } from "./context/ContextProvider";
 import AlbumPage from "./pages/AlbumPage";
 import CreatePlaylist from "./components/CreatePlaylistModal";
-import { serverUrl } from "./serverUrl";
+
 const Screen = () => {
   const [signedIn, setSignedIn] = useState(false);
   const contextStore = useContext(PlaylistStore);
@@ -30,27 +30,7 @@ const Screen = () => {
     </div>
   );
 };
-const StartScreen = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const loginToSpoify = () => {
-    setIsLoading(true);
-    return (window.location = serverUrl);
-  };
-  return (
-    <div className="start-screen">
-      <div className="wrap">
-        <h1>welcome to playlist wizard</h1>
-        <h3>sign in to spotify for wizardry</h3>
-        <MdArrowDownward className="down-arrow" />
-        <div onClick={loginToSpoify} className="btn">
-          <MdPerson className="icon" style={{ fontSize: "20px" }} />
-          <p>sign in</p>
-        </div>
-      </div>
-      {isLoading ? <Loading /> : null}
-    </div>
-  );
-};
+
 
 function App() {
   return (

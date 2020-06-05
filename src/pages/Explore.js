@@ -37,6 +37,7 @@ const ExploreMain = ({ store, state }) => {
   } = state;
 
   const getPlaylistDetails = (playlist) => {
+    dispatch({ type: "setFeatured", payload: true });
     dispatch({ type: "setSelectedPlaylist", payload: playlist });
   };
 
@@ -57,6 +58,7 @@ const ExploreMain = ({ store, state }) => {
                 key={i}
                 playlist={playlist}
                 getPlaylistDetails={getPlaylistDetails}
+               
               />
             );
           })}

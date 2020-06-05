@@ -1,0 +1,44 @@
+@import './colors';
+
+.start-screen {
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    
+    background: white;
+    position: absolute;
+    overflow: hidden;
+
+    .background {
+        background: $purpleLinear;
+        width: 100%;
+        height: 50vh;
+        position: absolute;
+        z-index: -1;
+    }
+     .top {
+        height: 50vh;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+    }
+    .wrap {
+      text-align: center;
+      text-transform: capitalize;
+      margin: auto;
+       
+      .down-arrow {
+        font-size: 30px;
+        margin: 20px 0;
+        color: $pink;
+      }
+  
+      h1 {
+        text-transform: capitalize;
+        font-size: 40px;
+      }
+      h3 {
+        color: $pink;
+      }
+    }
+  }

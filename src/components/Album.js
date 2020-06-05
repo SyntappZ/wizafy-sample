@@ -10,12 +10,14 @@ const Album = ({ album, created }) => {
     dispatch({ type: "setIsCreated", payload: !created });
     
   };
+
+  const title = album.title.length > 20 ? album.title.slice(0, 20) + '...' : album.title 
   return (
     <div className="album">
       <div className="image-wrap" onClick={setAlbum}>
         <img src={album.image} alt={`${album.title} album art`} />
       </div>
-      <p>{album.title.split("-")[0]}</p>
+      <p>{title}</p>
     </div>
   );
 };
