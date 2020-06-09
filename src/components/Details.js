@@ -28,6 +28,7 @@ const Details = ({ image, title, description, category, isGenerator, id, setStar
       history.goBack();
     }
     dispatch({ type: "setSongToGenerate", payload: {} });
+    dispatch({type: 'setFeatured', payload: false})
   };
 
   

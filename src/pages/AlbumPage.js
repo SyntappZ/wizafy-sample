@@ -80,10 +80,8 @@ const AlbumPage = () => {
     
     >
       <Details title={title} image={image} description={description} id={id} setStartAnimation={setStartAnimation} />
-      <motion.div className="save-btn-wrap"
-       initial={fadeIn.initial}
-       animate={fadeIn.animate}
-       transition={fadeIn.transition}
+      <div className="save-btn-wrap"
+      
       >
         <h1 className="title">{title} Tracks</h1>
         {isFeatured ? (
@@ -101,7 +99,7 @@ const AlbumPage = () => {
             isSaved={isSaved}
           />
         )}
-      </motion.div>
+      </div>
 
       <TrackList tracklist={playlistTracks} next={next} startAnimation={startAnimation} />
     </motion.div>
