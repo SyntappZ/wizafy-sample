@@ -3,6 +3,8 @@ import TrackFull from "./TrackFull";
 import { PlaylistStore } from "../context/ContextProvider";
 import { IoMdCloudDownload } from "react-icons/io";
 import { convertTracks } from "../data/trackConverter.js";
+import { motion } from "framer-motion";
+import { fadeInDelay } from "../data/animations.js";
 const TrackList = ({ tracklist, next, updateNext }) => {
   const [tracks, setTracks] = useState([]);
   const [id, setId] = useState("");
@@ -43,8 +45,13 @@ const TrackList = ({ tracklist, next, updateNext }) => {
     setId(nextId);
   };
 
+  const { initial, animate, transition } = fadeInDelay;
+
+
   return (
-    <div className="tracklist">
+    <div className="tracklist"
+   
+    >
       {tracks.map((track, i) => {
         return (
           <TrackFull key={i} track={track} updateFavorite={updateFavorite} />

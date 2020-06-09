@@ -2,9 +2,11 @@ import React, { useRef } from "react";
 import Track from "./Track";
 import Album from "./Album";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
-
+import { motion } from "framer-motion";
+import { fadeIn } from "../data/animations.js";
 const TrackScroller = ({ loadMoreTracks, title, tracks, album, created }) => {
   const scrollerRef = useRef(null);
+ 
 
   const scroller = (direction) => {
     const { offsetWidth } = scrollerRef.current;
@@ -15,8 +17,16 @@ const TrackScroller = ({ loadMoreTracks, title, tracks, album, created }) => {
     }
   };
 
+  const { initial, animate, transition } = fadeIn;
+
+  
+
   return (
-    <div className="scroller">
+    <motion.div className="scroller"
+    initial={initial}
+    animate={animate}
+    transition={transition}
+    >
       <div className="title-wrap">
         <h1 className="title">{title}</h1>
         <div className="scroll-buttons">
@@ -41,7 +51,7 @@ const TrackScroller = ({ loadMoreTracks, title, tracks, album, created }) => {
           <Track loadMoreTracks={loadMoreTracks} track={null} />
         ) : null}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
