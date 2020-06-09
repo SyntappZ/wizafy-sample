@@ -3,14 +3,21 @@ import { PlaylistStore } from "../context/ContextProvider";
 import { genres } from "../data/genres.js";
 import { convertTracks } from "../data/trackConverter.js";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-
+import { attributeData } from "../data/categories.js";
 import Slider from "rc-slider";
 import TrackList from "../components/TrackList";
 import TrackScroller from "../components/TrackScroller";
-import SaveButton from '../components/SaveButton'
+import SaveButton from "../components/SaveButton";
 import ToggleSwitch from "../components/ToggleSwitch";
 import Details from "../components/Details";
 import Tooltip from "../components/Tooltip";
+import { motion } from "framer-motion";
+import {
+  fadeInRight,
+  fadeInUp,
+  fadeIn,
+  fadeInLeft,
+} from "../data/animations.js";
 
 const Generator = () => {
   const contextStore = useContext(PlaylistStore);
@@ -18,58 +25,23 @@ const Generator = () => {
   const [amountValue, setAmountValue] = useState("");
   const [advAmountValue, setAdvAmountValue] = useState("");
   const { getRecomendations, state, dispatch, loadMoreTracks } = contextStore;
-  const { topFiveIds, songToGenerate, selectedPlaylist, myTopTracks, moreTopTracks } = state;
+  const {
+    topFiveIds,
+    songToGenerate,
+    selectedPlaylist,
+    myTopTracks,
+    moreTopTracks,
+  } = state;
   const trackAmountRef = useRef("");
   const advTrackAmountRef = useRef("");
   const [showAdvanced, setAdvanced] = useState(false);
   const [genresArray, setGenresArray] = useState([]);
   const { title, image, id } = songToGenerate;
-
-  const [attributes] = useState([
-    {
-      title: "acousticness",
-      value: null,
-      info:
-        "A confidence measure from 0 to 10 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.",
-    },
-
-    {
-      title: "danceability",
-      value: null,
-      info:
-        "	Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0 is least danceable and 10 is most danceable.",
-    },
-    {
-      title: "energy",
-      value: null,
-      info:
-        "	Energy is a measure from 0 to 10 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.",
-    },
-    {
-      title: "instrumentalness",
-      value: null,
-      info:
-        "	Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The closer the instrumentalness value is to 10, the greater likelihood the track contains no vocal content. Values above 5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 10.",
-    },
-    {
-      title: "liveness",
-      value: null,
-      info:
-        "	Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 8 provides strong likelihood that the track is live.",
-    },
-    {
-      title: "valence",
-      value: null,
-      info:
-        "A measure from 0 to 10 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).",
-    },
-    {
-      title: "popularity",
-      value: null,
-      info:
-        "	The popularity of the track. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are.",
-    },
-  ]);
+  const [attributes, setAttributes] = useState([]);
+  const [startAnimation, setStartAnimation] = useState(false);
+  useEffect(() => {
+    setAttributes(attributeData);
+  }, [attributeData]);
 
   const savePlaylist = () => {
     dispatch({ type: "setGeneratedPlaylist", payload: playlist });
@@ -160,6 +132,7 @@ const Generator = () => {
             image={image}
             description={`Generate a playlist with song's like ${title}`}
             isGenerator={true}
+            setStartAnimation={setStartAnimation}
           />
           <div
             style={{
@@ -178,7 +151,7 @@ const Generator = () => {
             <SaveButton
               showButton={playlist.length > 0}
               savePlaylist={savePlaylist}
-              title={'save playlist'}
+              title={"save playlist"}
             />
           </div>
           {playlist.length > 0 ? (
@@ -188,6 +161,7 @@ const Generator = () => {
                 loadMore={null}
                 favorites={false}
                 next={null}
+                startAnimation={startAnimation}
               />
             </div>
           ) : null}
@@ -196,137 +170,143 @@ const Generator = () => {
         <>
           <h4 className="gen-title">generator</h4>
           <TrackScroller
-              title="my top played tracks"
-              loadMoreTracks={loadMoreTopTracks}
-              tracks={myTopTracks}
-              album={null}
-            />
-          <div className="basic">
-           
-            <div>
-              <h1>Generate based on your top played tracks</h1>
-              <NumberInput
-                inputRef={trackAmountRef}
-                onChangeEvent={getAmountValue}
-                amountValue={amountValue}
-                buttonHandler={generateTopPlayed}
+            title="my top played tracks"
+            loadMoreTracks={loadMoreTopTracks}
+            tracks={myTopTracks}
+            album={null}
+          />
+          <motion.div
+            initial={fadeInUp.initial}
+            animate={fadeInUp.animate}
+            transition={fadeInUp.transition}
+            onAnimationComplete={() => setStartAnimation(true)}
+          >
+            <div className="basic">
+              <div>
+                <h1>Generate based on your top played tracks</h1>
+                <NumberInput
+                  inputRef={trackAmountRef}
+                  onChangeEvent={getAmountValue}
+                  amountValue={amountValue}
+                  buttonHandler={generateTopPlayed}
+                />
+              </div>
+
+              <SaveButton
+                showButton={playlist.length > 0}
+                savePlaylist={savePlaylist}
+                title={"save playlist"}
               />
             </div>
-
-            <SaveButton
-              showButton={playlist.length > 0}
-              savePlaylist={savePlaylist}
-              title={'save playlist'}
-
-            />
-          </div>
-          <div className="advanced">
-            <div className="top">
-              <h1>Advanced</h1>
-              <div className="show" onClick={openAdvanced}>
-                <h2>{showAdvanced ? "hide" : "show"}</h2>
-                {showAdvanced ? (
-                  <FiChevronUp style={{ fontSize: "24px", color: "#949494" }} />
-                ) : (
-                  <FiChevronDown
-                    style={{ fontSize: "24px", color: "#949494" }}
-                  />
-                )}
-              </div>
-            </div>
-
-            {showAdvanced ? (
-              <div className="generator-form">
-                <h1
-                  style={{
-                    fontSize: "25px",
-                    color: "#333",
-                    textAlign: "center",
-                  }}
-                >
-                  Genres
-                </h1>
-
-                <p
-                  style={{
-                    color: "#aaa",
-                    textAlign: "center",
-                  }}
-                >
-                  Choose 1 or more genres to show attributes.
-                </p>
-
-                <Genres
-                  genres={genres}
-                  genresArray={genresArray}
-                  setGenresArray={setGenresArray}
-                />
-                {genresArray.length > 0 ? (
-                  <>
-                    <h1
-                      style={{
-                        marginTop: "50px",
-                        fontSize: "25px",
-                        color: "#333",
-                        textAlign: "center",
-                      }}
-                    >
-                      attributes
-                    </h1>
-                    <p
-                      style={{
-                        color: "#aaa",
-                        textAlign: "center",
-                      }}
-                    >
-                      Hover over the title for information.
-                    </p>
-                    <div className="sliders">
-                      {attributes.map((attribute, i) => {
-                        if (attribute.title !== "popularity") {
-                          return (
-                            <TuneableAttribute
-                              key={i}
-                              id={i}
-                              title={attribute.title}
-                              info={attribute.info}
-                              value={attribute.value}
-                              updateAttributeValue={updateAttributeValue}
-                            />
-                          );
-                        }
-                      })}
-                    </div>
-                    <div className="popularity">
-                      <TuneableAttribute
-                        id={6}
-                        title={attributes[6].title}
-                        info={attributes[6].info}
-                        value={attributes[6].value}
-                        updateAttributeValue={updateAttributeValue}
-                        isPopularity={true}
-                      />
-                    </div>
-                    <NumberInput
-                      inputRef={advTrackAmountRef}
-                      onChangeEvent={getAdvAmountValue}
-                      amountValue={advAmountValue}
-                      buttonHandler={generateAdvanced}
-                      advanced={true}
+            <div className="advanced">
+              <div className="top">
+                <h1>Advanced</h1>
+                <div className="show" onClick={openAdvanced}>
+                  <h2>{showAdvanced ? "hide" : "show"}</h2>
+                  {showAdvanced ? (
+                    <FiChevronUp
+                      style={{ fontSize: "24px", color: "#949494" }}
                     />
-                  </>
-                ) : null}
+                  ) : (
+                    <FiChevronDown
+                      style={{ fontSize: "24px", color: "#949494" }}
+                    />
+                  )}
+                </div>
               </div>
-            ) : null}
-          </div>
+
+              {showAdvanced ? (
+                <div className="generator-form">
+                  <h1
+                    style={{
+                      fontSize: "25px",
+                      color: "#333",
+                      textAlign: "center",
+                    }}
+                  >
+                    Genres
+                  </h1>
+
+                  <p
+                    style={{
+                      color: "#aaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    Choose 1 or more genres to show attributes.
+                  </p>
+
+                  <Genres
+                    genres={genres}
+                    genresArray={genresArray}
+                    setGenresArray={setGenresArray}
+                  />
+                  {genresArray.length > 0 ? (
+                    <>
+                      <h1
+                        style={{
+                          marginTop: "50px",
+                          fontSize: "25px",
+                          color: "#333",
+                          textAlign: "center",
+                        }}
+                      >
+                        attributes
+                      </h1>
+                      <p
+                        style={{
+                          color: "#aaa",
+                          textAlign: "center",
+                        }}
+                      >
+                        Hover over the title for information.
+                      </p>
+                      <div className="sliders">
+                        {attributes.map((attribute, i) => {
+                          if (attribute.title !== "popularity") {
+                            return (
+                              <TuneableAttribute
+                                key={i}
+                                id={i}
+                                title={attribute.title}
+                                info={attribute.info}
+                                value={attribute.value}
+                                updateAttributeValue={updateAttributeValue}
+                              />
+                            );
+                          }
+                        })}
+                      </div>
+                      <div className="popularity">
+                        <TuneableAttribute
+                          id={6}
+                          title={attributes[6].title}
+                          info={attributes[6].info}
+                          value={attributes[6].value}
+                          updateAttributeValue={updateAttributeValue}
+                          isPopularity={true}
+                        />
+                      </div>
+                      <NumberInput
+                        inputRef={advTrackAmountRef}
+                        onChangeEvent={getAdvAmountValue}
+                        amountValue={advAmountValue}
+                        buttonHandler={generateAdvanced}
+                        advanced={true}
+                      />
+                    </>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+          </motion.div>
           {playlist.length > 0 && genresArray.length > 0 ? (
             <div className="button-wrap">
               <h4>Tracks: {playlist.length}</h4>
               <SaveButton
                 showButton={playlist.length > 0}
                 savePlaylist={savePlaylist}
-                title={'save playlist'}
-
+                title={"save playlist"}
               />
             </div>
           ) : null}
@@ -338,6 +318,7 @@ const Generator = () => {
                 loadMore={null}
                 favorites={false}
                 next={null}
+                startAnimation={startAnimation}
               />
             </div>
           ) : null}
@@ -348,8 +329,6 @@ const Generator = () => {
 };
 
 export default Generator;
-
-
 
 const NumberInput = ({
   inputRef,

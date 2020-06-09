@@ -11,9 +11,13 @@ const CategoryPlaylists = () => {
   const { selectedCategory } = state;
   const { title, playlists, image } = selectedCategory;
 
+  const setStartAnimation = () => {
+    
+  }
+
   return (
     <div className="wrap">
-      <Details title={title} image={image} category={true} />
+      <Details title={title} image={image} category={true} setStartAnimation={setStartAnimation} />
       <PlaylistBrowser playlists={playlists} title={title} />
     </div>
   );

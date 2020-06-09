@@ -3,9 +3,14 @@ import Lottie from "react-lottie";
 import soundWave from "../images/long-sound-wave.json";
 import { FaStepForward, FaVolumeUp, FaStepBackward } from "react-icons/fa";
 import { MdPause, MdPlayArrow } from "react-icons/md";
-
+import { motion } from "framer-motion";
 import { PlaylistStore } from "../context/ContextProvider";
-
+import {
+  fadeInRight,
+  fadeIn,
+  fadeInLeft,
+  scaleUp,
+} from "../data/animations.js";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 const Player = () => {
@@ -90,9 +95,9 @@ const Player = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const lottie = isPlaying ? ( <Lottie
-    options={soundWaveOptions}
-  />) : null
+  const lottie = isPlaying ? (
+      <Lottie options={soundWaveOptions} />
+  ) : null;
 
   const { title, artist, image } = track;
   const timePosition = Math.floor(time);
@@ -100,7 +105,7 @@ const Player = () => {
     <div className="player-container">
       <div className="now-playing">
         <div className="image-wrap">
-        { image ? <img src={image} alt="album art" /> : null}
+          {image ? <img src={image} alt="album art" /> : null}
           <div className="text-wrap">
             <h3>{title}</h3>
             <p>{artist}</p>
@@ -131,9 +136,7 @@ const Player = () => {
           <p>0:30</p>
         </div>
       </div>
-      <div className="lottie-wrap">
-        {lottie}
-      </div>
+      <div className="lottie-wrap">{lottie}</div>
       <div className="volume">
         <div className="volume-wrap">
           <FaVolumeUp className="volume-icon" />

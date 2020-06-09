@@ -1,4 +1,4 @@
-export const categories = [
+ const categories = [
   {
     title: "Top Lists",
     id: "toplists",
@@ -169,11 +169,6 @@ export const categories = [
       "https://t.scdn.co/media/original/metal_27c921443fd0a5ba95b1b2c2ae654b2b_274x274.jpg",
   },
   {
-    title: "Kids & Family",
-    id: "kids",
-    icon: "https://t.scdn.co/images/4ebb98ae04d34698a3a1ac4252c69ac6.jpeg",
-  },
-  {
     title: "Dinner",
     id: "dinner",
     icon:
@@ -203,3 +198,51 @@ export const categories = [
       "https://t.scdn.co/media/derived/travel-274x274_1e89cd5b42cf8bd2ff8fc4fb26f2e955_0_0_274_274.jpg",
   },
 ];
+
+const attributeData = [
+  {
+    title: "acousticness",
+    value: null,
+    info:
+      "A confidence measure from 0 to 10 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.",
+  },
+
+  {
+    title: "danceability",
+    value: null,
+    info:
+      "	Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0 is least danceable and 10 is most danceable.",
+  },
+  {
+    title: "energy",
+    value: null,
+    info:
+      "	Energy is a measure from 0 to 10 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.",
+  },
+  {
+    title: "instrumentalness",
+    value: null,
+    info:
+      "	Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The closer the instrumentalness value is to 10, the greater likelihood the track contains no vocal content. Values above 5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 10.",
+  },
+  {
+    title: "liveness",
+    value: null,
+    info:
+      "	Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 8 provides strong likelihood that the track is live.",
+  },
+  {
+    title: "valence",
+    value: null,
+    info:
+      "A measure from 0 to 10 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).",
+  },
+  {
+    title: "popularity",
+    value: null,
+    info:
+      "	The popularity of the track. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are.",
+  },
+]
+
+export {attributeData, categories}

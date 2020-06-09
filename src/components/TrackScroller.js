@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../data/animations.js";
 const TrackScroller = ({ loadMoreTracks, title, tracks, album, created }) => {
   const scrollerRef = useRef(null);
- 
 
   const scroller = (direction) => {
     const { offsetWidth } = scrollerRef.current;
@@ -17,15 +16,12 @@ const TrackScroller = ({ loadMoreTracks, title, tracks, album, created }) => {
     }
   };
 
-  const { initial, animate, transition } = fadeIn;
-
-  
-
   return (
-    <motion.div className="scroller"
-    initial={initial}
-    animate={animate}
-    transition={transition}
+    <motion.div
+      className="scroller"
+      initial={fadeIn.initial}
+      animate={fadeIn.animate}
+      transition={fadeIn.transition}
     >
       <div className="title-wrap">
         <h1 className="title">{title}</h1>

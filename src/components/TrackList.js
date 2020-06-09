@@ -3,13 +3,14 @@ import TrackFull from "./TrackFull";
 import { PlaylistStore } from "../context/ContextProvider";
 import { IoMdCloudDownload } from "react-icons/io";
 import { convertTracks } from "../data/trackConverter.js";
-import { motion } from "framer-motion";
-import { fadeInDelay } from "../data/animations.js";
-const TrackList = ({ tracklist, next, updateNext }) => {
+import { motion, useAnimation } from "framer-motion";
+import { fadeIn } from "../data/animations.js";
+const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
   const [tracks, setTracks] = useState([]);
   const [id, setId] = useState("");
   const contextStore = useContext(PlaylistStore);
   const { favoriteCheck, fetchData } = contextStore;
+  const controls = useAnimation()
   let _mounted = false;
   useEffect(() => {
     _mounted = true;
@@ -18,7 +19,6 @@ const TrackList = ({ tracklist, next, updateNext }) => {
       _mounted = false;
     };
   }, [tracklist, id]);
-  
 
   const check = async (tracklist) => {
     const data = await favoriteCheck(tracklist);
@@ -45,18 +45,23 @@ const TrackList = ({ tracklist, next, updateNext }) => {
     setId(nextId);
   };
 
-  const { initial, animate, transition } = fadeInDelay;
-
-
+  const { initial, animate, transition } = fadeIn;
+  if(startAnimation) {
+    controls.start(animate)
+  }
+ 
   return (
-    <div className="tracklist"
-   
+    <motion.div
+      className="tracklist"
+      initial={initial}
+      animate={controls}
+      transition={transition}
     >
-      {tracks.map((track, i) => {
-        return (
-          <TrackFull key={i} track={track} updateFavorite={updateFavorite} />
-        );
-      })}
+     { startAnimation ? tracks.map((track, i) => {
+      return (
+        <TrackFull key={i} track={track} updateFavorite={updateFavorite} />
+      );
+    }) : null}
 
       {next ? (
         <div className="track-list-more" onClick={loadMoreTracks}>
@@ -64,7 +69,7 @@ const TrackList = ({ tracklist, next, updateNext }) => {
           <h3>load more</h3>
         </div>
       ) : null}
-    </div>
+    </motion.div>
   );
 };
 

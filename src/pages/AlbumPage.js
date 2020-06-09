@@ -4,10 +4,12 @@ import Details from "../components/Details";
 import TrackList from "../components/TrackList";
 import SaveButton from "../components/SaveButton";
 import { convertTracks } from "../data/trackConverter.js";
-
+import {motion} from 'framer-motion';
+import { fadeInLeft, fadeInFast, fadeInRight, fadeIn, fadeInDelay } from "../data/animations.js";
 const AlbumPage = () => {
   const contextStore = useContext(PlaylistStore);
   const [playlistTracks, setTracks] = useState([]);
+  const [startAnimation, setStartAnimation] = useState(false);
   const {
     state,
     fetchData,
@@ -71,9 +73,18 @@ const AlbumPage = () => {
   }, []);
 
   return (
-    <div className="albumPage">
-      <Details title={title} image={image} description={description} id={id} />
-      <div className="save-btn-wrap">
+    <motion.div className="albumPage"
+    initial={fadeInFast.initial}
+    animate={fadeInFast.animate}
+    transition={fadeInFast.transition}
+    
+    >
+      <Details title={title} image={image} description={description} id={id} setStartAnimation={setStartAnimation} />
+      <motion.div className="save-btn-wrap"
+       initial={fadeIn.initial}
+       animate={fadeIn.animate}
+       transition={fadeIn.transition}
+      >
         <h1 className="title">{title} Tracks</h1>
         {isFeatured ? (
           <SaveButton
@@ -90,10 +101,10 @@ const AlbumPage = () => {
             isSaved={isSaved}
           />
         )}
-      </div>
+      </motion.div>
 
-      <TrackList tracklist={playlistTracks} next={next} />
-    </div>
+      <TrackList tracklist={playlistTracks} next={next} startAnimation={startAnimation} />
+    </motion.div>
   );
 };
 

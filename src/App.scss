@@ -110,7 +110,8 @@ body {
 
 .pages-section {
   flex: 6 4;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   position: relative;
   
 }

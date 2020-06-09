@@ -29,7 +29,7 @@ const SearchResults = ({ isPlaylists }) => {
           {searchTracks ? (
             <div>
               <h2 style={{ padding: "20px 0" }}>Search results for {searchTitle}</h2>
-              <TrackList tracklist={searchTracks} />
+              <TrackList tracklist={searchTracks} startAnimation={true} />
             </div>
           ) : null}
         </div>

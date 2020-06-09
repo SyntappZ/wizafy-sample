@@ -3,10 +3,11 @@ import { useHistory } from "react-router-dom";
 import Lottie from "react-lottie";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import heartBeat from "../images/heartBeat.json";
-
+import { motion } from "framer-motion";
+import { fadeInLeft, fadeInRight, fadeIn, fadeInDelay } from "../data/animations.js";
 import { PlaylistStore } from "../context/ContextProvider";
 
-const Details = ({ image, title, description, category, isGenerator, id }) => {
+const Details = ({ image, title, description, category, isGenerator, id, setStartAnimation }) => {
   const history = useHistory();
   const contextStore = useContext(PlaylistStore);
   const { dispatch, state } = contextStore;
@@ -21,18 +22,23 @@ const Details = ({ image, title, description, category, isGenerator, id }) => {
   };
 
   const goBack = () => {
-    if(state.selectedPlaylist) {
-    dispatch({ type: "setSelectedPlaylist", payload: null });
-
-    }else{
-      history.goBack()
+    if (state.selectedPlaylist) {
+      dispatch({ type: "setSelectedPlaylist", payload: null });
+    } else {
+      history.goBack();
     }
     dispatch({ type: "setSongToGenerate", payload: {} });
   };
 
+  
+
   return (
     <div className="details">
-      <div className="top-bar">
+      <motion.div className="top-bar"
+        initial={fadeIn.initial}
+        animate={fadeIn.animate}
+        transition={fadeIn.transition}
+      >
         <FaRegArrowAltCircleLeft className="back-icon" onClick={goBack} />
         {isGenerator ? (
           <h3>Generate from song</h3>
@@ -44,11 +50,17 @@ const Details = ({ image, title, description, category, isGenerator, id }) => {
             <h4>{title}</h4>
           </div>
         )}
-      </div>
+      </motion.div>
 
       <div className="details-bar">
         <div className="left">
-          <div className="image-wrap">
+          <motion.div className="image-wrap"
+             initial={fadeInLeft.initial}
+             animate={fadeInLeft.animate}
+             transition={fadeInLeft.transition}
+             onAnimationComplete={() => setStartAnimation(true)}
+          
+          >
             <img src={image} alt={title} />
             {category ? (
               <div className="lottie">
@@ -61,16 +73,21 @@ const Details = ({ image, title, description, category, isGenerator, id }) => {
                 />
               </div>
             ) : null}
-          </div>
+          </motion.div>
         </div>
-        <div className="right">
+        <motion.div className="right"
+          initial={fadeInDelay.initial}
+          animate={fadeInDelay.animate}
+          transition={fadeInDelay.transition}
+         
+        >
           <div className="text-wrap">
             {isGenerator ? null : <h2>{category ? "Category" : "Playlist"}</h2>}
 
             <h1>{title}</h1>
             <h3>{description ? description : `All of ${title}'s tracks`}</h3>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

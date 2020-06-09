@@ -3,6 +3,8 @@ import { MdClose } from "react-icons/md";
 import { IoMdSave } from "react-icons/io";
 import { PlaylistStore } from "../context/ContextProvider";
 import ToggleSwitch from "./ToggleSwitch";
+import { motion } from "framer-motion";
+import { fadeInRight, fadeIn, fadeInLeft, fadeInFast } from "../data/animations.js";
 const CreatePlaylistModal = () => {
   const contextStore = useContext(PlaylistStore);
   const { sendData, state, refreshData, dispatch, toggleModal, setToastMessage } = contextStore;
@@ -50,7 +52,11 @@ const CreatePlaylistModal = () => {
   return (
     <>
       {modalOpen ? (
-        <div className="create-playlist-modal">
+        <motion.div className="create-playlist-modal"
+        initial={fadeInFast.initial}
+        animate={fadeInFast.animate}
+        transition={fadeInFast.transition}
+        >
           <div className="modal">
             <div className="close">
               <p></p>
@@ -100,7 +106,7 @@ const CreatePlaylistModal = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       ) : null}
     </>
   );

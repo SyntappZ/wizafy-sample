@@ -5,6 +5,8 @@ import Search from "../components/Search";
 import PlaylistBrowser from "../components/PlaylistBrowser";
 import SearchResults from "../components/SearchResults";
 import NoTracksLottie from "../components/NoTracksLottie";
+import {motion} from 'framer-motion'
+import { fadeInRight, fadeIn } from "../data/animations.js";
 const Playlists = () => {
   const contextStore = useContext(PlaylistStore);
   const [inputVal, setInputValue] = useState(null);
@@ -21,9 +23,12 @@ const Playlists = () => {
   };
 
   return (
-    <div
+    <motion.div
       className="wrap"
       style={selectedPlaylist ? { overflow: "hidden", height: "100%" } : null}
+      initial={fadeIn.initial}
+      animate={fadeIn.animate}
+      transition={fadeIn.transition}
     >
       <Search
         isPlaylists={true}
@@ -51,7 +56,7 @@ const Playlists = () => {
           )}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 // style={selectedPlaylist ? {overflow: 'hidden'} : null}

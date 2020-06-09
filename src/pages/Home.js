@@ -4,8 +4,9 @@ import { MdArrowForward } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 import TrackList from "../components/TrackList";
 import { PlaylistStore } from "../context/ContextProvider";
-import NoTracksLottie from '../components/NoTracksLottie'
-
+import NoTracksLottie from "../components/NoTracksLottie";
+import { motion } from "framer-motion";
+import { fadeInRight, fadeIn, fadeInLeft } from "../data/animations.js";
 
 import TrackScroller from "../components/TrackScroller";
 
@@ -31,13 +32,14 @@ const Home = () => {
     moreFavorites,
     savedAlbums,
     moreSavedAlbums,
-    selectedPlaylist
+    selectedPlaylist,
   } = state;
   const [years, setYears] = useState([]);
   const [next, setNext] = useState("");
-  
+
   const [currentYear, setCurrentYear] = useState("All");
   const [favoriteTracks, setFavoriteTracks] = useState([]);
+  const [startAnimation, setStartAnimation] = useState(false);
 
   useEffect(() => {
     const arr = ["All"];
@@ -76,13 +78,23 @@ const Home = () => {
     loadMoreTracks(moreSavedAlbums, "topTracks");
   };
 
- 
- 
-
   return (
-    <div className="home" style={selectedPlaylist ? {overflow: 'hidden'} : null}>
-      <div className="welcome">
-        <div className="text-wrap">
+    <div
+      className="home"
+      style={selectedPlaylist ? { overflow: "hidden" } : null}
+    >
+      <motion.div className="welcome"
+       initial={fadeIn.initial}
+       animate={fadeIn.animate}
+       transition={fadeIn.transition}
+      >
+        <motion.div
+          className="text-wrap"
+          initial={fadeInLeft.initial}
+          animate={fadeInLeft.animate}
+          transition={fadeInLeft.transition}
+          onAnimationComplete={() => setStartAnimation(true)}
+        >
           <div>
             <h1>playlist wizard</h1>
             <h2>Create or generate awesome playlists.</h2>
@@ -91,7 +103,7 @@ const Home = () => {
             <h3>Create new playlist</h3>
             <MdArrowForward className="arrow" />
           </div>
-        </div>
+        </motion.div>
         <p className="username">{username}</p>
         <div className="image-section">
           <a className="logout" href="https://spotify.com/logout">
@@ -100,15 +112,21 @@ const Home = () => {
           </a>
           <img src={profileImage} alt="profile" />
         </div>
-      </div>
-      <div className="wrap" style={{ paddingTop: "20px" }}>
+      </motion.div>
+      <motion.div
+        className="wrap"
+        style={{ paddingTop: "20px" }}
+        initial={fadeIn.initial}
+        animate={fadeIn.animate}
+        transition={fadeIn.transition}
+      >
         <TrackScroller
           title="my saved albums"
           loadMoreTracks={loadMoreTopTracks}
           tracks={savedAlbums}
           album={true}
         />
-      </div>
+      </motion.div>
 
       <div className="favorites">
         <div className="title-wrap">
@@ -130,10 +148,10 @@ const Home = () => {
             favorites={true}
             next={next}
             updateNext={updateNext}
+            startAnimation={startAnimation}
           />
         ) : (
           <NoTracksLottie />
-
         )}
       </div>
     </div>

@@ -5,6 +5,8 @@ import { PlaylistStore } from "../context/ContextProvider";
 import Playlist from "../components/Playlist";
 import { convertDescription } from "../data/trackConverter.js";
 import SearchResults from "../components/SearchResults";
+import {motion} from 'framer-motion'
+import { fadeInRight, fadeIn, fadeInUp } from "../data/animations.js";
 const Explore = () => {
   const [inputVal, setInputValue] = useState(null);
   const [searchTracks, setTracks] = useState([]);
@@ -14,14 +16,18 @@ const Explore = () => {
  
   // const inputValue = (val) => setVal(val)
   return (
-    <div className="explore wrap" style={selectedPlaylist ? {overflow: 'hidden'} : null}>
+    <motion.div className="explore wrap" style={selectedPlaylist ? {overflow: 'hidden'} : null}
+    initial={fadeIn.initial}
+    animate={fadeIn.animate}
+    transition={fadeIn.transition}
+    >
       <Search inputValue={setInputValue} placeholder={"Search for songs..."} />
       {inputVal ? (
         <SearchResults />
       ) : (
         <ExploreMain store={contextStore} state={state} />
       )}
-    </div>
+    </motion.div>
   );
 };
 
@@ -49,7 +55,11 @@ const ExploreMain = ({ store, state }) => {
         title={`${playlistMessage} Album's`}
         album={true}
       />
-      <div className="bottom-wrap">
+      <motion.div className="bottom-wrap"
+       initial={fadeInUp.initial}
+       animate={fadeInUp.animate}
+       transition={fadeInUp.transition}
+      >
         <div className="featuredPlaylists">
           <h1 className="title">Featured Playlists</h1>
           {featuredPlaylists.map((playlist, i) => {
@@ -80,7 +90,7 @@ const ExploreMain = ({ store, state }) => {
             })}
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };
