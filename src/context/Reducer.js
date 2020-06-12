@@ -12,7 +12,7 @@ const userState = {
   profileImage: "",
   myPlaylists: [],
   savedAlbums: [],
-  moreSavedAlbums: '',
+  moreSavedAlbums: "",
   savedPlaylists: [],
   morePlaylistsUrl: "",
   newReleaseAlbums: [],
@@ -44,13 +44,13 @@ const userState = {
   modalOpen: false,
   isCreated: true,
   isFeatured: false,
-  toastMessage: ''
+  toastMessage: "",
 };
 
 const convertAlbums = (albums) => {
   const albumsList = albums
     ? albums.map((album) => {
-      album = album.album || album
+        album = album.album || album;
         return {
           id: album.id,
           title: album.name,
@@ -112,18 +112,18 @@ const userData = (state, action) => {
       };
     }
 
-    case "setFeatured" : {
-      return  {
-        ...state,
-        isFeatured: action.payload
-      }
-    }
-
-    case 'setToastMessage': {
+    case "setFeatured": {
       return {
         ...state,
-        toastMessage: action.payload
-      }
+        isFeatured: action.payload,
+      };
+    }
+
+    case "setToastMessage": {
+      return {
+        ...state,
+        toastMessage: action.payload,
+      };
     }
 
     case "setPlaylists": {
@@ -170,17 +170,17 @@ const userData = (state, action) => {
       };
     }
     case "setSavedAlbums": {
-       const albums = convertAlbums(action.payload.items);
-       const refresh = action.payload.refresh;
+      const albums = convertAlbums(action.payload.items);
+      const refresh = action.payload.refresh;
       return {
         ...state,
         savedAlbums: refresh ? albums : [...state.savedAlbums, ...albums],
         moreSavedAlbums: action.payload.next,
-      }
+      };
     }
     case "setNewReleases": {
       const albums = convertAlbums(action.payload.albums.items);
-      
+
       return {
         ...state,
         newReleaseAlbums: [...state.newReleaseAlbums, ...albums],
@@ -234,10 +234,9 @@ const userData = (state, action) => {
         searchAlbums: null,
         searchTracks: null,
         searchTitle: "",
-        savedSearch: false
+        savedSearch: false,
       };
     }
-
 
     case "setSearchData": {
       const data = action.payload.data;
@@ -256,8 +255,8 @@ const userData = (state, action) => {
     case "ToggleModal": {
       return {
         ...state,
-        modalOpen: !state.modalOpen
-      }
+        modalOpen: !state.modalOpen,
+      };
     }
     case "setSearchTracks": {
       const data = action.payload.data.tracks.items;
@@ -273,8 +272,8 @@ const userData = (state, action) => {
     case "setIsCreated": {
       return {
         ...state,
-        isCreated: action.payload
-      }
+        isCreated: action.payload,
+      };
     }
 
     case "setGeneratedTracks": {

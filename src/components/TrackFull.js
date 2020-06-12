@@ -21,10 +21,15 @@ const TrackFull = ({ track, updateFavorite }) => {
   const [showTip, showTooltip] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { title, artist, image, duration, favorite, preview, id, uri } = track;
-
-  const addToPlaylist = (playlistId) => {
+  const arr = title.split(" ");
+  const addToPlaylist = (playlistId, playlistTitle) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`;
-    sendData(url, "POST").then((message) => {});
+    sendData(url, "POST").then((message) => {
+      let toastTitle = title.split("(")[0].trim();
+      toastTitle =
+        toastTitle.length > 20 ? toastTitle.slice(0, 20) + "..." : toastTitle;
+      setToastMessage(` added ${toastTitle} to ${playlistTitle}`);
+    });
   };
   const sendToGenerator = () => {
     dispatch({ type: "setSongToGenerate", payload: track });
@@ -48,10 +53,7 @@ const TrackFull = ({ track, updateFavorite }) => {
     },
   };
 
-  const arr = title.split(" ");
-
   useEffect(() => {
-   
     if (favorite) {
       setState({ lottieStopped: false, lottiePaused: false });
     } else {
@@ -66,10 +68,12 @@ const TrackFull = ({ track, updateFavorite }) => {
   const handleFavorite = async () => {
     const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
     const method = favorite ? "DELETE" : "PUT";
-    const message = favorite ? 'Removed from favorites.' : 'Added to favorites.'
+    const message = favorite
+      ? "Removed from favorites."
+      : "Added to favorites.";
     const action = await addFavorites(url, method);
-    if(action.status === 200) {
-      setToastMessage(message)
+    if (action.status === 200) {
+      setToastMessage(message);
     }
     updateFavorite(id, track);
   };
@@ -121,6 +125,13 @@ const TrackFull = ({ track, updateFavorite }) => {
         </div>
       </div>
       <div className="right">
+        {menuOpen ? (
+          <Menu
+            addToPlaylist={addToPlaylist}
+            setMenuOpen={setMenuOpen}
+            track={track}
+          />
+        ) : null}
         <p>{duration}</p>
 
         <div className="lottie-wrap" onClick={handleFavorite}>
@@ -142,14 +153,8 @@ const TrackFull = ({ track, updateFavorite }) => {
           <Tooltip message={"Generate"} toggle={showTip} mini={true} />
           <GiRegeneration style={{ fontSize: "20px" }} />
         </div>
-        <div
-          className="more-menu"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}>
           <MdMoreHoriz className="more-icon" />
-          {menuOpen ? (
-            <Menu addToPlaylist={addToPlaylist} setMenuOpen={setMenuOpen} />
-          ) : null}
         </div>
       </div>
     </div>

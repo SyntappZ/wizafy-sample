@@ -44,6 +44,11 @@ const CreatePlaylistModal = () => {
     });
   };
 
+  const closeModal = () => {
+    toggleModal()
+    dispatch({ type: "setGeneratedPlaylist", payload: null });
+  }
+
   const toggleHandler = () => setPublic(!isPublic);
 
   useEffect(() => {
@@ -62,7 +67,7 @@ const CreatePlaylistModal = () => {
               <p></p>
               <h2>Create Playlist</h2>
               <MdClose
-                onClick={toggleModal}
+                onClick={closeModal}
                 style={{ fontSize: 20, cursor: "pointer" }}
               />
             </div>

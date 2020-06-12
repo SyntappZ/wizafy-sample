@@ -12,6 +12,8 @@ import ToggleSwitch from "../components/ToggleSwitch";
 import Details from "../components/Details";
 import Tooltip from "../components/Tooltip";
 import { motion } from "framer-motion";
+import Menu from "../components/Menu";
+
 import {
   fadeInRight,
   fadeInUp,
@@ -24,7 +26,14 @@ const Generator = () => {
   const [playlist, setPlaylist] = useState([]);
   const [amountValue, setAmountValue] = useState("");
   const [advAmountValue, setAdvAmountValue] = useState("");
-  const { getRecomendations, state, dispatch, loadMoreTracks } = contextStore;
+  const {
+    getRecomendations,
+    state,
+    dispatch,
+    sendData,
+    setToastMessage,
+    loadMoreTracks,
+  } = contextStore;
   const {
     topFiveIds,
     songToGenerate,
@@ -39,13 +48,12 @@ const Generator = () => {
   const { title, image, id } = songToGenerate;
   const [attributes, setAttributes] = useState([]);
   const [startAnimation, setStartAnimation] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     setAttributes(attributeData);
   }, [attributeData]);
 
-  const savePlaylist = () => {
-    dispatch({ type: "setGeneratedPlaylist", payload: playlist });
-  };
+  const savePlaylist = () => setMenuOpen(!menuOpen);
 
   const loadMoreTopTracks = () => {
     loadMoreTracks(moreTopTracks, "topTracks");
@@ -113,10 +121,30 @@ const Generator = () => {
     setAdvAmountValue("");
   };
 
+  const addToPlaylist = (playlistId, playlistTitle) => {
+     const uris = playlist.map((track) => track.uri);
+   
+    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris}`;
+    sendData(url, "POST").then((message) => {
+      if(message.error) {
+        setToastMessage(` error ${message.error.message.split(':')[0]}`);
+      }else{
+        setToastMessage(` added ${playlist.length} tracks to ${playlistTitle}`);
+      }
+      
+      
+      setMenuOpen(false)
+    });
+  };
+
   const isSingleSong = Object.keys(songToGenerate).length > 0 ? true : false;
 
   useEffect(() => {
     setPlaylist([]);
+
+    return () => {
+      setMenuOpen(false)
+    }
   }, [isSingleSong, songToGenerate]);
 
   const openAdvanced = () => {
@@ -125,6 +153,15 @@ const Generator = () => {
   };
   return (
     <div className="wrap">
+      {menuOpen ? (
+        <div className="modal-wrap">
+          <Menu
+            addToPlaylist={addToPlaylist}
+            setMenuOpen={setMenuOpen}
+            newPlaylist={playlist}
+          />
+        </div>
+      ) : null}
       {isSingleSong ? (
         <div className="song-generator">
           <Details
@@ -133,6 +170,7 @@ const Generator = () => {
             description={`Generate a playlist with song's like ${title}`}
             isGenerator={true}
             setStartAnimation={setStartAnimation}
+            tracksAmount={playlist.length}
           />
           <div
             style={{
@@ -383,7 +421,6 @@ const TuneableAttribute = ({
   }, [isChecked]);
 
   useEffect(() => {
-    console.log(sliderValue);
     updateAttributeValue({ title: title, id: id, value: sliderValue });
   }, [sliderValue]);
 

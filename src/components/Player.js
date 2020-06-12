@@ -95,19 +95,22 @@ const Player = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const lottie = isPlaying ? (
-      <Lottie options={soundWaveOptions} />
-  ) : null;
+  const lottie = isPlaying ? <Lottie options={soundWaveOptions} /> : null;
 
   const { title, artist, image } = track;
   const timePosition = Math.floor(time);
+  let trackTitle;
+  if (title) {
+    trackTitle = title.length > 25 ? title.slice(0, 25) + "..." : title;
+  }
+
   return (
     <div className="player-container">
       <div className="now-playing">
         <div className="image-wrap">
           {image ? <img src={image} alt="album art" /> : null}
           <div className="text-wrap">
-            <h3>{title}</h3>
+            <h3>{trackTitle}</h3>
             <p>{artist}</p>
           </div>
         </div>

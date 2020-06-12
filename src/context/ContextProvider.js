@@ -48,7 +48,7 @@ const ContextProvider = ({ children }) => {
     });
   };
 
-  const toggleModal = () => dispatch({type: "ToggleModal"})
+  const toggleModal = () => dispatch({ type: "ToggleModal" });
 
   const sendData = (url, method, body) => {
     return new Promise((resolve, reject) => {
@@ -59,7 +59,8 @@ const ContextProvider = ({ children }) => {
           Authorization: "Bearer " + accessToken,
           "Content-Type": "application/json",
         },
-      }).then(res => res.json())
+      })
+        .then((res) => res.json())
 
         .then((data) => {
           resolve(data);
@@ -68,18 +69,17 @@ const ContextProvider = ({ children }) => {
     });
   };
 
-  
   const putData = async (url, method, body) => {
-  const data = await fetch(url, {
+    const data = await fetch(url, {
       method: method,
       body: body ? JSON.stringify(body) : "",
       headers: {
         Authorization: "Bearer " + accessToken,
         "Content-Type": "application/json",
       },
-    })
-    return data
-  }
+    });
+    return data;
+  };
 
   const favoriteCheck = (list) => {
     return new Promise((resolve, reject) => {
@@ -187,9 +187,7 @@ const ContextProvider = ({ children }) => {
     });
 
     fetchData("https://api.spotify.com/v1/me/albums?limit=50").then((data) => {
-      
-       dispatch({ type: "setSavedAlbums", payload: data });
-
+      dispatch({ type: "setSavedAlbums", payload: data });
     });
 
     fetchData("https://api.spotify.com/v1/me/top/tracks?limit=40").then(
@@ -204,8 +202,8 @@ const ContextProvider = ({ children }) => {
   };
 
   const setToastMessage = (message) => {
-    dispatch({type: 'setToastMessage', payload: message})
-  }
+    dispatch({ type: "setToastMessage", payload: message });
+  };
 
   const refreshData = (type) => {
     switch (type) {
@@ -251,8 +249,7 @@ const ContextProvider = ({ children }) => {
     refreshData: refreshData,
     addFavorites: addFavorites,
     toggleModal: toggleModal,
-    setToastMessage: setToastMessage
-  
+    setToastMessage: setToastMessage,
   };
 
   return (

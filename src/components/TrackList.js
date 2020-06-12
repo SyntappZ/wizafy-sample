@@ -10,7 +10,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
   const [id, setId] = useState("");
   const contextStore = useContext(PlaylistStore);
   const { favoriteCheck, fetchData } = contextStore;
-  const controls = useAnimation()
+  const controls = useAnimation();
   let _mounted = false;
   useEffect(() => {
     _mounted = true;
@@ -46,10 +46,10 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
   };
 
   const { initial, animate, transition } = fadeIn;
-  if(startAnimation) {
-    controls.start(animate)
+  if (startAnimation) {
+    controls.start(animate);
   }
- 
+
   return (
     <motion.div
       className="tracklist"
@@ -57,11 +57,17 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
       animate={controls}
       transition={transition}
     >
-     { startAnimation ? tracks.map((track, i) => {
-      return (
-        <TrackFull key={i} track={track} updateFavorite={updateFavorite} />
-      );
-    }) : null}
+      {startAnimation
+        ? tracks.map((track, i) => {
+            return (
+              <TrackFull
+                key={i}
+                track={track}
+                updateFavorite={updateFavorite}
+              />
+            );
+          })
+        : null}
 
       {next ? (
         <div className="track-list-more" onClick={loadMoreTracks}>

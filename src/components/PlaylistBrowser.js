@@ -27,7 +27,7 @@ const PlaylistBrowser = ({ playlists, title }) => {
   const [next, setNext] = useState("");
   const [tracks, setTracks] = useState([]);
   const [isSaved, setIsSaved] = useState(false);
-  const [startAnimation, setStartAnimation] = useState(false)
+  const [startAnimation, setStartAnimation] = useState(false);
   const savedCheck = async (playlistId) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/followers/contains?ids=${userId}`;
     const data = await fetchData(url, "GET");
@@ -80,11 +80,13 @@ const PlaylistBrowser = ({ playlists, title }) => {
   }, [playlists]);
 
   return (
-    <motion.div ref={playlistScroll} className="playlist-browser"
-    initial={fadeInUp.initial}
-    animate={fadeInUp.animate}
-    transition={fadeInUp.transition}
-    onAnimationComplete={() => setStartAnimation(true)}
+    <motion.div
+      ref={playlistScroll}
+      className="playlist-browser"
+      initial={fadeInUp.initial}
+      animate={fadeInUp.animate}
+      transition={fadeInUp.transition}
+      onAnimationComplete={() => setStartAnimation(true)}
     >
       <div className="left">
         <h1 className="title">{title} playlists</h1>
@@ -123,7 +125,12 @@ const PlaylistBrowser = ({ playlists, title }) => {
             />
           </div>
         </div>
-        <TrackList tracklist={tracks} next={next} updateNext={updateNext} startAnimation={startAnimation} />
+        <TrackList
+          tracklist={tracks}
+          next={next}
+          updateNext={updateNext}
+          startAnimation={startAnimation}
+        />
       </div>
     </motion.div>
   );

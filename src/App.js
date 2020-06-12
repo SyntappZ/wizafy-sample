@@ -18,6 +18,7 @@ const Screen = () => {
   const contextStore = useContext(PlaylistStore);
   const { accessToken } = contextStore.state;
   useEffect(() => {
+   
     if (accessToken) {
       setSignedIn(true);
     }
