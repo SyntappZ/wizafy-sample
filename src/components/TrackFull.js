@@ -21,7 +21,7 @@ const TrackFull = ({ track, updateFavorite }) => {
   const [showTip, showTooltip] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { title, artist, image, duration, favorite, preview, id, uri } = track;
-  const arr = title.split(" ");
+ 
   const addToPlaylist = (playlistId, playlistTitle) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`;
     sendData(url, "POST").then((message) => {
@@ -64,7 +64,7 @@ const TrackFull = ({ track, updateFavorite }) => {
   const sendTrack = () => {
     dispatch({ type: "loadCurrentTrack", payload: track });
   };
-
+  const arr = title.split(" ");
   const handleFavorite = async () => {
     const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
     const method = favorite ? "DELETE" : "PUT";
@@ -78,11 +78,12 @@ const TrackFull = ({ track, updateFavorite }) => {
     updateFavorite(id, track);
   };
 
-  const trackTitle = arr.length > 4 ? arr.slice(0, 4).join(" ") + "..." : title;
+  const trackTitle = title.length > 50 ? title.slice(0, 50).join(" ") + "..." : title;
   const iconStyle = {
     fontSize: "25px",
     color: preview ? "#333" : "#aaa",
   };
+  const arr = title.split(" ");
 
   let isPlay;
   if (currentTrack.id === id && isPlaying) {
