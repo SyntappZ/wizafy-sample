@@ -5,11 +5,18 @@ import { IoMdCloudDownload } from "react-icons/io";
 import { convertTracks } from "../data/trackConverter.js";
 import { motion, useAnimation } from "framer-motion";
 import { fadeIn } from "../data/animations.js";
-const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
+const TrackList = ({
+  tracklist,
+  next,
+  updateNext,
+  startAnimation,
+  setChosenTracks,
+}) => {
   const [tracks, setTracks] = useState([]);
   const [id, setId] = useState("");
   const contextStore = useContext(PlaylistStore);
   const { favoriteCheck, fetchData } = contextStore;
+  const [checked, setChecked] = useState(false);
   const controls = useAnimation();
   let _mounted = false;
   useEffect(() => {
@@ -26,6 +33,13 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
       setTracks(data);
     }
   };
+
+  useEffect(() => {
+    if (setChosenTracks) {
+      const arr = tracks.filter((track) => track.checked);
+      setChosenTracks(arr);
+    }
+  }, [tracks.length, checked]);
 
   const loadMoreTracks = async () => {
     fetchData(next).then((data) => {
@@ -64,6 +78,9 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
                 key={i}
                 track={track}
                 updateFavorite={updateFavorite}
+                setChosenTracks={setChosenTracks}
+                setChecked={setChecked}
+                checked={checked}
               />
             );
           })

@@ -55,6 +55,12 @@
   justify-content: center;
   align-items: center;
 }
+.tracks-chosen {
+  display: flex;
+  width: 200px;
+  align-items: center;
+  height: 100px;
+}
 .advanced {
   min-height: 50px;
   background: white;

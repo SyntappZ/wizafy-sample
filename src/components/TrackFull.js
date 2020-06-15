@@ -3,6 +3,8 @@ import Lottie from "react-lottie";
 
 import heart from "../images/heart.json";
 import visualizer from "../images/sound-visualizer.json";
+import tick from "../images/correct-check-animation.json";
+import cross from "../images/incorrect-failed.json";
 import { MdMoreHoriz, MdPlayArrow } from "react-icons/md";
 import { GiRegeneration } from "react-icons/gi";
 import Tooltip from "../components/Tooltip";
@@ -10,10 +12,25 @@ import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
 import Menu from "./Menu";
 
-const TrackFull = ({ track, updateFavorite }) => {
+const TrackFull = ({
+  track,
+  updateFavorite,
+  setChosenTracks,
+  setChecked,
+  checked,
+}) => {
   const contextStore = useContext(PlaylistStore);
   const { addFavorites, sendData, dispatch, setToastMessage } = contextStore;
   const { isPlaying, isPaused, currentTrack } = contextStore.state;
+  const [trackChosen, setTrackChosen] = useState(true);
+  const [showTickTip, setShowTickTip] = useState(false);
+
+  useEffect(() => {
+    if (setChosenTracks) {
+      track.checked = trackChosen;
+      setChecked(!checked);
+    }
+  }, [trackChosen]);
   const [state, setState] = useState({
     lottiePaused: false,
     lottieStopped: true,
@@ -21,7 +38,7 @@ const TrackFull = ({ track, updateFavorite }) => {
   const [showTip, showTooltip] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { title, artist, image, duration, favorite, preview, id, uri } = track;
- 
+
   const addToPlaylist = (playlistId, playlistTitle) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`;
     sendData(url, "POST").then((message) => {
@@ -30,6 +47,7 @@ const TrackFull = ({ track, updateFavorite }) => {
         toastTitle.length > 20 ? toastTitle.slice(0, 20) + "..." : toastTitle;
       setToastMessage(` added ${toastTitle} to ${playlistTitle}`);
     });
+    setMenuOpen(false);
   };
   const sendToGenerator = () => {
     dispatch({ type: "setSongToGenerate", payload: track });
@@ -52,6 +70,22 @@ const TrackFull = ({ track, updateFavorite }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+  const tickOptions = {
+    loop: false,
+    autoplay: true,
+    animationData: tick,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  const crossOptions = {
+    loop: false,
+    autoplay: true,
+    animationData: cross,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
     if (favorite) {
@@ -64,7 +98,7 @@ const TrackFull = ({ track, updateFavorite }) => {
   const sendTrack = () => {
     dispatch({ type: "loadCurrentTrack", payload: track });
   };
-  const arr = title.split(" ");
+
   const handleFavorite = async () => {
     const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
     const method = favorite ? "DELETE" : "PUT";
@@ -78,12 +112,12 @@ const TrackFull = ({ track, updateFavorite }) => {
     updateFavorite(id, track);
   };
 
-  const trackTitle = title.length > 50 ? title.slice(0, 50).join(" ") + "..." : title;
+  const trackTitle = title.length > 30 ? title.slice(0, 30) + "..." : title;
+
   const iconStyle = {
     fontSize: "25px",
     color: preview ? "#333" : "#aaa",
   };
-  const arr = title.split(" ");
 
   let isPlay;
   if (currentTrack.id === id && isPlaying) {
@@ -126,36 +160,57 @@ const TrackFull = ({ track, updateFavorite }) => {
         </div>
       </div>
       <div className="right">
-        {menuOpen ? (
-          <Menu
-            addToPlaylist={addToPlaylist}
-            setMenuOpen={setMenuOpen}
-            track={track}
-          />
+        {setChosenTracks ? (
+          <div
+            className="tick"
+            onClick={() => setTrackChosen(!trackChosen)}
+            onMouseOver={() => setShowTickTip(true)}
+            onMouseLeave={() => setShowTickTip(false)}
+          >
+            <Tooltip
+              message={trackChosen ? "Remove track" : "Add track"}
+              toggle={showTickTip}
+              mini={true}
+            />
+            {trackChosen ? (
+              <Lottie options={tickOptions} width={80} height={70} />
+            ) : (
+              <Lottie options={crossOptions} width={80} height={70} />
+            )}
+          </div>
         ) : null}
-        <p>{duration}</p>
+        <div className="container">
+          {menuOpen ? (
+            <Menu
+              addToPlaylist={addToPlaylist}
+              setMenuOpen={setMenuOpen}
+              track={track}
+            />
+          ) : null}
+          <p>{duration}</p>
 
-        <div className="lottie-wrap" onClick={handleFavorite}>
-          <Lottie
-            options={heartOptions}
-            style={{ cursor: "pointer" }}
-            isStopped={state.lottieStopped}
-            isPaused={state.lottiePaused}
-            width={200}
-            height={150}
-          />
-        </div>
-        <div
-          className="generator-wrap"
-          onMouseOver={() => showTooltip(true)}
-          onMouseLeave={() => showTooltip(false)}
-          onClick={sendToGenerator}
-        >
-          <Tooltip message={"Generate"} toggle={showTip} mini={true} />
-          <GiRegeneration style={{ fontSize: "20px" }} />
-        </div>
-        <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}>
-          <MdMoreHoriz className="more-icon" />
+          <div className="lottie-wrap" onClick={handleFavorite}>
+            <Lottie
+              options={heartOptions}
+              style={{ cursor: "pointer" }}
+              isStopped={state.lottieStopped}
+              isPaused={state.lottiePaused}
+              width={200}
+              height={150}
+            />
+          </div>
+          <div
+            className="generator-wrap"
+            onMouseOver={() => showTooltip(true)}
+            onMouseLeave={() => showTooltip(false)}
+            onClick={sendToGenerator}
+          >
+            <Tooltip message={"Generate"} toggle={showTip} mini={true} />
+            <GiRegeneration style={{ fontSize: "20px" }} />
+          </div>
+          <div className="more-menu" onClick={() => setMenuOpen(!menuOpen)}>
+            <MdMoreHoriz className="more-icon" />
+          </div>
         </div>
       </div>
     </div>

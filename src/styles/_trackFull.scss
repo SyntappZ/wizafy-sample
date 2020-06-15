@@ -14,7 +14,8 @@
   transition: 1s ease-in-out;
 
   .left {
-    min-width: 300px;
+    min-width: 400px;
+    
     height: 100%;
     display: flex;
     align-items: center;
@@ -48,12 +49,18 @@
   }
 
   .right {
-    max-width: 200px;
+    min-width: 200px;
     height: 100%;
     display: flex;
     position: relative;
     align-items: center;
-
+   justify-content: flex-end;
+    .container {
+      max-width: 200px;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
     p {
       font-size: 15px;
       font-weight: bold;
@@ -68,6 +75,14 @@
     justify-content: center;
     align-items: center;
     
+  }
+
+  .tick {
+   width: 100px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
 
   .generator-wrap {

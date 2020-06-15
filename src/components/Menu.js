@@ -15,14 +15,14 @@ const Menu = ({ addToPlaylist, setMenuOpen, newPlaylist, track }) => {
   const { state, dispatch } = contextStore;
   const { myPlaylists } = state;
   const [playlists, setPlaylists] = useState([]);
-
+  const closeMenu = () => setMenuOpen(false);
   const createNewPlaylist = () => {
     if (newPlaylist) {
       dispatch({ type: "setGeneratedPlaylist", payload: newPlaylist });
     } else {
       dispatch({ type: "setGeneratedPlaylist", payload: [track] });
     }
-    setMenuOpen(false);
+    closeMenu()
   };
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Menu = ({ addToPlaylist, setMenuOpen, newPlaylist, track }) => {
     setPlaylists(convert);
   }, [myPlaylists]);
 
-  const closeMenu = () => setMenuOpen(false);
+  
 
   const pos = newPlaylist
     ? { position: "absolute" }
