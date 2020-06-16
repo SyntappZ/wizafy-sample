@@ -96,7 +96,7 @@ const AlbumPage = () => {
         description={description}
         id={id}
         setStartAnimation={setStartAnimation}
-        tracksAmount={playlistTracks.length}
+        cornerTitle={`${playlistTracks.length} Tracks`}
       />
       <div className="save-btn-wrap">
         <h1 className="title">{title} Tracks</h1>

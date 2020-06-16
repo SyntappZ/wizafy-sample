@@ -55,7 +55,12 @@ const PageRouter = () => {
   useEffect(() => {
     if (location.pathname !== "/generator") {
       dispatch({ type: "setSongToGenerate", payload: {} });
+      dispatch({type: "setOnGenerator", payload: false})
+    }else{
+      dispatch({type: "setOnGenerator", payload: true})
+
     }
+
     if(location.pathname !== "/playlists") {
       dispatch({ type: "clearSearch" });
     }

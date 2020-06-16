@@ -45,6 +45,8 @@ const userState = {
   isCreated: true,
   isFeatured: false,
   toastMessage: "",
+  onGenerator: false,
+  checkedPlaylist: []
 };
 
 const convertAlbums = (albums) => {
@@ -125,6 +127,41 @@ const userData = (state, action) => {
         toastMessage: action.payload,
       };
     }
+
+    case "setOnGenerator": {
+      return {
+        ...state,
+        onGenerator: action.payload
+      }
+    }
+
+    case "setCheckedPlaylist": {
+      const track = action.payload;
+      let playlist;
+
+      const arr = state.checkedPlaylist.map(track => track.id)
+      const chosen = arr.includes(track.id);
+      
+      if(chosen) {
+        playlist = state.checkedPlaylist.filter(item => item.id !== track.id)
+      }else{
+        playlist = [...state.checkedPlaylist, track]
+      }
+      return {
+        ...state,
+        checkedPlaylist: playlist
+      }
+    }
+
+    case "setAllChecked": {
+      const playlist = action.payload
+      return {
+        ...state,
+        checkedPlaylist: playlist
+      }
+    }
+
+    
 
     case "setPlaylists": {
       const myPlaylists = [];

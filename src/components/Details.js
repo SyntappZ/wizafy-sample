@@ -20,7 +20,7 @@ const Details = ({
   isGenerator,
   id,
   setStartAnimation,
-  tracksAmount,
+  cornerTitle,
 }) => {
   const history = useHistory();
   const contextStore = useContext(PlaylistStore);
@@ -45,7 +45,6 @@ const Details = ({
     dispatch({ type: "setFeatured", payload: false });
   };
 
-  const track = tracksAmount === 1 ? ' track' : ' tracks'
 
   return (
     <div className="details">
@@ -61,7 +60,7 @@ const Details = ({
           className="title-wrap"
           style={{ cursor: category ? "default" : "pointer" }}
         >
-          <h4>{tracksAmount + track}</h4>
+          <h4>{cornerTitle}</h4>
         </div>
       </motion.div>
 

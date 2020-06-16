@@ -12,25 +12,20 @@ import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
 import Menu from "./Menu";
 
-const TrackFull = ({
-  track,
-  updateFavorite,
-  setChosenTracks,
-  setChecked,
-  checked,
-}) => {
+const TrackFull = ({ track, updateFavorite }) => {
   const contextStore = useContext(PlaylistStore);
   const { addFavorites, sendData, dispatch, setToastMessage } = contextStore;
-  const { isPlaying, isPaused, currentTrack } = contextStore.state;
-  const [trackChosen, setTrackChosen] = useState(true);
-  const [showTickTip, setShowTickTip] = useState(false);
+  const {
+    isPlaying,
+    isPaused,
+    currentTrack,
+    onGenerator,
+    checkedPlaylist,
+  } = contextStore.state;
 
-  useEffect(() => {
-    if (setChosenTracks) {
-      track.checked = trackChosen;
-      setChecked(!checked);
-    }
-  }, [trackChosen]);
+  const [showTickTip, setShowTickTip] = useState(false);
+  const [trackChosen, setTrackChosen] = useState(false);
+
   const [state, setState] = useState({
     lottiePaused: false,
     lottieStopped: true,
@@ -52,6 +47,23 @@ const TrackFull = ({
   const sendToGenerator = () => {
     dispatch({ type: "setSongToGenerate", payload: track });
   };
+
+  const addCheckedTrack = () => {
+    dispatch({ type: "setCheckedPlaylist", payload: track });
+  };
+
+  // useEffect(() => {
+  //   if(onGenerator) {
+  //   dispatch({ type: "setCheckedPlaylist", payload: track });
+  //   }
+  // }, [])
+
+  useEffect(() => {
+    const arr = checkedPlaylist.map(track => track.id)
+    const chosen = arr.includes(id);
+    setTrackChosen(chosen);
+    
+  }, [checkedPlaylist.length, checkedPlaylist]);
 
   const heartOptions = {
     loop: false,
@@ -160,10 +172,10 @@ const TrackFull = ({
         </div>
       </div>
       <div className="right">
-        {setChosenTracks ? (
+        {onGenerator ? (
           <div
             className="tick"
-            onClick={() => setTrackChosen(!trackChosen)}
+            onClick={addCheckedTrack}
             onMouseOver={() => setShowTickTip(true)}
             onMouseLeave={() => setShowTickTip(false)}
           >

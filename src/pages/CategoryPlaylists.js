@@ -17,7 +17,7 @@ const CategoryPlaylists = () => {
 
   return (
     <div className="wrap">
-      <Details title={title} image={image} category={true} setStartAnimation={setStartAnimation} />
+      <Details title={title} image={image} category={true} setStartAnimation={setStartAnimation} cornerTitle={`${playlists.length} Playlists`} />
       <PlaylistBrowser playlists={playlists} title={title} />
     </div>
   );

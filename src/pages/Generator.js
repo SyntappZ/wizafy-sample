@@ -14,7 +14,8 @@ import Tooltip from "../components/Tooltip";
 import { motion } from "framer-motion";
 import Menu from "../components/Menu";
 import tick from "../images/correct-check-animation.json";
-import Lottie from 'react-lottie'
+import cross from "../images/incorrect-failed.json";
+import Lottie from "react-lottie";
 
 import {
   fadeInRight,
@@ -42,6 +43,7 @@ const Generator = () => {
     selectedPlaylist,
     myTopTracks,
     moreTopTracks,
+    checkedPlaylist,
   } = state;
   const trackAmountRef = useRef("");
   const advTrackAmountRef = useRef("");
@@ -51,9 +53,7 @@ const Generator = () => {
   const [attributes, setAttributes] = useState([]);
   const [startAnimation, setStartAnimation] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [chosenTracks, setChosenTracks] = useState([]);
 
- 
   useEffect(() => {
     setAttributes(attributeData);
   }, [attributeData]);
@@ -83,8 +83,7 @@ const Generator = () => {
     if (topFiveIds.length > 0) {
       const data = await getRecomendations(url, amountValue);
       const tracks = convertTracks(data.tracks);
-  
-      setPlaylist([]);
+      clearList();
       setPlaylist(tracks);
       clearInput();
     }
@@ -98,8 +97,7 @@ const Generator = () => {
     const url = `&seed_tracks=${id}`;
     const data = await getRecomendations(url, amountValue);
     const tracks = convertTracks(data.tracks);
-    
-    setPlaylist([]);
+    clearList();
     setPlaylist(tracks);
     clearInput();
   };
@@ -118,7 +116,7 @@ const Generator = () => {
     const data = await getRecomendations(url, advAmountValue);
 
     const tracks = convertTracks(data.tracks);
-    setPlaylist([]);
+    clearList();
     setPlaylist(tracks);
     clearInput();
   };
@@ -128,15 +126,22 @@ const Generator = () => {
     setAdvAmountValue("");
   };
 
+  const clearList = () => {
+    handleCheckedPlaylist(false);
+    setPlaylist([]);
+  };
+
   const addToPlaylist = (playlistId, playlistTitle) => {
-    const uris = chosenTracks.map((track) => track.uri);
+    const uris = checkedPlaylist.map((track) => track.uri);
 
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris}`;
     sendData(url, "POST").then((message) => {
       if (message.error) {
         setToastMessage(` error ${message.error.message.split(":")[0]}`);
       } else {
-        setToastMessage(` added ${chosenTracks.length} tracks to ${playlistTitle}`);
+        setToastMessage(
+          ` added ${checkedPlaylist.length} tracks to ${playlistTitle}`
+        );
       }
 
       setMenuOpen(false);
@@ -146,16 +151,23 @@ const Generator = () => {
   const isSingleSong = Object.keys(songToGenerate).length > 0 ? true : false;
 
   useEffect(() => {
-    setPlaylist([]);
-    setChosenTracks([])
+    clearList();
     return () => {
       setMenuOpen(false);
     };
   }, [isSingleSong, songToGenerate]);
 
+  useEffect(() => {
+    handleCheckedPlaylist(true);
+  }, [playlist]);
+
   const openAdvanced = () => {
-    setPlaylist([]);
     setAdvanced(!showAdvanced);
+  };
+
+  const handleCheckedPlaylist = (checked) => {
+    const list = checked ? playlist : [];
+    dispatch({ type: "setAllChecked", payload: list });
   };
   return (
     <div className="wrap">
@@ -164,7 +176,7 @@ const Generator = () => {
           <Menu
             addToPlaylist={addToPlaylist}
             setMenuOpen={setMenuOpen}
-            newPlaylist={chosenTracks}
+            newPlaylist={checkedPlaylist}
           />
         </div>
       ) : null}
@@ -176,7 +188,7 @@ const Generator = () => {
             description={`Generate a playlist with song's like ${title}`}
             isGenerator={true}
             setStartAnimation={setStartAnimation}
-            tracksAmount={playlist.length}
+            cornerTitle={`${playlist.length} Tracks`}
           />
           <div
             style={{
@@ -193,12 +205,15 @@ const Generator = () => {
             />
 
             <SaveButton
-              showButton={playlist.length > 0}
+              showButton={checkedPlaylist.length > 0}
               savePlaylist={savePlaylist}
               title={"save playlist"}
             />
           </div>
-          <TracksChosen chosenTracks={chosenTracks} />
+          <TracksChosen
+            chosenTracks={checkedPlaylist}
+            handleCheckedPlaylist={handleCheckedPlaylist}
+          />
           {playlist.length > 0 ? (
             <div className="generated-tracks">
               <TrackList
@@ -207,7 +222,6 @@ const Generator = () => {
                 favorites={false}
                 next={null}
                 startAnimation={startAnimation}
-                setChosenTracks={setChosenTracks}
               />
             </div>
           ) : null}
@@ -239,7 +253,7 @@ const Generator = () => {
               </div>
 
               <SaveButton
-                showButton={playlist.length > 0}
+                showButton={checkedPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -345,13 +359,19 @@ const Generator = () => {
                 </div>
               ) : null}
             </div>
+            <TracksChosen
+            chosenTracks={checkedPlaylist}
+            handleCheckedPlaylist={handleCheckedPlaylist}
+          />
           </motion.div>
-          <TracksChosen chosenTracks={chosenTracks} />
-          {playlist.length > 0 && genresArray.length > 0 ? (
+
+         
+
+          {playlist.length > 0 && genresArray.length && showAdvanced > 0 ? (
             <div className="button-wrap">
               <h4>Tracks: {playlist.length}</h4>
               <SaveButton
-                showButton={playlist.length > 0}
+                showButton={checkedPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -366,7 +386,6 @@ const Generator = () => {
                 favorites={false}
                 next={null}
                 startAnimation={startAnimation}
-                setChosenTracks={setChosenTracks}
               />
             </div>
           ) : null}
@@ -378,8 +397,7 @@ const Generator = () => {
 
 export default Generator;
 
-const TracksChosen = ({chosenTracks}) => {
-
+const TracksChosen = ({ chosenTracks, handleCheckedPlaylist }) => {
   const tickOptions = {
     loop: false,
     autoplay: true,
@@ -389,15 +407,36 @@ const TracksChosen = ({chosenTracks}) => {
     },
   };
 
+  const crossOptions = {
+    loop: false,
+    autoplay: true,
+    animationData: cross,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   return (
     <div className="tracks-chosen">
-      <Lottie options={tickOptions} width={60} height={60} />
-      <h1>Tracks Added {chosenTracks.length}</h1>
-      
+      <div className="item" style={{ cursor: "default" }}>
+        <Lottie options={tickOptions} width={60} height={60} />
+        <h1>Tracks Added {chosenTracks.length}</h1>
+      </div>
+
+      <div className="item-wrap">
+        <div className="item" onClick={() => handleCheckedPlaylist(true)}>
+          <h2>Add All</h2>
+          <Lottie options={tickOptions} width={60} height={60} />
+        </div>
+        <div className="item" onClick={() => handleCheckedPlaylist(false)}>
+          <h2>Remove All</h2>
+
+          <Lottie options={crossOptions} width={60} height={60} />
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 const NumberInput = ({
   inputRef,

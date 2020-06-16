@@ -10,13 +10,12 @@ const TrackList = ({
   next,
   updateNext,
   startAnimation,
-  setChosenTracks,
 }) => {
   const [tracks, setTracks] = useState([]);
   const [id, setId] = useState("");
   const contextStore = useContext(PlaylistStore);
   const { favoriteCheck, fetchData } = contextStore;
-  const [checked, setChecked] = useState(false);
+ 
   const controls = useAnimation();
   let _mounted = false;
   useEffect(() => {
@@ -34,12 +33,7 @@ const TrackList = ({
     }
   };
 
-  useEffect(() => {
-    if (setChosenTracks) {
-      const arr = tracks.filter((track) => track.checked);
-      setChosenTracks(arr);
-    }
-  }, [tracks.length, checked]);
+
 
   const loadMoreTracks = async () => {
     fetchData(next).then((data) => {
@@ -78,9 +72,7 @@ const TrackList = ({
                 key={i}
                 track={track}
                 updateFavorite={updateFavorite}
-                setChosenTracks={setChosenTracks}
-                setChecked={setChecked}
-                checked={checked}
+
               />
             );
           })

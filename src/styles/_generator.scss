@@ -1,5 +1,3 @@
-
-
 .gen-title {
   padding-top: 30px;
   letter-spacing: 1px;
@@ -19,8 +17,6 @@
     color: $light-text;
   }
 }
-
-
 
 .button-wrap {
   display: flex;
@@ -57,14 +53,33 @@
 }
 .tracks-chosen {
   display: flex;
-  width: 200px;
+  width: 100%;
   align-items: center;
-  height: 100px;
+  height: 70px;
+  justify-content: space-between;
+  background: rgb(231, 231, 231);
+  border-radius: 8px;
+  margin: 30px auto;
+  .item-wrap {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    margin: 0 20px;
+    cursor: pointer;
+   
+  }
 }
 .advanced {
   min-height: 50px;
   background: white;
-  margin-top: 100px;
+  margin-top: 40px;
   border-radius: 15px;
   transition: 0.5s;
 
