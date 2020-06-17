@@ -5,9 +5,9 @@ import PageRouter from "./router/PageRouter";
 import ScrollToTop from "./router/ScrollToTop";
 import { BrowserRouter as Router } from "react-router-dom";
 import ContextProvider from "./context/ContextProvider";
-import StartScreen from './components/StartScreen'
+import StartScreen from "./components/StartScreen";
 
-import Toast from './components/Toast'
+import Toast from "./components/Toast";
 import Player from "./components/Player";
 import { PlaylistStore } from "./context/ContextProvider";
 import AlbumPage from "./pages/AlbumPage";
@@ -18,7 +18,6 @@ const Screen = () => {
   const contextStore = useContext(PlaylistStore);
   const { accessToken } = contextStore.state;
   useEffect(() => {
-   
     if (accessToken) {
       setSignedIn(true);
     }
@@ -31,7 +30,6 @@ const Screen = () => {
     </div>
   );
 };
-
 
 function App() {
   return (
@@ -48,13 +46,10 @@ export default App;
 const MainApp = ({ contextStore }) => {
   const { selectedPlaylist, modalOpen } = contextStore.state;
 
-  // useEffect(() => {
-  //   console.log(selectedPlaylist);
-  // }, [selectedPlaylist]);
   const pageWrap = useRef(null);
   return (
     <div className="App">
-      <CreatePlaylist modalOpen={modalOpen}   /> 
+      <CreatePlaylist modalOpen={modalOpen} />
       <div className="section-container">
         <div className="nav-section">
           <SideNav />

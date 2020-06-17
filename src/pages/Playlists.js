@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { PlaylistStore } from "../context/ContextProvider";
 import TrackScroller from "../components/TrackScroller";
 import Search from "../components/Search";
 import PlaylistBrowser from "../components/PlaylistBrowser";
 import SearchResults from "../components/SearchResults";
 import NoTracksLottie from "../components/NoTracksLottie";
-import {motion} from 'framer-motion'
-import { fadeInRight, fadeIn } from "../data/animations.js";
+import { motion } from "framer-motion";
+import { fadeIn } from "../data/animations.js";
 const Playlists = () => {
   const contextStore = useContext(PlaylistStore);
   const [inputVal, setInputValue] = useState(null);
@@ -59,5 +59,5 @@ const Playlists = () => {
     </motion.div>
   );
 };
-// style={selectedPlaylist ? {overflow: 'hidden'} : null}
+
 export default Playlists;

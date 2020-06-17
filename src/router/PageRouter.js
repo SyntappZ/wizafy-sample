@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Generator from "../pages/Generator";
 import Playlists from "../pages/Playlists";
 import Settings from "../pages/Settings";
@@ -55,13 +55,12 @@ const PageRouter = () => {
   useEffect(() => {
     if (location.pathname !== "/generator") {
       dispatch({ type: "setSongToGenerate", payload: {} });
-      dispatch({type: "setOnGenerator", payload: false})
-    }else{
-      dispatch({type: "setOnGenerator", payload: true})
-
+      dispatch({ type: "setOnGenerator", payload: false });
+    } else {
+      dispatch({ type: "setOnGenerator", payload: true });
     }
 
-    if(location.pathname !== "/playlists") {
+    if (location.pathname !== "/playlists") {
       dispatch({ type: "clearSearch" });
     }
     dispatch({ type: "setSelectedPlaylist", payload: null });
@@ -102,7 +101,6 @@ const PageRouter = () => {
           path={route.path}
           exact={route.exact}
           children={<route.main />}
-          
         />
       ))}
     </Switch>

@@ -6,7 +6,7 @@ import TrackList from "../components/TrackList";
 import { PlaylistStore } from "../context/ContextProvider";
 import NoTracksLottie from "../components/NoTracksLottie";
 import { motion } from "framer-motion";
-import { fadeInRight, fadeIn, fadeInLeft } from "../data/animations.js";
+import { fadeIn, fadeInLeft } from "../data/animations.js";
 
 import TrackScroller from "../components/TrackScroller";
 
@@ -83,10 +83,11 @@ const Home = () => {
       className="home"
       style={selectedPlaylist ? { overflow: "hidden" } : null}
     >
-      <motion.div className="welcome"
-       initial={fadeIn.initial}
-       animate={fadeIn.animate}
-       transition={fadeIn.transition}
+      <motion.div
+        className="welcome"
+        initial={fadeIn.initial}
+        animate={fadeIn.animate}
+        transition={fadeIn.transition}
       >
         <motion.div
           className="text-wrap"

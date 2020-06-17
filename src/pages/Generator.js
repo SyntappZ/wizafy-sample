@@ -17,12 +17,7 @@ import tick from "../images/correct-check-animation.json";
 import cross from "../images/incorrect-failed.json";
 import Lottie from "react-lottie";
 
-import {
-  fadeInRight,
-  fadeInUp,
-  fadeIn,
-  fadeInLeft,
-} from "../data/animations.js";
+import { fadeInUp } from "../data/animations.js";
 
 const Generator = () => {
   const contextStore = useContext(PlaylistStore);
@@ -360,12 +355,10 @@ const Generator = () => {
               ) : null}
             </div>
             <TracksChosen
-            chosenTracks={checkedPlaylist}
-            handleCheckedPlaylist={handleCheckedPlaylist}
-          />
+              chosenTracks={checkedPlaylist}
+              handleCheckedPlaylist={handleCheckedPlaylist}
+            />
           </motion.div>
-
-         
 
           {playlist.length > 0 && genresArray.length && showAdvanced > 0 ? (
             <div className="button-wrap">

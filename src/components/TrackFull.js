@@ -52,17 +52,10 @@ const TrackFull = ({ track, updateFavorite }) => {
     dispatch({ type: "setCheckedPlaylist", payload: track });
   };
 
-  // useEffect(() => {
-  //   if(onGenerator) {
-  //   dispatch({ type: "setCheckedPlaylist", payload: track });
-  //   }
-  // }, [])
-
   useEffect(() => {
-    const arr = checkedPlaylist.map(track => track.id)
+    const arr = checkedPlaylist.map((track) => track.id);
     const chosen = arr.includes(id);
     setTrackChosen(chosen);
-    
   }, [checkedPlaylist.length, checkedPlaylist]);
 
   const heartOptions = {

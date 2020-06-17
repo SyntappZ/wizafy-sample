@@ -3,13 +3,7 @@ import { PlaylistStore } from "../context/ContextProvider";
 import { motion } from "framer-motion";
 import { MdClose } from "react-icons/md";
 import SaveButton from "./SaveButton";
-import {
-  fadeInRight,
-  fadeInUp,
-  fadeIn,
-  fadeInLeft,
-  scaleUp,
-} from "../data/animations.js";
+import { fadeInRight } from "../data/animations.js";
 const Menu = ({ addToPlaylist, setMenuOpen, newPlaylist, track }) => {
   const contextStore = useContext(PlaylistStore);
   const { state, dispatch } = contextStore;
@@ -22,7 +16,7 @@ const Menu = ({ addToPlaylist, setMenuOpen, newPlaylist, track }) => {
     } else {
       dispatch({ type: "setGeneratedPlaylist", payload: [track] });
     }
-    closeMenu()
+    closeMenu();
   };
 
   useEffect(() => {
@@ -50,8 +44,6 @@ const Menu = ({ addToPlaylist, setMenuOpen, newPlaylist, track }) => {
     const convert = Object.values(playlistObject);
     setPlaylists(convert);
   }, [myPlaylists]);
-
-  
 
   const pos = newPlaylist
     ? { position: "absolute" }

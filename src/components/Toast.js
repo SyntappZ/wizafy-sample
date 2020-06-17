@@ -5,16 +5,15 @@ import { PlaylistStore } from "../context/ContextProvider";
 
 const Toast = () => {
   const contextStore = useContext(PlaylistStore);
-  const {state, setToastMessage} = contextStore;
+  const { state, setToastMessage } = contextStore;
 
-  const {toastMessage} = state
+  const { toastMessage } = state;
 
   useEffect(() => {
     if (toastMessage) {
-      toast('🎵 ' + toastMessage);
-      setTimeout(() => setToastMessage(''), 2000)
+      toast("🎵 " + toastMessage);
+      setTimeout(() => setToastMessage(""), 2000);
     }
-   
   }, [toastMessage]);
 
   return (
@@ -28,7 +27,6 @@ const Toast = () => {
       pauseOnFocusLoss
       draggable
       pauseOnHover
-      
     />
   );
 };

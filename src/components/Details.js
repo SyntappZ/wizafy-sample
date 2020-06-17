@@ -4,12 +4,7 @@ import Lottie from "react-lottie";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import heartBeat from "../images/heartBeat.json";
 import { motion } from "framer-motion";
-import {
-  fadeInLeft,
-  fadeInRight,
-  fadeIn,
-  fadeInDelay,
-} from "../data/animations.js";
+import { fadeInLeft, fadeIn, fadeInDelay } from "../data/animations.js";
 import { PlaylistStore } from "../context/ContextProvider";
 
 const Details = ({
@@ -18,7 +13,6 @@ const Details = ({
   description,
   category,
   isGenerator,
-  id,
   setStartAnimation,
   cornerTitle,
 }) => {
@@ -44,7 +38,6 @@ const Details = ({
     dispatch({ type: "setSongToGenerate", payload: {} });
     dispatch({ type: "setFeatured", payload: false });
   };
-
 
   return (
     <div className="details">

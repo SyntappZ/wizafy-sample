@@ -1,16 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Lottie from "react-lottie";
 import soundWave from "../images/long-sound-wave.json";
-import { FaStepForward, FaVolumeUp, FaStepBackward } from "react-icons/fa";
+import { FaVolumeUp, FaStepBackward } from "react-icons/fa";
 import { MdPause, MdPlayArrow } from "react-icons/md";
-import { motion } from "framer-motion";
+
 import { PlaylistStore } from "../context/ContextProvider";
-import {
-  fadeInRight,
-  fadeIn,
-  fadeInLeft,
-  scaleUp,
-} from "../data/animations.js";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 const Player = () => {
@@ -19,10 +13,6 @@ const Player = () => {
   const [volume, setVolume] = useState(0.2);
   const [time, setTime] = useState(0);
   const { currentTrack, audio, isPlaying, isPaused } = contextStore.state;
-  const [state, setState] = useState({
-    lottiePaused: false,
-    lottieStopped: true,
-  });
 
   useEffect(() => {
     if (currentTrack) {

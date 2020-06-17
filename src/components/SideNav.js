@@ -3,21 +3,19 @@ import img from "../images/tempProfile.jpg";
 import { AiOutlineHome } from "react-icons/ai";
 import { MdPlaylistAdd, MdPlaylistPlay } from "react-icons/md";
 import { GiRegeneration, GiCubes } from "react-icons/gi";
-import { FiSettings } from "react-icons/fi";
+
 import { PlaylistStore } from "../context/ContextProvider";
 import { Link, useLocation } from "react-router-dom";
 
-
 const SideNav = () => {
   const contextStore = useContext(PlaylistStore);
-  const {toggleModal} = contextStore
+  const { toggleModal } = contextStore;
   const {
     username,
     profileImage,
     email,
     accessToken,
     generatedPlaylist,
-    
   } = contextStore.state;
   const [page, setPage] = useState("/");
 
@@ -57,8 +55,6 @@ const SideNav = () => {
     // },
   ];
 
-
-
   let location = useLocation();
   useEffect(() => {
     let mounted = true;
@@ -72,7 +68,6 @@ const SideNav = () => {
 
   return (
     <div className="nav-container">
-      
       <div className="profile-wrap">
         <div className="picture-wrap">
           <img src={profileImage ? profileImage : img} alt="profile" />

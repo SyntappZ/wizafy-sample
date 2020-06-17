@@ -1,12 +1,7 @@
 import React from "react";
 import { MdPlaylistAdd, MdPlaylistAddCheck } from "react-icons/md";
 import { motion } from "framer-motion";
-import {
-  fadeInRight,
-  fadeInUp,
-  fadeIn,
-  fadeInLeft,
-} from "../data/animations.js";
+import { fadeInRight } from "../data/animations.js";
 const SaveButton = ({ showButton, savePlaylist, title, isSaved }) => {
   return (
     <>

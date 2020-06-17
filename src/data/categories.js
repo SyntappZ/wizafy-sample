@@ -1,4 +1,4 @@
- const categories = [
+const categories = [
   {
     title: "Top Lists",
     id: "toplists",
@@ -243,6 +243,6 @@ const attributeData = [
     info:
       "	The popularity of the track. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are.",
   },
-]
+];
 
-export {attributeData, categories}
+export { attributeData, categories };

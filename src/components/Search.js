@@ -23,11 +23,11 @@ const Search = ({ isPlaylists, inputValue, placeholder }) => {
     }`;
     if (e.keyCode === 13) {
       const data = await fetchData(url);
-      
+
       if (!data.error) {
         isPlaylists
-          ? dispatch({ type: "setSearchData", payload: {data, val} })
-          : dispatch({ type: "setSearchTracks", payload: {data, val} });
+          ? dispatch({ type: "setSearchData", payload: { data, val } })
+          : dispatch({ type: "setSearchTracks", payload: { data, val } });
       } else {
         alert(data.error.message);
       }

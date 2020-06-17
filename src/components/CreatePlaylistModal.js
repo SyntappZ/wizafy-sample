@@ -4,23 +4,29 @@ import { IoMdSave } from "react-icons/io";
 import { PlaylistStore } from "../context/ContextProvider";
 import ToggleSwitch from "./ToggleSwitch";
 import { motion } from "framer-motion";
-import { fadeInRight, fadeIn, fadeInLeft, fadeInFast } from "../data/animations.js";
+import { fadeInFast } from "../data/animations.js";
 const CreatePlaylistModal = () => {
   const contextStore = useContext(PlaylistStore);
-  const { sendData, state, refreshData, dispatch, toggleModal, setToastMessage } = contextStore;
-  const { generatedPlaylist, userId, modalOpen,  } = state;
+  const {
+    sendData,
+    state,
+    refreshData,
+    dispatch,
+    toggleModal,
+    setToastMessage,
+  } = contextStore;
+  const { generatedPlaylist, userId, modalOpen } = state;
   const titleRef = useRef("");
   const descriptionRef = useRef("");
   const [tracksAmount, setTracksAmount] = useState(0);
   const [isPublic, setPublic] = useState(true);
-
 
   const addToPlaylist = (playlistId, uris) => {
     const body = { uris: uris };
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
     sendData(url, "POST", body).then((data) => {
       refreshData("playlists");
-      setToastMessage("Playlist added.")
+      setToastMessage("Playlist added.");
       dispatch({ type: "setGeneratedPlaylist", payload: null });
       toggleModal();
     });
@@ -38,16 +44,16 @@ const CreatePlaylistModal = () => {
         addToPlaylist(playlistId, generatedPlaylist);
       } else {
         refreshData("playlists");
-        setToastMessage("Playlist created.")
+        setToastMessage("Playlist created.");
         toggleModal();
       }
     });
   };
 
   const closeModal = () => {
-    toggleModal()
+    toggleModal();
     dispatch({ type: "setGeneratedPlaylist", payload: null });
-  }
+  };
 
   const toggleHandler = () => setPublic(!isPublic);
 
@@ -57,10 +63,11 @@ const CreatePlaylistModal = () => {
   return (
     <>
       {modalOpen ? (
-        <motion.div className="create-playlist-modal"
-        initial={fadeInFast.initial}
-        animate={fadeInFast.animate}
-        transition={fadeInFast.transition}
+        <motion.div
+          className="create-playlist-modal"
+          initial={fadeInFast.initial}
+          animate={fadeInFast.animate}
+          transition={fadeInFast.transition}
         >
           <div className="modal">
             <div className="close">

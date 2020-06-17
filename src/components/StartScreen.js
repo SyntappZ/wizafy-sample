@@ -14,7 +14,7 @@ const StartScreen = () => {
       <div className="background"></div>
       <div className="top">
         <div className="wrap">
-          <h1 style={{color: 'white'}}>welcome to playlist wizard</h1>
+          <h1 style={{ color: "white" }}>welcome to playlist wizard</h1>
           <h3>sign in to spotify for wizardry</h3>
           <MdArrowDownward className="down-arrow" />
           <div
@@ -26,14 +26,12 @@ const StartScreen = () => {
               className="icon"
               style={{ fontSize: "22px", color: "#554fd8" }}
             />
-            <p style={{color: "#554fd8"}}>sign in</p>
+            <p style={{ color: "#554fd8" }}>sign in</p>
           </div>
         </div>
       </div>
 
-      <div className="bottom">
-      {isLoading ? <Loading /> : null}
-      </div>
+      <div className="bottom">{isLoading ? <Loading /> : null}</div>
     </div>
   );
 };

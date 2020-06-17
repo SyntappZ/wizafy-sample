@@ -5,13 +5,7 @@ import TrackList from "../components/TrackList";
 import SaveButton from "../components/SaveButton";
 import { convertTracks } from "../data/trackConverter.js";
 import { motion } from "framer-motion";
-import {
-  fadeInLeft,
-  fadeInFast,
-  fadeInRight,
-  fadeIn,
-  fadeInDelay,
-} from "../data/animations.js";
+import { fadeInFast } from "../data/animations.js";
 const AlbumPage = () => {
   const contextStore = useContext(PlaylistStore);
   const [playlistTracks, setTracks] = useState([]);
