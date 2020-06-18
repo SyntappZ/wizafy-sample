@@ -61,14 +61,14 @@ const Generator = () => {
 
   const getAmountValue = () => {
     const limit = trackAmountRef.current.valueAsNumber;
-    let val = limit > 100 ? 100 : limit;
+    let val = limit > 50 ? 50 : limit;
     val = Number.isNaN(val) ? "" : val.toString();
     setAmountValue(val);
   };
 
   const getAdvAmountValue = () => {
     const limit = advTrackAmountRef.current.valueAsNumber;
-    let val = limit > 100 ? 100 : limit;
+    let val = limit > 50 ? 50 : limit;
     val = Number.isNaN(val) ? "" : val.toString();
     setAdvAmountValue(val);
   };
@@ -89,9 +89,20 @@ const Generator = () => {
   };
 
   const generateSingleSong = async () => {
-    const url = `&seed_tracks=${id}`;
+    
+    let convertedAttributes = "";
+    attributes.forEach((attribute) => {
+      if (attribute.value !== null) {
+        const val = attribute.value == "1" ? "1.0" : attribute.value;
+        convertedAttributes += `target_${attribute.title}=${val}&`;
+      }
+    });
+    const url = `${convertedAttributes}seed_tracks=${id}`;
+
     const data = await getRecomendations(url, amountValue);
+
     const tracks = convertTracks(data.tracks);
+
     clearList();
     setPlaylist(tracks);
     clearInput();
@@ -124,6 +135,7 @@ const Generator = () => {
   const clearList = () => {
     handleCheckedPlaylist(false);
     setPlaylist([]);
+    
   };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
@@ -147,6 +159,7 @@ const Generator = () => {
 
   useEffect(() => {
     clearList();
+    setAdvanced(false)
     return () => {
       setMenuOpen(false);
     };
@@ -205,10 +218,57 @@ const Generator = () => {
               title={"save playlist"}
             />
           </div>
+          <div className="advanced">
+            <div className="top" onClick={openAdvanced}>
+              <h1>Attributes</h1>
+              <div className="show">
+                <h2>{showAdvanced ? "hide" : "show"}</h2>
+                {showAdvanced ? (
+                  <FiChevronUp style={{ fontSize: "24px", color: "#949494" }} />
+                ) : (
+                  <FiChevronDown
+                    style={{ fontSize: "24px", color: "#949494" }}
+                  />
+                )}
+              </div>
+            </div>
+            {showAdvanced ? (
+              <>
+                <Attributes
+                  attributes={attributes}
+                  updateAttributeValue={updateAttributeValue}
+                />
+
+                <NumberInput
+                  inputRef={trackAmountRef}
+                  onChangeEvent={getAmountValue}
+                  amountValue={amountValue}
+                  buttonHandler={generateSingleSong}
+                  advanced={true}
+                />
+              </>
+            ) : null}
+          </div>
           <TracksChosen
             chosenTracks={checkedPlaylist}
             handleCheckedPlaylist={handleCheckedPlaylist}
           />
+          {showAdvanced && checkedPlaylist.length > 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                marginBottom: '20px'
+              }}
+            >
+              <SaveButton
+                showButton={checkedPlaylist.length > 0}
+                savePlaylist={savePlaylist}
+                title={"save playlist"}
+              />
+            </div>
+          ) : null}
           {playlist.length > 0 ? (
             <div className="generated-tracks">
               <TrackList
@@ -254,9 +314,9 @@ const Generator = () => {
               />
             </div>
             <div className="advanced">
-              <div className="top">
+              <div className="top" onClick={openAdvanced}>
                 <h1>Advanced</h1>
-                <div className="show" onClick={openAdvanced}>
+                <div className="show">
                   <h2>{showAdvanced ? "hide" : "show"}</h2>
                   {showAdvanced ? (
                     <FiChevronUp
@@ -298,50 +358,10 @@ const Generator = () => {
                   />
                   {genresArray.length > 0 ? (
                     <>
-                      <h1
-                        style={{
-                          marginTop: "50px",
-                          fontSize: "25px",
-                          color: "#333",
-                          textAlign: "center",
-                        }}
-                      >
-                        attributes
-                      </h1>
-                      <p
-                        style={{
-                          color: "#aaa",
-                          textAlign: "center",
-                        }}
-                      >
-                        Hover over the title for information.
-                      </p>
-                      <div className="sliders">
-                        {attributes.map((attribute, i) => {
-                          if (attribute.title !== "popularity") {
-                            return (
-                              <TuneableAttribute
-                                key={i}
-                                id={i}
-                                title={attribute.title}
-                                info={attribute.info}
-                                value={attribute.value}
-                                updateAttributeValue={updateAttributeValue}
-                              />
-                            );
-                          }
-                        })}
-                      </div>
-                      <div className="popularity">
-                        <TuneableAttribute
-                          id={6}
-                          title={attributes[6].title}
-                          info={attributes[6].info}
-                          value={attributes[6].value}
-                          updateAttributeValue={updateAttributeValue}
-                          isPopularity={true}
-                        />
-                      </div>
+                      <Attributes
+                        attributes={attributes}
+                        updateAttributeValue={updateAttributeValue}
+                      />
                       <NumberInput
                         inputRef={advTrackAmountRef}
                         onChangeEvent={getAdvAmountValue}
@@ -455,13 +475,65 @@ const NumberInput = ({
         placeholder="track amount"
         min="0"
         default="0"
-        max="100"
+        max="50"
         onChange={onChangeEvent}
         value={amountValue}
         onKeyDown={keyPress}
       />
       <div onClick={amountValue ? buttonHandler : null} className="btn">
         generate
+      </div>
+    </div>
+  );
+};
+
+const Attributes = ({ attributes, updateAttributeValue }) => {
+  return (
+    <div className="attributes">
+      <h1
+        style={{
+          marginTop: "50px",
+          fontSize: "25px",
+          color: "#333",
+          textAlign: "center",
+        }}
+      >
+        attributes
+      </h1>
+      <p
+        style={{
+          color: "#aaa",
+          textAlign: "center",
+        }}
+      >
+        Hover over the title for information.
+      </p>
+
+      <div className="sliders">
+        {attributes.map((attribute, i) => {
+          if (attribute.title !== "popularity") {
+            return (
+              <TuneableAttribute
+                key={i}
+                id={i}
+                title={attribute.title}
+                info={attribute.info}
+                value={attribute.value}
+                updateAttributeValue={updateAttributeValue}
+              />
+            );
+          }
+        })}
+      </div>
+      <div className="popularity">
+        <TuneableAttribute
+          id={6}
+          title={attributes[6].title}
+          info={attributes[6].info}
+          value={attributes[6].value}
+          updateAttributeValue={updateAttributeValue}
+          isPopularity={true}
+        />
       </div>
     </div>
   );

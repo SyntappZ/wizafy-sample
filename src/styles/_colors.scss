@@ -1,10 +1,14 @@
 $light-text: #949494;
 $light-grey: #dbdbdb;
-$purple: #554fd8;
 $text: #303A53;
-$pink: #9e93d3;
 $blackLinear: linear-gradient(to right, rgb(28, 33, 46), #303A53);
+$disabled: #dfdfdf;
+
+
+
+//light theme
+$purple: #554fd8;
+$pink: #9e93d3;
 $purpleLinear: linear-gradient(to right, #302aa5, #554fd8);
 $background: linear-gradient(#ffffff, #ebebeb);
 $player-background: #fbfbfb;
-$disabled: #dfdfdf;

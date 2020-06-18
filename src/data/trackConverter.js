@@ -14,7 +14,7 @@ const convertTracks = (data, image) => {
 
     const trackImage = track.album
       ? track.album.images.length > 0
-        ? track.album.images[1].url
+        ? track.album.images[1].url || track.album.images[0].url
         : defaultImage
       : image;
 
