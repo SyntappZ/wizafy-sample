@@ -89,7 +89,6 @@ const Generator = () => {
   };
 
   const generateSingleSong = async () => {
-    
     let convertedAttributes = "";
     attributes.forEach((attribute) => {
       if (attribute.value !== null) {
@@ -135,7 +134,6 @@ const Generator = () => {
   const clearList = () => {
     handleCheckedPlaylist(false);
     setPlaylist([]);
-    
   };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
@@ -159,7 +157,7 @@ const Generator = () => {
 
   useEffect(() => {
     clearList();
-    setAdvanced(false)
+    setAdvanced(false);
     return () => {
       setMenuOpen(false);
     };
@@ -259,7 +257,7 @@ const Generator = () => {
                 display: "flex",
                 justifyContent: "flex-end",
                 alignItems: "center",
-                marginBottom: '20px'
+                marginBottom: "20px",
               }}
             >
               <SaveButton

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Generator from "../pages/Generator";
 import Playlists from "../pages/Playlists";
-import Settings from "../pages/Settings";
+
 import Home from "../pages/Home";
 import Explore from "../pages/Explore";
 import { PlaylistStore } from "../context/ContextProvider";
@@ -29,10 +29,6 @@ const routes = [
     main: () => <Playlists />,
   },
   {
-    path: "/settings",
-    main: () => <Settings />,
-  },
-  {
     path: "/categoryPlaylists",
     main: () => <CategoryPlaylists />,
   },
@@ -43,12 +39,7 @@ const PageRouter = () => {
   const contextStore = useContext(PlaylistStore);
   const { dispatch, state } = contextStore;
 
-  const {
-    accessToken,
-    selectedCategory,
-    selectedPlaylist,
-    songToGenerate,
-  } = state;
+  const { accessToken, selectedCategory, songToGenerate } = state;
   const history = useHistory();
   const location = useLocation();
 
@@ -86,12 +77,6 @@ const PageRouter = () => {
       history.push("/categoryPlaylists");
     }
   }, [selectedCategory]);
-
-  // useEffect(() => {
-  //   if (Object.keys(selectedPlaylist).length > 0) {
-  //     history.push("/tracks");
-  //   }
-  // }, [selectedPlaylist]);
 
   return (
     <Switch>
