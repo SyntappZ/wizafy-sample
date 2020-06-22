@@ -3,7 +3,7 @@ import Lottie from "react-lottie";
 import soundWave from "../images/long-sound-wave.json";
 import { FaVolumeUp, FaStepBackward } from "react-icons/fa";
 import { MdPause, MdPlayArrow } from "react-icons/md";
-
+import { GiRegeneration } from "react-icons/gi";
 import { PlaylistStore } from "../context/ContextProvider";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
@@ -12,7 +12,8 @@ const Player = () => {
   const [track, setTrack] = useState({});
   const [volume, setVolume] = useState(0.2);
   const [time, setTime] = useState(0);
-  const { currentTrack, audio, isPlaying, isPaused } = contextStore.state;
+  const {dispatch, state} = contextStore;
+  const { currentTrack, audio, isPlaying, isPaused } = state;
 
   useEffect(() => {
     if (currentTrack) {
@@ -93,6 +94,11 @@ const Player = () => {
   if (title) {
     trackTitle = title.length > 25 ? title.slice(0, 25) + "..." : title;
   }
+  const sendToGenerator = () => {
+    dispatch({ type: "setSongToGenerate", payload: track });
+  };
+
+  
 
   return (
     <div className="player-container">
@@ -111,6 +117,7 @@ const Player = () => {
             <div className="play-wrap" onClick={playSample}>
               {isPlaying ? <MdPause /> : <MdPlayArrow />}
             </div>
+            <GiRegeneration className="icon" onClick={sendToGenerator} />
           </div>
         </div>
       </div>

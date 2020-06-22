@@ -35,7 +35,6 @@ const Generator = () => {
   const {
     topFiveIds,
     songToGenerate,
-    selectedPlaylist,
     myTopTracks,
     moreTopTracks,
     checkedPlaylist,
@@ -60,6 +59,7 @@ const Generator = () => {
   };
 
   const getAmountValue = () => {
+   
     const limit = trackAmountRef.current.valueAsNumber;
     let val = limit > 50 ? 50 : limit;
     val = Number.isNaN(val) ? "" : val.toString();
@@ -67,6 +67,8 @@ const Generator = () => {
   };
 
   const getAdvAmountValue = () => {
+    
+
     const limit = advTrackAmountRef.current.valueAsNumber;
     let val = limit > 50 ? 50 : limit;
     val = Number.isNaN(val) ? "" : val.toString();
@@ -74,6 +76,7 @@ const Generator = () => {
   };
 
   const generateTopPlayed = async () => {
+    console.log('top played')
     const url = `&seed_tracks=${topFiveIds}`;
     if (topFiveIds.length > 0) {
       const data = await getRecomendations(url, amountValue);
@@ -89,6 +92,7 @@ const Generator = () => {
   };
 
   const generateSingleSong = async () => {
+    console.log('single')
     let convertedAttributes = "";
     attributes.forEach((attribute) => {
       if (attribute.value !== null) {
@@ -98,7 +102,7 @@ const Generator = () => {
     });
     const url = `${convertedAttributes}seed_tracks=${id}`;
 
-    const data = await getRecomendations(url, amountValue);
+    const data = await getRecomendations(url, amountValue || advAmountValue);
 
     const tracks = convertTracks(data.tracks);
 
@@ -157,6 +161,7 @@ const Generator = () => {
 
   useEffect(() => {
     clearList();
+    setGenresArray([])
     setAdvanced(false);
     return () => {
       setMenuOpen(false);
@@ -238,9 +243,9 @@ const Generator = () => {
                 />
 
                 <NumberInput
-                  inputRef={trackAmountRef}
-                  onChangeEvent={getAmountValue}
-                  amountValue={amountValue}
+                  inputRef={advTrackAmountRef}
+                  onChangeEvent={getAdvAmountValue}
+                  amountValue={advAmountValue}
                   buttonHandler={generateSingleSong}
                   advanced={true}
                 />
@@ -461,7 +466,8 @@ const NumberInput = ({
       buttonHandler();
     }
   };
-
+console.log(inputRef)
+console.log(amountValue)
   return (
     <div
       className="number-wrap"

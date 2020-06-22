@@ -47,7 +47,7 @@
 }
 .controls-wrap {
   display: flex;
-  width: 100px;
+  width: 150px;
   align-items: center;
   justify-content: space-around;
   height: 100%;
@@ -56,6 +56,12 @@
     color: $purple;
     font-size: 18px;
     cursor: pointer;
+  }
+  .icon {
+    font-size: 22px;
+    color: #979797;
+    cursor: pointer;
+
   }
 }
 
