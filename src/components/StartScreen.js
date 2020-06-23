@@ -31,9 +31,26 @@ const StartScreen = () => {
         </div>
       </div>
 
-      <div className="bottom">{isLoading ? <Loading /> : null}</div>
+      <div className="bottom">{isLoading ? <Loading /> : <Features />}</div>
     </div>
   );
 };
 
 export default StartScreen;
+
+const Features = () => {
+  const arr = [1, 2, 3, 4, 5, 6];
+  return (
+    <div className="features">
+      <div className="wrap">
+        {arr.map((feature) => {
+          return <Feature key={feature} />;
+        })}
+      </div>
+    </div>
+  );
+};
+
+const Feature = () => {
+  return <div className="feature"></div>;
+};

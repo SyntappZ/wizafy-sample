@@ -19,7 +19,7 @@ const Screen = () => {
   const { accessToken } = contextStore.state;
   useEffect(() => {
     if (accessToken) {
-      setSignedIn(true);
+      // setSignedIn(true);
     }
   }, [accessToken]);
 
