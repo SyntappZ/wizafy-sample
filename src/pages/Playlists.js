@@ -39,7 +39,7 @@ const Playlists = () => {
         <SearchResults isPlaylists={true} />
       ) : (
         <div>
-          {myPlaylists ? (
+          {myPlaylists.length > 0 ? (
             <TrackScroller
               loadMoreTracks={loadMorePlaylists}
               tracks={myPlaylists}

@@ -36,9 +36,9 @@ const userState = {
   isPaused: false,
   generatedPlaylist: [],
   songToGenerate: {},
-  searchAlbums: null,
-  searchPlaylists: null,
-  searchTracks: null,
+  searchAlbums: [],
+  searchPlaylists: [],
+  searchTracks: [],
   searchTitle: "",
   savedSearch: false,
   modalOpen: false,
@@ -265,9 +265,9 @@ const userData = (state, action) => {
     case "clearSearch": {
       return {
         ...state,
-        searchPlaylists: null,
-        searchAlbums: null,
-        searchTracks: null,
+        searchPlaylists: [],
+        searchAlbums: [],
+        searchTracks: [],
         searchTitle: "",
         savedSearch: false,
       };

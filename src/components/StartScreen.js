@@ -39,18 +39,64 @@ const StartScreen = () => {
 export default StartScreen;
 
 const Features = () => {
-  const arr = [1, 2, 3, 4, 5, 6];
+  const arr = [
+    {
+      color: "#ac8be9",
+      title: "search",
+      desc:
+        "Search for alsorts of playlists, albums and songs from the spotify database.",
+    },
+    {
+      color: "#6e50bf",
+      title: "catagories",
+      desc:
+        "Explore through 35 catagories each of which has many playlists to browse through.",
+    },
+    {
+      color: "#382b64",
+      title: "playlists & albums",
+      desc:
+        "Add & remove any playlist or album and save any song to your favorites.",
+    },
+    {
+      color: "#3d3372",
+      title: "generate playlists",
+      desc:
+        "Generate playlists from your most played tracks or from any song you choose.",
+    },
+    {
+      color: "#554fd8",
+      title: "tuneable attributes",
+      desc:
+        "Add some tuneble attributes in the generator such as Danceability, Energy and Popularity to get the playlist more to your liking.",
+    },
+    { color: "#7d50e7", title: "genre generator", desc: "Choose upto 5 genres to generate a playlist from with over 127 genres to choose from." },
+  ];
   return (
     <div className="features">
       <div className="wrap">
-        {arr.map((feature) => {
-          return <Feature key={feature} />;
+        {arr.map((feature, i) => {
+          return (
+            <Feature key={i} color={feature.color} title={feature.title} desc={feature.desc} />
+          );
         })}
       </div>
     </div>
   );
 };
 
-const Feature = () => {
-  return <div className="feature"></div>;
+const Feature = ({ color, title, desc }) => {
+  return (
+    <div className="feature">
+      <div className="feature-wrap">
+        <div className="icon-wrap">
+          <div className="circle" style={{ background: color }}></div>
+        </div>
+        <div className="text-wrap">
+          <p className="feature-title">{title}</p>
+          <p className="description">{desc}</p>
+        </div>
+      </div>
+    </div>
+  );
 };

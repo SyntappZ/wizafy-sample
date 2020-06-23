@@ -76,7 +76,7 @@ const Generator = () => {
   };
 
   const generateTopPlayed = async () => {
-    console.log('top played')
+    
     const url = `&seed_tracks=${topFiveIds}`;
     if (topFiveIds.length > 0) {
       const data = await getRecomendations(url, amountValue);
@@ -92,7 +92,7 @@ const Generator = () => {
   };
 
   const generateSingleSong = async () => {
-    console.log('single')
+  
     let convertedAttributes = "";
     attributes.forEach((attribute) => {
       if (attribute.value !== null) {
@@ -466,8 +466,7 @@ const NumberInput = ({
       buttonHandler();
     }
   };
-console.log(inputRef)
-console.log(amountValue)
+
   return (
     <div
       className="number-wrap"
