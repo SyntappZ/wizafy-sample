@@ -6,15 +6,23 @@ import visualizer from "../images/sound-visualizer.json";
 import tick from "../images/correct-check-animation.json";
 import cross from "../images/incorrect-failed.json";
 import { MdMoreHoriz, MdPlayArrow } from "react-icons/md";
-import { GiRegeneration } from "react-icons/gi";
+import { GiRegeneration, GiRollingDices } from "react-icons/gi";
 import Tooltip from "../components/Tooltip";
 import { TiCancel } from "react-icons/ti";
 import { PlaylistStore } from "../context/ContextProvider";
+import { FaHeart } from "react-icons/fa";
 import Menu from "./Menu";
 
-const TrackFull = ({ track, updateFavorite }) => {
+const TrackFull = ({ track }) => {
   const contextStore = useContext(PlaylistStore);
-  const { addFavorites, sendData, dispatch, setToastMessage } = contextStore;
+  const {
+    addFavorites,
+    sendData,
+    dispatch,
+    setToastMessage,
+    searchSample,
+    rollTrack,
+  } = contextStore;
   const {
     isPlaying,
     isPaused,
@@ -26,18 +34,48 @@ const TrackFull = ({ track, updateFavorite }) => {
   const [showTickTip, setShowTickTip] = useState(false);
   const [trackChosen, setTrackChosen] = useState(false);
 
-  const [state, setState] = useState({
-    lottiePaused: false,
-    lottieStopped: true,
-  });
+  const [trackData, setTrackData] = useState({});
+
+  const [isNoSample, setNoSample] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [showTip, showTooltip] = useState(false);
+  const [showRollTip, showRollTooltip] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { title, artist, image, duration, favorite, preview, id, uri } = track;
+
+  useEffect(() => {
+    setTrackData(track);
+  }, [track]);
+
+  const searchForSamples = async () => {
+    const sample = await searchSample({
+      title: trackData.title,
+      artist: trackData.artist,
+    });
+
+    if (sample) {
+      setTrackData(sample);
+    } else {
+      setNoSample(true);
+    }
+  };
+
+  const reroll = async () => {
+    const url = `seed_tracks=${trackData.id}`;
+    const data = await rollTrack(url, 1);
+    if (trackChosen) {
+      addCheckedTrack();
+      setTrackData(data);
+      dispatch({ type: "setCheckedPlaylist", payload: data });
+    } else {
+      setTrackData(data);
+      dispatch({ type: "setCheckedPlaylist", payload: data });
+    }
+  };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
-    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`;
+    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${trackData.uri}`;
     sendData(url, "POST").then((message) => {
-      let toastTitle = title.split("(")[0].trim();
+      let toastTitle = trackData.title.split("(")[0].trim();
       toastTitle =
         toastTitle.length > 20 ? toastTitle.slice(0, 20) + "..." : toastTitle;
       setToastMessage(` added ${toastTitle} to ${playlistTitle}`);
@@ -49,23 +87,15 @@ const TrackFull = ({ track, updateFavorite }) => {
   };
 
   const addCheckedTrack = () => {
-    dispatch({ type: "setCheckedPlaylist", payload: track });
+    dispatch({ type: "setCheckedPlaylist", payload: trackData });
   };
 
   useEffect(() => {
     const arr = checkedPlaylist.map((track) => track.id);
-    const chosen = arr.includes(id);
-    setTrackChosen(chosen);
-  }, [checkedPlaylist.length, checkedPlaylist]);
+    const chosen = arr.includes(trackData.id);
 
-  const heartOptions = {
-    loop: false,
-    autoplay: false,
-    animationData: heart,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+    setTrackChosen(chosen);
+  }, [checkedPlaylist.length, checkedPlaylist, trackData]);
 
   const visualizerOptions = {
     loop: true,
@@ -93,39 +123,33 @@ const TrackFull = ({ track, updateFavorite }) => {
   };
 
   useEffect(() => {
-    if (favorite) {
-      setState({ lottieStopped: false, lottiePaused: false });
-    } else {
-      setState({ lottieStopped: true });
-    }
-  }, [favorite]);
+    setIsFavorite(trackData.favorite);
+  }, [trackData.favorite]);
 
   const sendTrack = () => {
-    dispatch({ type: "loadCurrentTrack", payload: track });
+    dispatch({ type: "loadCurrentTrack", payload: trackData });
   };
 
   const handleFavorite = async () => {
-    const url = `https://api.spotify.com/v1/me/tracks?ids=${id}`;
-    const method = favorite ? "DELETE" : "PUT";
-    const message = favorite
-      ? "Removed from favorites."
-      : "Added to favorites.";
-    const action = await addFavorites(url, method);
-    if (action.status === 200) {
-      setToastMessage(message);
-    }
-    updateFavorite(id, track);
+    const action = await addFavorites(trackData.id);
+    setIsFavorite(action);
   };
 
-  const trackTitle = title.length > 30 ? title.slice(0, 30) + "..." : title;
+  let trackTitle;
+  if (trackData.title) {
+    trackTitle =
+      trackData.title.length > 30
+        ? trackData.title.slice(0, 30) + "..."
+        : trackData.title;
+  }
 
   const iconStyle = {
     fontSize: "25px",
-    color: preview ? "#333" : "#aaa",
+    color: trackData.preview ? "#333" : "#aaa",
   };
 
   let isPlay;
-  if (currentTrack.id === id && isPlaying) {
+  if (currentTrack.id === trackData.id && isPlaying) {
     isPlay = (
       <Lottie
         options={visualizerOptions}
@@ -138,7 +162,7 @@ const TrackFull = ({ track, updateFavorite }) => {
     isPlay = <MdPlayArrow style={iconStyle} />;
   }
 
-  const icon = preview ? (
+  const icon = trackData.preview ? (
     isPlay
   ) : (
     <div style={{ textAlign: "center" }}>
@@ -151,20 +175,46 @@ const TrackFull = ({ track, updateFavorite }) => {
       <div className="left">
         <div
           className="play-icon-wrap"
-          style={{ cursor: preview ? "pointer" : "default" }}
-          onClick={preview ? sendTrack : null}
+          style={{ cursor: trackData.preview ? "pointer" : "default" }}
+          onClick={trackData.preview ? sendTrack : null}
         >
           {icon}
         </div>
 
-        <img src={image} alt={trackTitle} />
+        <img src={trackData.image} alt={trackTitle} />
 
         <div className="text-wrap">
           <h3>{trackTitle}</h3>
-          <p>{artist}</p>
+          <p>{trackData.artist}</p>
         </div>
       </div>
       <div className="right">
+        {onGenerator ? (
+          <div
+            className="sample-search"
+            style={{ justifyContent: "flex-end", margin: 0 }}
+            onClick={reroll}
+            onMouseOver={() => showRollTooltip(true)}
+            onMouseLeave={() => showRollTooltip(false)}
+          >
+             <Tooltip
+              message={"Reroll track"}
+              toggle={showRollTip}
+              mini={true}
+            />
+            <GiRollingDices style={{ fontSize: "30px" }} />
+          </div>
+        ) : null}
+
+        {!trackData.preview && !onGenerator ? (
+          <div
+            className="sample-search"
+            style={{ border: "solid 1px #eee" }}
+            onClick={searchForSamples}
+          >
+            <p> {isNoSample ? "no samples found" : "Search for sample"}</p>
+          </div>
+        ) : null}
         {onGenerator ? (
           <div
             className="tick"
@@ -177,6 +227,7 @@ const TrackFull = ({ track, updateFavorite }) => {
               toggle={showTickTip}
               mini={true}
             />
+
             {trackChosen ? (
               <Lottie options={tickOptions} width={80} height={70} />
             ) : (
@@ -192,16 +243,14 @@ const TrackFull = ({ track, updateFavorite }) => {
               track={track}
             />
           ) : null}
-          <p>{duration}</p>
+          <p>{trackData.duration}</p>
 
           <div className="lottie-wrap" onClick={handleFavorite}>
-            <Lottie
-              options={heartOptions}
-              style={{ cursor: "pointer" }}
-              isStopped={state.lottieStopped}
-              isPaused={state.lottiePaused}
-              width={200}
-              height={150}
+            <FaHeart
+              style={{
+                color: isFavorite ? "#C41E58" : "#D9D9D9",
+                fontSize: "20px",
+              }}
             />
           </div>
           <div

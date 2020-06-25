@@ -1,6 +1,7 @@
 import React, { createContext, useEffect } from "react";
 import { Reducer } from "./Reducer.js";
 import { categories } from "../data/categories.js";
+import { convertTracks } from "../data/trackConverter.js";
 
 export const PlaylistStore = createContext();
 
@@ -30,7 +31,17 @@ const ContextProvider = ({ children }) => {
     });
   };
 
-  const addFavorites = (url, method) => {
+  const addFavorites = async (trackId) => {
+    const check = await fetchData(
+      `https://api.spotify.com/v1/me/tracks/contains?ids=${trackId}`,
+      "GET"
+    );
+
+    const method = check[0] ? "DELETE" : "PUT";
+    const message = check[0]
+      ? "Removed from favorites."
+      : "Added to favorites.";
+    const url = `https://api.spotify.com/v1/me/tracks?ids=${trackId}`;
     return new Promise((resolve, reject) => {
       fetch(url, {
         method: method,
@@ -41,11 +52,45 @@ const ContextProvider = ({ children }) => {
       })
         .then((res) => {
           refreshData("favorites");
-          resolve(res);
+
+          setToastMessage(message);
+
+          resolve(!check[0]);
         })
 
         .catch((err) => reject(err));
     });
+  };
+
+  const l = (str) => str.toLowerCase();
+
+  const searchSample = async ({ title, artist }) => {
+    let sample = null;
+    const url = `https://api.spotify.com/v1/search?q=${
+      artist + " " + title
+    }&type=track&limit=50`;
+    const data = await fetchData(url);
+
+    let tracks = data.tracks.items;
+
+    if (tracks.length > 0 && !data.error) {
+      let trackData = convertTracks(tracks);
+      trackData = await favoriteCheck(trackData);
+
+      for (let i = 0; i < trackData.length; i++) {
+        if (trackData[i].preview) {
+          if (
+            trackData[i].title.includes(title) &&
+            l(trackData[i].artist) === l(artist)
+          ) {
+            sample = trackData[i];
+            break;
+          }
+        }
+      }
+    }
+
+    return sample;
   };
 
   const toggleModal = () => dispatch({ type: "ToggleModal" });
@@ -120,6 +165,14 @@ const ContextProvider = ({ children }) => {
         })
         .catch((err) => reject(err));
     });
+  };
+
+  const rollTrack = async (url, limit) => {
+    const data = await getRecomendations(url, limit);
+
+    const tracks = await favoriteCheck(convertTracks(data.tracks));
+
+    return tracks[0];
   };
 
   const loadMoreTracks = (url, type) => {
@@ -250,6 +303,8 @@ const ContextProvider = ({ children }) => {
     addFavorites: addFavorites,
     toggleModal: toggleModal,
     setToastMessage: setToastMessage,
+    searchSample: searchSample,
+    rollTrack: rollTrack,
   };
 
   return (

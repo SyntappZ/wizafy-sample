@@ -38,13 +38,13 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
     });
   };
 
-  const updateFavorite = (nextId) => {
-    if (nextId === id) {
-      nextId = nextId + Math.floor(Math.random() + 10000).toString();
-    }
+  // const updateFavorite = (nextId) => {
+  //   // if (nextId === id) {
+  //   //   nextId = nextId + Math.floor(Math.random() + 10000).toString();
+  //   // }
 
-    setId(nextId);
-  };
+  //   setId(nextId);
+  // };
 
   const { initial, animate, transition } = fadeIn;
   if (startAnimation) {
@@ -64,7 +64,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
               <TrackFull
                 key={i}
                 track={track}
-                updateFavorite={updateFavorite}
+                
               />
             );
           })
