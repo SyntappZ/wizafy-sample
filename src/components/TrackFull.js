@@ -53,7 +53,10 @@ const TrackFull = ({ track }) => {
     });
 
     if (sample) {
-      setTrackData(sample);
+      setTrackData({
+        ...trackData,
+        preview: sample.preview
+      });
     } else {
       setNoSample(true);
     }
@@ -124,7 +127,7 @@ const TrackFull = ({ track }) => {
 
   useEffect(() => {
     setIsFavorite(trackData.favorite);
-  }, [trackData.favorite]);
+  }, [trackData]);
 
   const sendTrack = () => {
     dispatch({ type: "loadCurrentTrack", payload: trackData });
