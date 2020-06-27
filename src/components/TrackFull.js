@@ -55,7 +55,8 @@ const TrackFull = ({ track }) => {
     if (sample) {
       setTrackData({
         ...trackData,
-        preview: sample.preview
+        preview: sample.preview,
+
       });
     } else {
       setNoSample(true);
@@ -86,7 +87,7 @@ const TrackFull = ({ track }) => {
     setMenuOpen(false);
   };
   const sendToGenerator = () => {
-    dispatch({ type: "setSongToGenerate", payload: track });
+    dispatch({ type: "setSongToGenerate", payload: trackData });
   };
 
   const addCheckedTrack = () => {
