@@ -53,8 +53,8 @@ const Generator = () => {
   }, [attributeData]);
 
   useEffect(() => {
-    dispatch({ type: "setRemovedPlaylist", payload: playlist }); 
-  }, [playlist])
+    dispatch({ type: "setRemovedPlaylist", payload: playlist });
+  }, [playlist]);
 
   const savePlaylist = () => setMenuOpen(!menuOpen);
 

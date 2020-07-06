@@ -19,12 +19,7 @@ const TrackFull = ({ track, removeTrack }) => {
     searchSample,
     rollTrack,
   } = contextStore;
-  const {
-    isPlaying,
-    isPaused,
-    currentTrack,
-    onGenerator,
-  } = contextStore.state;
+  const { isPlaying, isPaused, currentTrack, onGenerator } = contextStore.state;
 
   const [showTickTip, setShowTickTip] = useState(false);
   const [trackData, setTrackData] = useState({});
@@ -49,20 +44,17 @@ const TrackFull = ({ track, removeTrack }) => {
       setTrackData({
         ...trackData,
         preview: sample.preview,
-
       });
     } else {
       setNoSample(true);
     }
   };
 
-
-
   const reroll = async () => {
     const url = `seed_tracks=${trackData.id}`;
     const data = await rollTrack(url, 1);
-      setTrackData(data);
-      track.uri = data.uri
+    setTrackData(data);
+    track.uri = data.uri;
   };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
@@ -79,8 +71,6 @@ const TrackFull = ({ track, removeTrack }) => {
     dispatch({ type: "setSongToGenerate", payload: trackData });
   };
 
-
-
   const visualizerOptions = {
     loop: true,
     autoplay: true,
@@ -89,7 +79,6 @@ const TrackFull = ({ track, removeTrack }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
- 
 
   useEffect(() => {
     setIsFavorite(trackData.favorite);
@@ -166,7 +155,7 @@ const TrackFull = ({ track, removeTrack }) => {
             onMouseOver={() => showRollTooltip(true)}
             onMouseLeave={() => showRollTooltip(false)}
           >
-             <Tooltip
+            <Tooltip
               message={"Reroll track"}
               toggle={showRollTip}
               mini={true}
@@ -197,9 +186,11 @@ const TrackFull = ({ track, removeTrack }) => {
               mini={true}
             />
 
-           <MdDeleteForever  style={{
+            <MdDeleteForever
+              style={{
                 fontSize: "25px",
-              }} />
+              }}
+            />
           </div>
         ) : null}
         <div className="container">

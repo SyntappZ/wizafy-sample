@@ -7,7 +7,7 @@ import { motion, useAnimation } from "framer-motion";
 import { fadeIn } from "../data/animations.js";
 const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
   const [tracks, setTracks] = useState([]);
-  
+
   const contextStore = useContext(PlaylistStore);
   const { favoriteCheck, fetchData, dispatch } = contextStore;
 
@@ -28,17 +28,11 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
     }
   };
 
-  
-
   const removeTrack = (id) => {
-    const list = tracks.filter(track => track.id !== id);
-    setTracks(list)
-     dispatch({ type: "setRemovedPlaylist", payload: list }); 
-  }
-
-  
-
-  
+    const list = tracks.filter((track) => track.id !== id);
+    setTracks(list);
+    dispatch({ type: "setRemovedPlaylist", payload: list });
+  };
 
   const loadMoreTracks = async () => {
     fetchData(next).then((data) => {
@@ -49,8 +43,6 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
       });
     });
   };
-
-
 
   const { initial, animate, transition } = fadeIn;
   if (startAnimation) {
@@ -67,11 +59,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
       {startAnimation
         ? tracks.map((track, i) => {
             return (
-              <TrackFull
-                key={i}
-                track={track}
-                removeTrack={removeTrack}
-              />
+              <TrackFull key={i} track={track} removeTrack={removeTrack} />
             );
           })
         : null}
