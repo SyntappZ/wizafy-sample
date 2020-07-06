@@ -22,7 +22,7 @@ const StartScreen = () => {
       <div className="background"></div>
       <div className="top">
         <div className="wrap">
-          <h1 style={{ color: "white" }}>welcome to playlist wizard</h1>
+          <h1 style={{ color: "white" }}>welcome to wizafy</h1>
           <h3>sign in to spotify for wizardry</h3>
           <MdArrowDownward className="down-arrow" />
           <div
@@ -38,7 +38,7 @@ const StartScreen = () => {
           </div>
         </div>
       </div>
-
+  
       <div className="bottom">{isLoading ? <Loading /> : <Features />}</div>
     </div>
   );
@@ -97,6 +97,7 @@ const Features = () => {
   ];
   return (
     <div className="features">
+      
       <div className="wrap">
         {arr.map((feature, i) => {
           return (

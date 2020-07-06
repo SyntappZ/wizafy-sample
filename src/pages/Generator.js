@@ -37,7 +37,7 @@ const Generator = () => {
     songToGenerate,
     myTopTracks,
     moreTopTracks,
-    checkedPlaylist,
+    removedPlaylist,
   } = state;
   const trackAmountRef = useRef("");
   const advTrackAmountRef = useRef("");
@@ -52,6 +52,10 @@ const Generator = () => {
     setAttributes(attributeData);
   }, [attributeData]);
 
+  useEffect(() => {
+    dispatch({ type: "setRemovedPlaylist", payload: playlist }); 
+  }, [playlist])
+
   const savePlaylist = () => setMenuOpen(!menuOpen);
 
   const loadMoreTopTracks = () => {
@@ -59,7 +63,6 @@ const Generator = () => {
   };
 
   const getAmountValue = () => {
-   
     const limit = trackAmountRef.current.valueAsNumber;
     let val = limit > 50 ? 50 : limit;
     val = Number.isNaN(val) ? "" : val.toString();
@@ -67,8 +70,6 @@ const Generator = () => {
   };
 
   const getAdvAmountValue = () => {
-    
-
     const limit = advTrackAmountRef.current.valueAsNumber;
     let val = limit > 50 ? 50 : limit;
     val = Number.isNaN(val) ? "" : val.toString();
@@ -76,7 +77,6 @@ const Generator = () => {
   };
 
   const generateTopPlayed = async () => {
-    
     const url = `&seed_tracks=${topFiveIds}`;
     if (topFiveIds.length > 0) {
       const data = await getRecomendations(url, amountValue);
@@ -92,7 +92,6 @@ const Generator = () => {
   };
 
   const generateSingleSong = async () => {
-  
     let convertedAttributes = "";
     attributes.forEach((attribute) => {
       if (attribute.value !== null) {
@@ -136,12 +135,11 @@ const Generator = () => {
   };
 
   const clearList = () => {
-    handleCheckedPlaylist(false);
     setPlaylist([]);
   };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
-    const uris = checkedPlaylist.map((track) => track.uri);
+    const uris = removedPlaylist.map((track) => track.uri);
 
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris}`;
     sendData(url, "POST").then((message) => {
@@ -149,7 +147,7 @@ const Generator = () => {
         setToastMessage(` error ${message.error.message.split(":")[0]}`);
       } else {
         setToastMessage(
-          ` added ${checkedPlaylist.length} tracks to ${playlistTitle}`
+          ` added ${removedPlaylist.length} tracks to ${playlistTitle}`
         );
       }
 
@@ -161,25 +159,17 @@ const Generator = () => {
 
   useEffect(() => {
     clearList();
-    setGenresArray([])
+    setGenresArray([]);
     setAdvanced(false);
     return () => {
       setMenuOpen(false);
     };
   }, [isSingleSong, songToGenerate]);
 
-  useEffect(() => {
-    handleCheckedPlaylist(true);
-  }, [playlist]);
-
   const openAdvanced = () => {
     setAdvanced(!showAdvanced);
   };
 
-  const handleCheckedPlaylist = (checked) => {
-    const list = checked ? playlist : [];
-    dispatch({ type: "setAllChecked", payload: list });
-  };
   return (
     <div className="wrap">
       {menuOpen ? (
@@ -187,7 +177,7 @@ const Generator = () => {
           <Menu
             addToPlaylist={addToPlaylist}
             setMenuOpen={setMenuOpen}
-            newPlaylist={checkedPlaylist}
+            newPlaylist={removedPlaylist}
           />
         </div>
       ) : null}
@@ -199,7 +189,7 @@ const Generator = () => {
             description={`Generate a playlist with song's like ${title}`}
             isGenerator={true}
             setStartAnimation={setStartAnimation}
-            cornerTitle={`${playlist.length} Tracks`}
+            cornerTitle={`${removedPlaylist.length} Tracks`}
           />
           <div
             style={{
@@ -216,7 +206,7 @@ const Generator = () => {
             />
 
             <SaveButton
-              showButton={checkedPlaylist.length > 0}
+              showButton={removedPlaylist.length > 0}
               savePlaylist={savePlaylist}
               title={"save playlist"}
             />
@@ -252,11 +242,8 @@ const Generator = () => {
               </>
             ) : null}
           </div>
-          <TracksChosen
-            chosenTracks={checkedPlaylist}
-            handleCheckedPlaylist={handleCheckedPlaylist}
-          />
-          {showAdvanced && checkedPlaylist.length > 0 ? (
+          <TracksChosen chosenTracks={removedPlaylist} />
+          {showAdvanced && removedPlaylist.length > 0 ? (
             <div
               style={{
                 display: "flex",
@@ -266,7 +253,7 @@ const Generator = () => {
               }}
             >
               <SaveButton
-                showButton={checkedPlaylist.length > 0}
+                showButton={removedPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -311,7 +298,7 @@ const Generator = () => {
               </div>
 
               <SaveButton
-                showButton={checkedPlaylist.length > 0}
+                showButton={removedPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -377,17 +364,14 @@ const Generator = () => {
                 </div>
               ) : null}
             </div>
-            <TracksChosen
-              chosenTracks={checkedPlaylist}
-              handleCheckedPlaylist={handleCheckedPlaylist}
-            />
+            <TracksChosen chosenTracks={removedPlaylist} />
           </motion.div>
 
           {playlist.length > 0 && genresArray.length && showAdvanced > 0 ? (
             <div className="button-wrap">
               <h4>Tracks: {playlist.length}</h4>
               <SaveButton
-                showButton={checkedPlaylist.length > 0}
+                showButton={removedPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -413,7 +397,7 @@ const Generator = () => {
 
 export default Generator;
 
-const TracksChosen = ({ chosenTracks, handleCheckedPlaylist }) => {
+const TracksChosen = ({ chosenTracks }) => {
   const tickOptions = {
     loop: false,
     autoplay: true,
@@ -439,17 +423,7 @@ const TracksChosen = ({ chosenTracks, handleCheckedPlaylist }) => {
         <h1>Tracks Added {chosenTracks.length}</h1>
       </div>
 
-      <div className="item-wrap">
-        <div className="item" onClick={() => handleCheckedPlaylist(true)}>
-          <h2>Add All</h2>
-          <Lottie options={tickOptions} width={60} height={60} />
-        </div>
-        <div className="item" onClick={() => handleCheckedPlaylist(false)}>
-          <h2>Remove All</h2>
-
-          <Lottie options={crossOptions} width={60} height={60} />
-        </div>
-      </div>
+      <div className="item-wrap"></div>
     </div>
   );
 };

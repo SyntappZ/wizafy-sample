@@ -97,7 +97,7 @@ const Home = () => {
           onAnimationComplete={() => setStartAnimation(true)}
         >
           <div>
-            <h1>playlist wizard</h1>
+            <h1>wizafy</h1>
             <h2>Create or generate awesome playlists.</h2>
           </div>
           <div className="create" onClick={toggleModal}>

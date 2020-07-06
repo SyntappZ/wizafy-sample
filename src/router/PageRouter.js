@@ -47,6 +47,7 @@ const PageRouter = () => {
     if (location.pathname !== "/generator") {
       dispatch({ type: "setSongToGenerate", payload: {} });
       dispatch({ type: "setOnGenerator", payload: false });
+      // dispatch({ type: "setRerolled", payload: false });
     } else {
       dispatch({ type: "setOnGenerator", payload: true });
     }

@@ -28,7 +28,7 @@ const Loading = () => {
       top: "0",
       left: "0",
       right: "0",
-      margin: "auto",
+      margin: "30px auto",
     },
   };
 
@@ -38,8 +38,8 @@ const Loading = () => {
       <Lottie
         style={styleSheet.lottie}
         options={defaultOptions}
-        height={450}
-        width={450}
+        height={200}
+        width={200}
       />
     </div>
   );

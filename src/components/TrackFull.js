@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Lottie from "react-lottie";
-
-import heart from "../images/heart.json";
 import visualizer from "../images/sound-visualizer.json";
-import tick from "../images/correct-check-animation.json";
-import cross from "../images/incorrect-failed.json";
-import { MdMoreHoriz, MdPlayArrow } from "react-icons/md";
+import { MdMoreHoriz, MdPlayArrow, MdDeleteForever } from "react-icons/md";
 import { GiRegeneration, GiRollingDices } from "react-icons/gi";
 import Tooltip from "../components/Tooltip";
 import { TiCancel } from "react-icons/ti";
@@ -13,7 +9,7 @@ import { PlaylistStore } from "../context/ContextProvider";
 import { FaHeart } from "react-icons/fa";
 import Menu from "./Menu";
 
-const TrackFull = ({ track }) => {
+const TrackFull = ({ track, removeTrack }) => {
   const contextStore = useContext(PlaylistStore);
   const {
     addFavorites,
@@ -28,12 +24,9 @@ const TrackFull = ({ track }) => {
     isPaused,
     currentTrack,
     onGenerator,
-    checkedPlaylist,
   } = contextStore.state;
 
   const [showTickTip, setShowTickTip] = useState(false);
-  const [trackChosen, setTrackChosen] = useState(false);
-
   const [trackData, setTrackData] = useState({});
 
   const [isNoSample, setNoSample] = useState(false);
@@ -63,17 +56,13 @@ const TrackFull = ({ track }) => {
     }
   };
 
+
+
   const reroll = async () => {
     const url = `seed_tracks=${trackData.id}`;
     const data = await rollTrack(url, 1);
-    if (trackChosen) {
-      addCheckedTrack();
       setTrackData(data);
-      dispatch({ type: "setCheckedPlaylist", payload: data });
-    } else {
-      setTrackData(data);
-      dispatch({ type: "setCheckedPlaylist", payload: data });
-    }
+      track.uri = data.uri
   };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
@@ -90,16 +79,7 @@ const TrackFull = ({ track }) => {
     dispatch({ type: "setSongToGenerate", payload: trackData });
   };
 
-  const addCheckedTrack = () => {
-    dispatch({ type: "setCheckedPlaylist", payload: trackData });
-  };
 
-  useEffect(() => {
-    const arr = checkedPlaylist.map((track) => track.id);
-    const chosen = arr.includes(trackData.id);
-
-    setTrackChosen(chosen);
-  }, [checkedPlaylist.length, checkedPlaylist, trackData]);
 
   const visualizerOptions = {
     loop: true,
@@ -109,22 +89,7 @@ const TrackFull = ({ track }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const tickOptions = {
-    loop: false,
-    autoplay: true,
-    animationData: tick,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-  const crossOptions = {
-    loop: false,
-    autoplay: true,
-    animationData: cross,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+ 
 
   useEffect(() => {
     setIsFavorite(trackData.favorite);
@@ -221,22 +186,20 @@ const TrackFull = ({ track }) => {
         ) : null}
         {onGenerator ? (
           <div
-            className="tick"
-            onClick={addCheckedTrack}
+            className="delete"
+            onClick={() => removeTrack(trackData.id)}
             onMouseOver={() => setShowTickTip(true)}
             onMouseLeave={() => setShowTickTip(false)}
           >
             <Tooltip
-              message={trackChosen ? "Remove track" : "Add track"}
+              message={"Remove track"}
               toggle={showTickTip}
               mini={true}
             />
 
-            {trackChosen ? (
-              <Lottie options={tickOptions} width={80} height={70} />
-            ) : (
-              <Lottie options={crossOptions} width={80} height={70} />
-            )}
+           <MdDeleteForever  style={{
+                fontSize: "25px",
+              }} />
           </div>
         ) : null}
         <div className="container">

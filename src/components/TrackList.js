@@ -7,9 +7,9 @@ import { motion, useAnimation } from "framer-motion";
 import { fadeIn } from "../data/animations.js";
 const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
   const [tracks, setTracks] = useState([]);
-  const [id, setId] = useState("");
+  
   const contextStore = useContext(PlaylistStore);
-  const { favoriteCheck, fetchData } = contextStore;
+  const { favoriteCheck, fetchData, dispatch } = contextStore;
 
   const controls = useAnimation();
   let _mounted = false;
@@ -19,7 +19,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
     return () => {
       _mounted = false;
     };
-  }, [tracklist, id]);
+  }, [tracklist]);
 
   const check = async (tracklist) => {
     const data = await favoriteCheck(tracklist);
@@ -27,6 +27,18 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
       setTracks(data);
     }
   };
+
+  
+
+  const removeTrack = (id) => {
+    const list = tracks.filter(track => track.id !== id);
+    setTracks(list)
+     dispatch({ type: "setRemovedPlaylist", payload: list }); 
+  }
+
+  
+
+  
 
   const loadMoreTracks = async () => {
     fetchData(next).then((data) => {
@@ -38,13 +50,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
     });
   };
 
-  // const updateFavorite = (nextId) => {
-  //   // if (nextId === id) {
-  //   //   nextId = nextId + Math.floor(Math.random() + 10000).toString();
-  //   // }
 
-  //   setId(nextId);
-  // };
 
   const { initial, animate, transition } = fadeIn;
   if (startAnimation) {
@@ -64,7 +70,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
               <TrackFull
                 key={i}
                 track={track}
-                
+                removeTrack={removeTrack}
               />
             );
           })
