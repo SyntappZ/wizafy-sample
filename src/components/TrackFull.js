@@ -55,6 +55,7 @@ const TrackFull = ({ track, removeTrack }) => {
     const data = await rollTrack(url, 1);
     setTrackData(data);
     track.uri = data.uri;
+    track.id = data.id;
   };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
