@@ -1,1 +1,1 @@
-# playlist wizard
+# wizafy
