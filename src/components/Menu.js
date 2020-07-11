@@ -45,39 +45,43 @@ const Menu = ({ addToPlaylist, setMenuOpen, newPlaylist, track }) => {
     setPlaylists(convert);
   }, [myPlaylists]);
 
-  const pos = newPlaylist
-    ? { position: "absolute" }
-    : { top: "50%", right: "50%", position: "absolute" };
+  // const pos = newPlaylist
+  //   ? { position: "absolute" }
+  //   : { top: "50%", right: "50%", position: "absolute" };
 
   const amount = newPlaylist ? newPlaylist.length : 1;
 
   return (
     <motion.div
       className="menu"
-      style={pos}
+  
       initial={fadeInRight.initial}
       animate={fadeInRight.animate}
       transition={fadeInRight.transition}
     >
-      <div className="title-container">
-        <p>{amount} tracks</p>
-        <h3>Add to playlist</h3>
-        <div className="close-wrap" onClick={closeMenu}>
-          <MdClose style={{ fontSize: "20px" }} />
+      <div className="menu-center">
+        <div className="title-container">
+          <p>{amount} tracks</p>
+          {track ? (<p className="track-title">{`${track.title} - ${track.artist}`}</p>) :  <h3>Add to playlist</h3>}
+        
+          <div className="close-wrap" onClick={closeMenu}>
+            <MdClose style={{ fontSize: "20px" }} />
+          </div>
         </div>
-      </div>
+        {track ? (<h3 className="add-title">Add to playlist</h3>) : null}
 
-      <div className="playlist-wrap">
-        {playlists.map((lists, i) => (
-          <Section key={i} playlists={lists} addToPlaylist={addToPlaylist} />
-        ))}
-      </div>
-      <div className="create-new">
-        <SaveButton
-          showButton={true}
-          savePlaylist={createNewPlaylist}
-          title={"Create playlist "}
-        />
+        <div className="playlist-wrap">
+          {playlists.map((lists, i) => (
+            <Section key={i} playlists={lists} addToPlaylist={addToPlaylist} />
+          ))}
+        </div>
+        <div className="create-new">
+          <SaveButton
+            showButton={true}
+            savePlaylist={createNewPlaylist}
+            title={"Create playlist "}
+          />
+        </div>
       </div>
     </motion.div>
   );

@@ -53,10 +53,11 @@ const TrackFull = ({ track, removeTrack, index }) => {
   const reroll = async () => {
     const url = `seed_tracks=${trackData.id}`;
     const data = await rollTrack(url, 1);
-    dispatch({type: 'changeEditPlaylist', payload: {indexToRemove: index, track: data }})
+    dispatch({
+      type: "changeEditPlaylist",
+      payload: { indexToRemove: index, track: data },
+    });
   };
-
-  
 
   const addToPlaylist = (playlistId, playlistTitle) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${trackData.uri}`;
@@ -85,13 +86,16 @@ const TrackFull = ({ track, removeTrack, index }) => {
     setIsFavorite(trackData.favorite);
   }, [trackData]);
 
-  const sendTrack = () => {
+  const sendTrackToPlayer = () => {
     dispatch({ type: "loadCurrentTrack", payload: trackData });
   };
 
   const handleFavorite = async () => {
     const action = await addFavorites(trackData.id);
     setIsFavorite(action);
+    if (trackData.id === currentTrack.id) {
+      currentTrack.favorite = action;
+    }
   };
 
   let trackTitle;
@@ -135,7 +139,7 @@ const TrackFull = ({ track, removeTrack, index }) => {
         <div
           className="play-icon-wrap"
           style={{ cursor: trackData.preview ? "pointer" : "default" }}
-          onClick={trackData.preview ? sendTrack : null}
+          onClick={trackData.preview ? sendTrackToPlayer : null}
         >
           {icon}
         </div>

@@ -47,6 +47,7 @@ const userState = {
   toastMessage: "",
   onGenerator: false,
   editPlaylist: [],
+  checkForFavorites: false,
 };
 
 const convertAlbums = (albums) => {
@@ -135,8 +136,6 @@ const userData = (state, action) => {
       };
     }
 
-   
-
     case "setEditPlaylist": {
       const playlist = action.payload;
       return {
@@ -156,8 +155,8 @@ const userData = (state, action) => {
     case "changeEditPlaylist": {
       const arr = [...state.editPlaylist];
       const track = action.payload.track;
-      const indexToRemove = action.payload.indexToRemove;
-      arr.splice(indexToRemove, 1, track);
+      const index = action.payload.indexToRemove;
+      arr.splice(index, 1, track);
 
       return {
         ...state,
@@ -168,15 +167,14 @@ const userData = (state, action) => {
     case "removeFromEditPlaylist": {
       const arr = [...state.editPlaylist];
       const id = action.payload;
-      
-     const removed = arr.filter((track) => track.id !== id);
+
+      const removed = arr.filter((track) => track.id !== id);
 
       return {
         ...state,
         editPlaylist: removed,
       };
     }
-
 
     case "setPlaylists": {
       const myPlaylists = [];
@@ -252,7 +250,7 @@ const userData = (state, action) => {
       const rand = (n) => Math.floor(Math.random() * n);
 
       let len = tracks.length;
-      
+
       const topFive = Array(5)
         .fill(len)
         .map((num) => {
@@ -277,6 +275,14 @@ const userData = (state, action) => {
         ...state,
         favorites: refresh ? tracks : [...state.favorites, ...tracks],
         moreFavorites: action.payload.next,
+      };
+    }
+    case "setFirstPlayerTrack": {
+      const track = convertTracks(action.payload);
+      track[0].firstLoad = true;
+      return {
+        ...state,
+        currentTrack: track[0],
       };
     }
 
@@ -375,8 +381,8 @@ const userData = (state, action) => {
       };
     }
     case "loadCurrentTrack": {
-      if(state.currentTrack === action.payload) {
-        state.audio.play()
+      if (state.currentTrack === action.payload) {
+        state.audio.play();
       }
       return {
         ...state,

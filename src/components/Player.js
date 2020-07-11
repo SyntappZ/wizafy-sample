@@ -10,36 +10,26 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 const Player = () => {
   const contextStore = useContext(PlaylistStore);
-  const [track, setTrack] = useState({});
   const [volume, setVolume] = useState(0.2);
   const [time, setTime] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const { dispatch, state, addFavorites } = contextStore;
-  const { currentTrack, audio, isPlaying, isPaused } = state;
+  const { currentTrack, audio, isPlaying, isPaused, checkForFavorites } = state;
   useEffect(() => {
-    if (currentTrack) {
-      if (currentTrack.title) {
-        setTrack(currentTrack);
-      } else {
-        setTrack({
-          id: currentTrack.id,
-          title: currentTrack.name.split("-")[0],
-          artist: currentTrack.artists[0].name,
-          image: currentTrack.album.images[2].url,
-          duration: "0:30",
-          preview: currentTrack.preview_url,
-          uri: currentTrack.uri,
-          href: currentTrack.href,
-          favorite: currentTrack.favorite
-        });
-      }
-      setIsFavorite(currentTrack.favorite)
-    }
     autoPlay();
   }, [currentTrack]);
 
+  useEffect(() => {
+    setIsFavorite(currentTrack.favorite);
+  }, [currentTrack.favorite]);
+
   const playSample = () => {
+    if (currentTrack.firstLoad) {
+      audio.src = currentTrack.preview;
+      audio.play();
+      currentTrack.firstLoad = false;
+    }
     if (currentTrack.preview) {
       if (isPlaying) {
         audio.pause();
@@ -50,12 +40,13 @@ const Player = () => {
   };
 
   const autoPlay = () => {
-    if (currentTrack.preview) {
+    if (currentTrack.preview && !currentTrack.firstLoad) {
       audio.src = currentTrack.preview;
       audio.play();
-      
     }
   };
+
+  const checkIfFavorite = () => {};
 
   useEffect(() => {
     let interval = null;
@@ -84,7 +75,7 @@ const Player = () => {
   };
 
   // audio.onended = () => {
-    
+
   // };
 
   const handleFavorite = async () => {
@@ -102,24 +93,28 @@ const Player = () => {
   };
   const lottie = isPlaying ? <Lottie options={soundWaveOptions} /> : null;
 
-  const { title, artist, image } = track;
   const timePosition = Math.floor(time);
   let trackTitle;
-  if (title) {
-    trackTitle = title.length > 25 ? title.slice(0, 25) + "..." : title;
+  if (currentTrack.title) {
+    trackTitle =
+      currentTrack.title.length > 25
+        ? currentTrack.title.slice(0, 25) + "..."
+        : currentTrack.title;
   }
   const sendToGenerator = () => {
-    dispatch({ type: "setSongToGenerate", payload: track });
+    dispatch({ type: "setSongToGenerate", payload: currentTrack });
   };
 
   return (
     <div className="player-container">
       <div className="now-playing">
         <div className="image-wrap">
-          {image ? <img src={image} alt="album art" /> : null}
+          {currentTrack.image ? (
+            <img src={currentTrack.image} alt="album art" />
+          ) : null}
           <div className="text-wrap">
             <h3>{trackTitle}</h3>
-            <p>{artist}</p>
+            <p>{currentTrack.artist}</p>
           </div>
         </div>
 

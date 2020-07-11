@@ -207,9 +207,6 @@ const ContextProvider = ({ children }) => {
         isPaused: false,
       };
       dispatch({ type: "audioTracker", payload: data });
-      // dispatch({ type: "loadCurrentTrack", payload: "" });
-      // state.audio.src = "";
-      // state.audio.currentTime = 0;
     };
   }, []);
 
@@ -236,6 +233,7 @@ const ContextProvider = ({ children }) => {
     );
     fetchData("https://api.spotify.com/v1/me/tracks?limit=50").then((data) => {
       favoriteCheck(data.items).then((tracks) => {
+        dispatch({ type: "setFirstPlayerTrack", payload: [tracks[0]] });
         data.items = tracks;
         data.refresh = false;
         dispatch({ type: "favorites", payload: data });
@@ -251,7 +249,6 @@ const ContextProvider = ({ children }) => {
         favoriteCheck(data.items).then((tracks) => {
           data.items = tracks;
           dispatch({ type: "topTracks", payload: data });
-          dispatch({ type: "loadCurrentTrack", payload: data.items[0] });
         });
       }
     );
