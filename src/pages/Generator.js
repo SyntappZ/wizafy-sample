@@ -37,7 +37,7 @@ const Generator = () => {
     songToGenerate,
     myTopTracks,
     moreTopTracks,
-    removedPlaylist,
+    editPlaylist,
   } = state;
   const trackAmountRef = useRef("");
   const advTrackAmountRef = useRef("");
@@ -53,7 +53,7 @@ const Generator = () => {
   }, [attributeData]);
 
   useEffect(() => {
-    dispatch({ type: "setRemovedPlaylist", payload: playlist });
+    dispatch({ type: "setEditPlaylist", payload: playlist });
   }, [playlist]);
 
   const savePlaylist = () => setMenuOpen(!menuOpen);
@@ -139,7 +139,7 @@ const Generator = () => {
   };
 
   const addToPlaylist = (playlistId, playlistTitle) => {
-    const uris = removedPlaylist.map((track) => track.uri);
+    const uris = editPlaylist.map((track) => track.uri);
 
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris}`;
     sendData(url, "POST").then((message) => {
@@ -147,7 +147,7 @@ const Generator = () => {
         setToastMessage(` error ${message.error.message.split(":")[0]}`);
       } else {
         setToastMessage(
-          ` added ${removedPlaylist.length} tracks to ${playlistTitle}`
+          ` added ${editPlaylist.length} tracks to ${playlistTitle}`
         );
       }
 
@@ -177,7 +177,7 @@ const Generator = () => {
           <Menu
             addToPlaylist={addToPlaylist}
             setMenuOpen={setMenuOpen}
-            newPlaylist={removedPlaylist}
+            newPlaylist={editPlaylist}
           />
         </div>
       ) : null}
@@ -189,7 +189,7 @@ const Generator = () => {
             description={`Generate a playlist with song's like ${title}`}
             isGenerator={true}
             setStartAnimation={setStartAnimation}
-            cornerTitle={`${removedPlaylist.length} Tracks`}
+            cornerTitle={`${editPlaylist.length} Tracks`}
           />
           <div
             style={{
@@ -206,7 +206,7 @@ const Generator = () => {
             />
 
             <SaveButton
-              showButton={removedPlaylist.length > 0}
+              showButton={editPlaylist.length > 0}
               savePlaylist={savePlaylist}
               title={"save playlist"}
             />
@@ -242,8 +242,8 @@ const Generator = () => {
               </>
             ) : null}
           </div>
-          <TracksChosen chosenTracks={removedPlaylist} />
-          {showAdvanced && removedPlaylist.length > 0 ? (
+          <TracksChosen chosenTracks={editPlaylist} />
+          {showAdvanced && editPlaylist.length > 0 ? (
             <div
               style={{
                 display: "flex",
@@ -253,7 +253,7 @@ const Generator = () => {
               }}
             >
               <SaveButton
-                showButton={removedPlaylist.length > 0}
+                showButton={editPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -262,7 +262,7 @@ const Generator = () => {
           {playlist.length > 0 ? (
             <div className="generated-tracks">
               <TrackList
-                tracklist={playlist}
+                tracklist={editPlaylist}
                 loadMore={null}
                 favorites={false}
                 next={null}
@@ -298,7 +298,7 @@ const Generator = () => {
               </div>
 
               <SaveButton
-                showButton={removedPlaylist.length > 0}
+                showButton={editPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -364,14 +364,14 @@ const Generator = () => {
                 </div>
               ) : null}
             </div>
-            <TracksChosen chosenTracks={removedPlaylist} />
+            <TracksChosen chosenTracks={editPlaylist} />
           </motion.div>
 
           {playlist.length > 0 && genresArray.length && showAdvanced > 0 ? (
             <div className="button-wrap">
               <h4>Tracks: {playlist.length}</h4>
               <SaveButton
-                showButton={removedPlaylist.length > 0}
+                showButton={editPlaylist.length > 0}
                 savePlaylist={savePlaylist}
                 title={"save playlist"}
               />
@@ -381,7 +381,7 @@ const Generator = () => {
           {playlist.length > 0 ? (
             <div className="generated-tracks">
               <TrackList
-                tracklist={playlist}
+                tracklist={editPlaylist}
                 loadMore={null}
                 favorites={false}
                 next={null}

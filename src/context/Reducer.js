@@ -46,7 +46,7 @@ const userState = {
   isFeatured: false,
   toastMessage: "",
   onGenerator: false,
-  removedPlaylist: [],
+  editPlaylist: [],
 };
 
 const convertAlbums = (albums) => {
@@ -114,8 +114,6 @@ const userData = (state, action) => {
       };
     }
 
-   
-
     case "setFeatured": {
       return {
         ...state,
@@ -137,12 +135,52 @@ const userData = (state, action) => {
       };
     }
 
-    case "setRemovedPlaylist": {
+    // case "setRemovedPlaylist": {
+    //   const playlist = action.payload;
+
+    //   return {
+    //     ...state,
+    //     editingPlaylist: playlist,
+    //   };
+    // }
+
+    case "setEditPlaylist": {
       const playlist = action.payload;
-     
       return {
         ...state,
-        removedPlaylist: playlist,
+        editPlaylist: playlist,
+      };
+    }
+
+    case "addToEditPlaylist": {
+      const track = action.payload;
+      return {
+        ...state,
+        editPlaylist: [...state.editingPlaylist, track],
+      };
+    }
+
+    case "changeEditPlaylist": {
+      const arr = [...state.editPlaylist];
+      const track = action.payload.track;
+      const indexToRemove = action.payload.indexToRemove;
+      arr.splice(indexToRemove, 1, track);
+
+      return {
+        ...state,
+        editPlaylist: arr,
+      };
+    }
+
+    case "removeFromEditPlaylist": {
+      const arr = [...state.editPlaylist];
+      const id = action.payload;
+      
+     const removed = arr.filter((track) => track.id !== id);
+
+      return {
+        ...state,
+        editPlaylist: removed,
       };
     }
 

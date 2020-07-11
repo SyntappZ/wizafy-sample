@@ -9,7 +9,7 @@ import { PlaylistStore } from "../context/ContextProvider";
 import { FaHeart } from "react-icons/fa";
 import Menu from "./Menu";
 
-const TrackFull = ({ track, removeTrack }) => {
+const TrackFull = ({ track, removeTrack, index }) => {
   const contextStore = useContext(PlaylistStore);
   const {
     addFavorites,
@@ -53,10 +53,10 @@ const TrackFull = ({ track, removeTrack }) => {
   const reroll = async () => {
     const url = `seed_tracks=${trackData.id}`;
     const data = await rollTrack(url, 1);
-    setTrackData(data);
-    track.uri = data.uri;
-    track.id = data.id;
+    dispatch({type: 'changeEditPlaylist', payload: {indexToRemove: index, track: data }})
   };
+
+  
 
   const addToPlaylist = (playlistId, playlistTitle) => {
     const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${trackData.uri}`;

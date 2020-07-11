@@ -9,7 +9,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
   const [tracks, setTracks] = useState([]);
 
   const contextStore = useContext(PlaylistStore);
-  const { favoriteCheck, fetchData, dispatch } = contextStore;
+  const { favoriteCheck, fetchData, dispatch, state } = contextStore;
 
   const controls = useAnimation();
   let _mounted = false;
@@ -27,12 +27,18 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
       setTracks(data);
     }
   };
-
   const removeTrack = (id) => {
-    const list = tracks.filter((track) => track.id !== id);
-    setTracks(list);
-    dispatch({ type: "setRemovedPlaylist", payload: list });
-  };
+    dispatch({type: 'removeFromEditPlaylist', payload:id})
+  }
+
+  // const removeTrack = (id) => {
+   
+    
+  //   const list = tracks.filter((track) => track.id !== id);
+  //   setTracks(list);
+  //   // dispatch({ type: "setRemovedPlaylist", payload: list });
+  //   console.log(tracks)
+  // };
 
   const loadMoreTracks = async () => {
     fetchData(next).then((data) => {
@@ -59,7 +65,7 @@ const TrackList = ({ tracklist, next, updateNext, startAnimation }) => {
       {startAnimation
         ? tracks.map((track, i) => {
             return (
-              <TrackFull key={i} track={track} removeTrack={removeTrack} />
+              <TrackFull key={i} track={track} removeTrack={removeTrack} index={i} />
             );
           })
         : null}
