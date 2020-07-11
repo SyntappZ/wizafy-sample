@@ -47,7 +47,7 @@
 }
 .controls-wrap {
   display: flex;
-  width: 150px;
+  width: 200px;
   align-items: center;
   justify-content: space-around;
   height: 100%;
@@ -62,6 +62,14 @@
     color: #979797;
     cursor: pointer;
 
+  }
+
+  .favorite {
+    height: 100%;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
 }
 

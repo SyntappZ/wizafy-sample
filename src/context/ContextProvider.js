@@ -207,6 +207,9 @@ const ContextProvider = ({ children }) => {
         isPaused: false,
       };
       dispatch({ type: "audioTracker", payload: data });
+      // dispatch({ type: "loadCurrentTrack", payload: "" });
+      // state.audio.src = "";
+      // state.audio.currentTime = 0;
     };
   }, []);
 

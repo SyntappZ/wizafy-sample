@@ -5,6 +5,7 @@ import { FaVolumeUp, FaStepBackward } from "react-icons/fa";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 import { GiRegeneration } from "react-icons/gi";
 import { PlaylistStore } from "../context/ContextProvider";
+import { FaHeart } from "react-icons/fa";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 const Player = () => {
@@ -12,9 +13,10 @@ const Player = () => {
   const [track, setTrack] = useState({});
   const [volume, setVolume] = useState(0.2);
   const [time, setTime] = useState(0);
-  const {dispatch, state} = contextStore;
-  const { currentTrack, audio, isPlaying, isPaused } = state;
+  const [isFavorite, setIsFavorite] = useState(false);
 
+  const { dispatch, state, addFavorites } = contextStore;
+  const { currentTrack, audio, isPlaying, isPaused } = state;
   useEffect(() => {
     if (currentTrack) {
       if (currentTrack.title) {
@@ -29,8 +31,10 @@ const Player = () => {
           preview: currentTrack.preview_url,
           uri: currentTrack.uri,
           href: currentTrack.href,
+          favorite: currentTrack.favorite
         });
       }
+      setIsFavorite(currentTrack.favorite)
     }
     autoPlay();
   }, [currentTrack]);
@@ -49,6 +53,7 @@ const Player = () => {
     if (currentTrack.preview) {
       audio.src = currentTrack.preview;
       audio.play();
+      
     }
   };
 
@@ -78,6 +83,15 @@ const Player = () => {
     setVolume(event / 100);
   };
 
+  // audio.onended = () => {
+    
+  // };
+
+  const handleFavorite = async () => {
+    const action = await addFavorites(currentTrack.id);
+    setIsFavorite(action);
+  };
+
   const soundWaveOptions = {
     loop: true,
     autoplay: true,
@@ -98,8 +112,6 @@ const Player = () => {
     dispatch({ type: "setSongToGenerate", payload: track });
   };
 
-  
-
   return (
     <div className="player-container">
       <div className="now-playing">
@@ -118,6 +130,14 @@ const Player = () => {
               {isPlaying ? <MdPause /> : <MdPlayArrow />}
             </div>
             <GiRegeneration className="icon" onClick={sendToGenerator} />
+            <div className="favorite" onClick={handleFavorite}>
+              <FaHeart
+                style={{
+                  color: isFavorite ? "#C41E58" : "#D9D9D9",
+                  fontSize: "20px",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

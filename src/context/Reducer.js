@@ -135,14 +135,7 @@ const userData = (state, action) => {
       };
     }
 
-    // case "setRemovedPlaylist": {
-    //   const playlist = action.payload;
-
-    //   return {
-    //     ...state,
-    //     editingPlaylist: playlist,
-    //   };
-    // }
+   
 
     case "setEditPlaylist": {
       const playlist = action.payload;
@@ -259,6 +252,7 @@ const userData = (state, action) => {
       const rand = (n) => Math.floor(Math.random() * n);
 
       let len = tracks.length;
+      
       const topFive = Array(5)
         .fill(len)
         .map((num) => {
@@ -381,6 +375,9 @@ const userData = (state, action) => {
       };
     }
     case "loadCurrentTrack": {
+      if(state.currentTrack === action.payload) {
+        state.audio.play()
+      }
       return {
         ...state,
         currentTrack: action.payload,
